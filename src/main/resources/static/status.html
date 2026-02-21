@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>주문 진행 현황 — 기념일 영상</title>
+<style>
+:root {
+  --purple: #a78bfa;
+  --purple-dark: #7c3aed;
+  --green: #34d399;
+  --bg: #0f0f14;
+  --card: #1a1a2e;
+  --border: #2d2d44;
+  --text: #e2e8f0;
+  --muted: #94a3b8;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans KR', sans-serif;
+       background: var(--bg); color: var(--text); min-height: 100vh;
+       display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+       padding: 40px 20px; }
+.logo { font-size: 14px; font-weight: 700; color: var(--purple); margin-bottom: 32px;
+        letter-spacing: .5px; }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 20px;
+        padding: 36px 32px; width: 100%; max-width: 480px; }
+.card h1 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+.card .sub { font-size: 14px; color: var(--muted); margin-bottom: 28px; }
+
+/* 상태 배지 */
+.status-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 18px; border-radius: 30px; font-size: 14px; font-weight: 700;
+  margin-bottom: 24px;
+}
+.badge-PENDING    { background:#1e1b4b; color:#a78bfa; }
+.badge-PAID       { background:#1a2e2b; color:#34d399; }
+.badge-PROCESSING { background:#1e2a3b; color:#60a5fa; }
+.badge-COMPLETED  { background:#14291e; color:#4ade80; }
+.badge-FAILED     { background:#2d1515; color:#f87171; }
+
+/* 타임라인 */
+.timeline { list-style: none; padding: 0; margin: 24px 0; }
+.timeline li { display: flex; align-items: flex-start; gap: 14px; padding: 10px 0;
+               border-left: 2px solid var(--border); padding-left: 20px; position: relative;
+               margin-left: 8px; }
+.timeline li::before { content: ''; position: absolute; left: -5px; top: 14px;
+                        width: 8px; height: 8px; border-radius: 50%; background: var(--border); }
+.timeline li.done::before { background: var(--green); }
+.timeline li.active::before { background: var(--purple); box-shadow: 0 0 8px var(--purple); }
+.timeline li.done { border-color: #1e3a2e; }
+.step-title { font-size: 14px; font-weight: 600; }
+.step-desc  { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+/* 다운로드 박스 */
+.download-box { background: #0f2d1a; border: 1px solid #1e5c34; border-radius: 12px;
+                padding: 20px; margin: 20px 0; text-align: center; }
+.download-box .title { font-size: 15px; font-weight: 700; color: var(--green); margin-bottom: 8px; }
+.download-box .exp { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+.download-btn { display: inline-block; background: var(--purple-dark); color: #fff;
+                padding: 12px 32px; border-radius: 8px; font-size: 15px; font-weight: 700;
+                text-decoration: none; transition: opacity .2s; }
+.download-btn:hover { opacity: .85; }
+.refresh-btn { background: none; border: 1px solid var(--border); color: var(--muted);
+               padding: 8px 20px; border-radius: 8px; font-size: 13px; cursor: pointer;
+               margin-top: 10px; transition: border-color .2s; }
+.refresh-btn:hover { border-color: var(--purple); color: var(--text); }
+
+/* 입력 폼 (orderId 없을 때) */
+.lookup-form { display: flex; flex-direction: column; gap: 12px; }
+.lookup-form input { background: #0f0f14; border: 1px solid var(--border); color: var(--text);
+                     padding: 12px 16px; border-radius: 8px; font-size: 15px; outline: none; }
+.lookup-form input:focus { border-color: var(--purple); }
+.lookup-btn { background: var(--purple-dark); color: #fff; border: none; padding: 13px;
+              border-radius: 8px; font-size: 15px; font-weight: 700; cursor: pointer; }
+
+/* 실패 박스 */
+.fail-box { background: #2d1515; border: 1px solid #5c2020; border-radius: 12px;
+            padding: 20px; margin: 20px 0; }
+.fail-box .title { font-size: 15px; font-weight: 700; color: #f87171; margin-bottom: 6px; }
+.fail-box p { font-size: 13px; color: var(--muted); }
+.contact-btn { display: inline-block; background: #1f2937; color: var(--text);
+               padding: 8px 20px; border-radius: 8px; font-size: 13px; text-decoration: none;
+               margin-top: 12px; }
+
+/* 로딩 */
+.loading { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 32px 0; }
+.spinner { width: 32px; height: 32px; border: 3px solid var(--border);
+           border-top-color: var(--purple); border-radius: 50%; animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+footer { margin-top: 32px; font-size: 12px; color: #374151; text-align: center; }
+</style>
+</head>
+<body>
+<div class="logo">✨ 기념일 영상 서비스</div>
+
+<div class="card">
+  <!-- 로딩 -->
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <div style="font-size:14px;color:var(--muted)">조회 중...</div>
+  </div>
+
+  <!-- 주문번호 입력 폼 -->
+  <div id="form-section" style="display:none">
+    <h1>주문 현황 조회</h1>
+    <p class="sub">주문번호를 입력하시면 진행 상황을 확인할 수 있습니다.</p>
+    <div class="lookup-form">
+      <input type="number" id="order-input" placeholder="주문번호 (예: 12)" min="1">
+      <button class="lookup-btn" onclick="lookup()">조회하기</button>
+    </div>
+    <div id="form-error" style="font-size:13px;color:#f87171;margin-top:8px;display:none"></div>
+  </div>
+
+  <!-- 주문 정보 -->
+  <div id="order-section" style="display:none">
+    <h1>주문 진행 현황</h1>
+    <p class="sub" id="order-title"></p>
+
+    <!-- 상태 배지 -->
+    <div id="status-badge"></div>
+
+    <!-- 타임라인 -->
+    <ul class="timeline" id="timeline"></ul>
+
+    <!-- 완성 다운로드 -->
+    <div class="download-box" id="download-box" style="display:none">
+      <div class="title">🎬 영상이 준비되었습니다!</div>
+      <div class="exp" id="expires-text"></div>
+      <a id="download-link" class="download-btn" href="#" target="_blank">📥 영상 다운로드</a>
+      <br>
+      <button class="refresh-btn" onclick="refreshUrl()">링크 갱신 (만료 시)</button>
+    </div>
+
+    <!-- 실패 안내 -->
+    <div class="fail-box" id="fail-box" style="display:none">
+      <div class="title">⚠️ 제작에 문제가 발생했습니다</div>
+      <p>고객센터로 연락주시면 신속히 처리해 드리겠습니다.<br>
+         결제하신 금액은 전액 환불해 드립니다.</p>
+      <a href="https://open.kakao.com/placeholder" class="contact-btn">💬 카카오톡 문의</a>
+    </div>
+
+    <!-- 새로고침 -->
+    <div style="text-align:center;margin-top:20px" id="refresh-section">
+      <button class="refresh-btn" onclick="loadOrder(currentOrderId)">🔄 상태 새로고침</button>
+      <div style="font-size:12px;color:#374151;margin-top:6px" id="last-updated"></div>
+    </div>
+  </div>
+</div>
+
+<footer>문의: 카카오톡 @기념일영상 · ⓒ 2025 Anniversary Video</footer>
+
+<script>
+let currentOrderId = null;
+let autoRefreshTimer = null;
+
+const STATUS_LABELS = {
+  PENDING:    { label: '주문 접수',   emoji: '📋' },
+  PAID:       { label: '결제 완료',   emoji: '✅' },
+  PROCESSING: { label: 'AI 제작 중',  emoji: '🎬' },
+  COMPLETED:  { label: '제작 완료',   emoji: '🎉' },
+  FAILED:     { label: '처리 실패',   emoji: '⚠️' },
+};
+
+const STEPS = [
+  { key: 'PENDING',    title: '주문 & 결제 완료',  desc: '사진 업로드 및 결제가 완료되었습니다.' },
+  { key: 'PAID',       title: '제작 준비 중',       desc: 'AI 영상 제작을 준비하고 있습니다.' },
+  { key: 'PROCESSING', title: 'AI 제작 진행 중',    desc: '보통 1~24시간 소요됩니다.' },
+  { key: 'COMPLETED',  title: '제작 완료',           desc: '영상이 준비되었습니다. 다운로드하세요!' },
+];
+const STATUS_ORDER = ['PENDING', 'PAID', 'PROCESSING', 'COMPLETED'];
+
+window.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  const orderId = params.get('orderId') || params.get('id');
+
+  if (orderId) {
+    currentOrderId = parseInt(orderId);
+    loadOrder(currentOrderId);
+  } else {
+    hide('loading');
+    show('form-section');
+  }
+});
+
+async function lookup() {
+  const val = document.getElementById('order-input').value.trim();
+  if (!val || isNaN(val)) {
+    showFormError('주문번호를 입력해주세요.');
+    return;
+  }
+  currentOrderId = parseInt(val);
+  hide('form-section');
+  show('loading');
+  loadOrder(currentOrderId);
+}
+
+async function loadOrder(orderId) {
+  try {
+    const resp = await fetch('/api/orders/' + orderId + '/status');
+    if (!resp.ok) {
+      if (resp.status === 400 || resp.status === 404) {
+        hide('loading');
+        show('form-section');
+        showFormError('주문을 찾을 수 없습니다. 주문번호를 확인해주세요.');
+        return;
+      }
+      throw new Error('서버 오류');
+    }
+    const data = await resp.json();
+    renderOrder(data);
+  } catch(e) {
+    hide('loading');
+    show('form-section');
+    showFormError('조회 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+  }
+}
+
+function renderOrder(data) {
+  hide('loading');
+  show('order-section');
+
+  const status = data.status;
+  const info = STATUS_LABELS[status] || { label: status, emoji: '?' };
+
+  document.getElementById('order-title').textContent =
+    '주문번호 #' + data.orderId;
+
+  // 상태 배지
+  document.getElementById('status-badge').innerHTML =
+    `<div class="status-badge badge-${status}">${info.emoji} ${info.label}</div>`;
+
+  // 타임라인
+  const currentIdx = STATUS_ORDER.indexOf(status);
+  const timeline = document.getElementById('timeline');
+  timeline.innerHTML = STEPS.map((step, i) => {
+    let cls = '';
+    if (i < currentIdx || (status === 'COMPLETED' && i <= currentIdx)) cls = 'done';
+    else if (i === currentIdx && status !== 'FAILED') cls = 'active';
+    return `<li class="${cls}">
+      <div>
+        <div class="step-title">${step.title}</div>
+        <div class="step-desc">${i === currentIdx ? step.desc : ''}</div>
+      </div>
+    </li>`;
+  }).join('');
+
+  // 완성 처리
+  if (status === 'COMPLETED' && data.downloadUrl) {
+    show('download-box');
+    document.getElementById('download-link').href = data.downloadUrl;
+    document.getElementById('expires-text').textContent =
+      '다운로드 링크는 72시간 동안 유효합니다.';
+    clearAutoRefresh();
+  } else if (status === 'FAILED') {
+    show('fail-box');
+    clearAutoRefresh();
+  } else {
+    // PROCESSING 중: 30초마다 자동 새로고침
+    if (!autoRefreshTimer && (status === 'PROCESSING' || status === 'PAID')) {
+      autoRefreshTimer = setInterval(() => loadOrder(currentOrderId), 30000);
+    }
+  }
+
+  // 마지막 업데이트 시간
+  const now = new Date();
+  document.getElementById('last-updated').textContent =
+    '마지막 조회: ' + now.toLocaleTimeString('ko-KR');
+}
+
+async function refreshUrl() {
+  try {
+    const resp = await fetch('/api/orders/' + currentOrderId + '/download-url', { method: 'POST' });
+    if (!resp.ok) throw new Error();
+    const data = await resp.json();
+    document.getElementById('download-link').href = data.downloadUrl;
+    document.getElementById('expires-text').textContent = '링크가 갱신되었습니다. 72시간 유효.';
+    alert('다운로드 링크가 갱신되었습니다.');
+  } catch(e) {
+    alert('링크 갱신에 실패했습니다. 고객센터로 문의해주세요.');
+  }
+}
+
+function clearAutoRefresh() {
+  if (autoRefreshTimer) { clearInterval(autoRefreshTimer); autoRefreshTimer = null; }
+}
+
+function show(id) { document.getElementById(id).style.display = 'block'; }
+function hide(id) { document.getElementById(id).style.display = 'none'; }
+function showFormError(msg) {
+  const el = document.getElementById('form-error');
+  el.textContent = msg; el.style.display = 'block';
+}
+</script>
+</body>
+</html>

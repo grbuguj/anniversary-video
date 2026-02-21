@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>기념일 영상 — 관리자</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+         background: #0f0f14; color: #e2e8f0; min-height: 100vh; }
+  .header { background: #1a1a2e; padding: 16px 24px;
+            display: flex; align-items: center; justify-content: space-between;
+            border-bottom: 1px solid #2d2d44; position: sticky; top: 0; z-index: 10; }
+  .logo { font-size: 18px; font-weight: 700; color: #a78bfa; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+           gap: 12px; padding: 20px 24px; }
+  .stat-card { background: #1a1a2e; border-radius: 12px; padding: 16px;
+               border: 1px solid #2d2d44; text-align: center; }
+  .stat-num { font-size: 28px; font-weight: 700; color: #a78bfa; }
+  .stat-label { font-size: 12px; color: #94a3b8; margin-top: 4px; }
+  .stat-card.revenue .stat-num { color: #34d399; }
+  .controls { padding: 0 24px 12px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .filter-btn { padding: 6px 14px; border-radius: 20px; border: 1px solid #2d2d44;
+                background: #1a1a2e; color: #94a3b8; cursor: pointer; font-size: 13px; transition: all .2s; }
+  .filter-btn.active { background: #a78bfa; color: #fff; border-color: #a78bfa; }
+  .refresh-btn { padding: 6px 14px; border-radius: 8px; background: #3b3b5c;
+                 color: #e2e8f0; border: none; cursor: pointer; font-size: 13px; margin-left: auto; }
+  .orders { padding: 0 24px 40px; display: flex; flex-direction: column; gap: 10px; }
+  .order-card { background: #1a1a2e; border-radius: 12px; padding: 16px 20px;
+                border: 1px solid #2d2d44; transition: border-color .2s; }
+  .order-card:hover { border-color: #a78bfa44; }
+  .order-top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px; }
+  .order-id { font-size: 13px; color: #64748b; }
+  .order-name { font-size: 15px; font-weight: 600; color: #e2e8f0; }
+  .order-phone { font-size: 13px; color: #94a3b8; }
+  .badge { padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+  .badge-PENDING    { background: #1e293b; color: #94a3b8; }
+  .badge-PAID       { background: #1e3a5f; color: #60a5fa; }
+  .badge-PROCESSING { background: #2d1b4e; color: #a78bfa; }
+  .badge-COMPLETED  { background: #064e3b; color: #34d399; }
+  .badge-FAILED     { background: #450a0a; color: #f87171; }
+  .order-meta { margin-top: 8px; font-size: 13px; color: #64748b; display: flex; gap: 16px; flex-wrap: wrap; }
+  .order-actions { margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; }
+  .btn { padding: 5px 12px; border-radius: 6px; border: none; cursor: pointer;
+         font-size: 12px; font-weight: 500; transition: opacity .2s; }
+  .btn:hover { opacity: .8; }
+  .btn-regen { background: #4c1d95; color: #c4b5fd; }
+  .btn-complete { background: #064e3b; color: #34d399; }
+  .btn-fail { background: #450a0a; color: #f87171; }
+  .btn-copy { background: #1e293b; color: #94a3b8; }
+  .download-link { font-size: 12px; color: #60a5fa; word-break: break-all; margin-top: 6px; }
+  .empty { text-align: center; padding: 60px; color: #4a5568; }
+  .toast { position: fixed; bottom: 24px; right: 24px; background: #1a1a2e;
+           border: 1px solid #a78bfa; padding: 12px 18px; border-radius: 8px;
+           color: #e2e8f0; font-size: 14px; opacity: 0; transition: opacity .3s;
+           pointer-events: none; z-index: 100; }
+  .toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">🎬 기념일 영상 관리자</div>
+  <div style="font-size:13px;color:#64748b;" id="lastUpdate">-</div>
+</div>
+
+<div class="stats" id="stats">
+  <div class="stat-card"><div class="stat-num" id="s-total">-</div><div class="stat-label">전체 주문</div></div>
+  <div class="stat-card"><div class="stat-num" id="s-paid" style="color:#60a5fa">-</div><div class="stat-label">결제 완료</div></div>
+  <div class="stat-card"><div class="stat-num" id="s-processing" style="color:#a78bfa">-</div><div class="stat-label">제작 중</div></div>
+  <div class="stat-card"><div class="stat-num" id="s-completed" style="color:#34d399">-</div><div class="stat-label">완성</div></div>
+  <div class="stat-card"><div class="stat-num" id="s-failed" style="color:#f87171">-</div><div class="stat-label">실패</div></div>
+  <div class="stat-card revenue"><div class="stat-num" id="s-revenue">-</div><div class="stat-label">누적 매출</div></div>
+</div>
+
+<div class="controls">
+  <button class="filter-btn active" onclick="setFilter('ALL')">전체</button>
+  <button class="filter-btn" onclick="setFilter('PENDING')">대기</button>
+  <button class="filter-btn" onclick="setFilter('PAID')">결제완료</button>
+  <button class="filter-btn" onclick="setFilter('PROCESSING')">제작중</button>
+  <button class="filter-btn" onclick="setFilter('COMPLETED')">완성</button>
+  <button class="filter-btn" onclick="setFilter('FAILED')">실패</button>
+  <button class="refresh-btn" onclick="loadAll()">↻ 새로고침</button>
+</div>
+
+<div class="orders" id="orders-container">
+  <div class="empty">로딩 중...</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let allOrders = [];
+let currentFilter = 'ALL';
+
+async function api(method, url, body) {
+  const res = await fetch(url, {
+    method,
+    headers: { 'Content-Type': 'application/json' },
+    body: body ? JSON.stringify(body) : undefined
+  });
+  if (!res.ok) throw new Error(await res.text());
+  return res.json().catch(() => ({}));
+}
+
+async function loadAll() {
+  try {
+    const [orders, dash] = await Promise.all([
+      api('GET', '/admin/orders'),
+      api('GET', '/admin/dashboard')
+    ]);
+    allOrders = orders;
+    updateStats(dash);
+    renderOrders();
+    document.getElementById('lastUpdate').textContent =
+      '마지막 갱신: ' + new Date().toLocaleTimeString('ko-KR');
+  } catch(e) {
+    showToast('로드 실패: ' + e.message);
+  }
+}
+
+function updateStats(d) {
+  document.getElementById('s-total').textContent = d.total;
+  document.getElementById('s-paid').textContent = d.paid;
+  document.getElementById('s-processing').textContent = d.processing;
+  document.getElementById('s-completed').textContent = d.completed;
+  document.getElementById('s-failed').textContent = d.failed;
+  document.getElementById('s-revenue').textContent =
+    (d.revenue || 0).toLocaleString('ko-KR') + '원';
+}
+
+function setFilter(f) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b =>
+    b.classList.toggle('active', b.textContent.includes(f) || (f==='ALL' && b.textContent==='전체'))
+  );
+  renderOrders();
+}
+
+function renderOrders() {
+  const filtered = currentFilter === 'ALL'
+    ? allOrders
+    : allOrders.filter(o => o.status === currentFilter);
+
+  const container = document.getElementById('orders-container');
+  if (!filtered.length) {
+    container.innerHTML = '<div class="empty">주문이 없습니다</div>';
+    return;
+  }
+
+  container.innerHTML = filtered.map(o => `
+    <div class="order-card" id="order-${o.id}">
+      <div class="order-top">
+        <div>
+          <div class="order-id">#${o.id} · ${formatDate(o.createdAt)}</div>
+          <div class="order-name">${o.customerName}</div>
+          <div class="order-phone">${o.customerPhone}</div>
+        </div>
+        <span class="badge badge-${o.status}">${statusLabel(o.status)}</span>
+      </div>
+      <div class="order-meta">
+        <span>💰 ${(o.amount||0).toLocaleString()}원</span>
+        <span>📸 사진 ${o.photoCount || 0}장</span>
+        ${o.adminMemo ? `<span>📝 ${o.adminMemo}</span>` : ''}
+      </div>
+      ${o.downloadUrl ? `<div class="download-link">🔗 ${o.downloadUrl.substring(0,80)}...</div>` : ''}
+      <div class="order-actions">
+        ${o.status === 'FAILED' || o.status === 'PROCESSING'
+          ? `<button class="btn btn-regen" onclick="regenerate(${o.id})">🔄 재생성</button>` : ''}
+        ${o.status === 'PROCESSING'
+          ? `<button class="btn btn-complete" onclick="forceStatus(${o.id},'COMPLETED')">✅ 완료처리</button>` : ''}
+        ${o.status !== 'FAILED' && o.status !== 'COMPLETED'
+          ? `<button class="btn btn-fail" onclick="forceStatus(${o.id},'FAILED')">❌ 실패처리</button>` : ''}
+        ${o.downloadUrl
+          ? `<button class="btn btn-copy" onclick="copyUrl('${o.downloadUrl}')">📋 URL복사</button>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+async function regenerate(id) {
+  if (!confirm(`#${id} 영상을 재생성할까요?`)) return;
+  try {
+    await api('POST', `/admin/orders/${id}/regenerate`);
+    showToast(`#${id} 재생성 시작!`);
+    setTimeout(loadAll, 1000);
+  } catch(e) { showToast('실패: ' + e.message); }
+}
+
+async function forceStatus(id, status) {
+  try {
+    await api('PUT', `/admin/orders/${id}/status`, { status });
+    showToast(`#${id} → ${statusLabel(status)}`);
+    loadAll();
+  } catch(e) { showToast('실패: ' + e.message); }
+}
+
+function copyUrl(url) {
+  navigator.clipboard.writeText(url).then(() => showToast('URL 복사됨!'));
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function statusLabel(s) {
+  return {PENDING:'대기',PAID:'결제완료',PROCESSING:'제작중',COMPLETED:'완성',FAILED:'실패'}[s] || s;
+}
+
+function formatDate(iso) {
+  if (!iso) return '-';
+  return new Date(iso).toLocaleString('ko-KR', {month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
+}
+
+// 초기 로드 + 30초마다 자동 갱신
+loadAll();
+setInterval(loadAll, 30000);
+</script>
+</body>
+</html>

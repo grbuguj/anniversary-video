@@ -1,0 +1,27 @@
+# Spring Boot
+target/
+build/
+*.class
+*.jar
+*.war
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# 환경 설정 (커밋 금지 — 절대 올리지 말 것)
+.env
+.env.local
+.env.production
+src/main/resources/application-prod.properties
+
+# AWS
+.aws/
+
+# 임시 파일
+/tmp/anniversary/
+*.log
+
+# 프로젝트 제외 경로
+/.gradle/

@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      DB_URL: jdbc:mysql://db:3306/anniversary_video?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_KEY: ${AWS_SECRET_KEY}
+      AWS_S3_BUCKET: ${AWS_S3_BUCKET}
+      TOSS_CLIENT_KEY: ${TOSS_CLIENT_KEY}
+      TOSS_SECRET_KEY: ${TOSS_SECRET_KEY}
+      RUNWAYML_API_KEY: ${RUNWAYML_API_KEY}
+      SOLAPI_API_KEY: ${SOLAPI_API_KEY}
+      SOLAPI_API_SECRET: ${SOLAPI_API_SECRET}
+      SOLAPI_SENDER: ${SOLAPI_SENDER}
+      ADMIN_USERNAME: ${ADMIN_USERNAME}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      CLOUDFRONT_DOMAIN: ${CLOUDFRONT_DOMAIN}
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    volumes:
+      - /tmp/anniversary:/tmp/anniversary
+      - /var/log/anniversary:/var/log/anniversary
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: anniversary_video
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
