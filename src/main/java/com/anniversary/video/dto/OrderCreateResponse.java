@@ -12,14 +12,21 @@ import java.util.List;
 public class OrderCreateResponse {
     private Long orderId;
     private int amount;
-    private List<PresignedUrlInfo> presignedUrls; // 사진 업로드용 URL 목록
+    private List<PresignedUrlInfo> presignedUrls;
+
+    /** true면 기존 PAID 미완료 주문 → 프론트에서 이어하기 모달 띄움 */
+    @Builder.Default
+    private boolean isExistingOrder = false;
+
+    /** 이어하기일 때 표시할 고객 이름 */
+    private String existingCustomerName;
 
     @Getter
     @Builder
     @AllArgsConstructor
     public static class PresignedUrlInfo {
-        private int index;       // 사진 순서
-        private String uploadUrl; // S3 Presigned PUT URL
-        private String s3Key;     // 업로드 후 서버에 전달할 키
+        private int index;
+        private String uploadUrl;
+        private String s3Key;
     }
 }

@@ -34,6 +34,10 @@ public class OrderPhoto {
     @Column(length = 300)
     private String clipS3Key;
 
+    // 사용자가 입력한 사진 제목 (영상 자막용)
+    @Column(length = 20)
+    private String caption;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
 }

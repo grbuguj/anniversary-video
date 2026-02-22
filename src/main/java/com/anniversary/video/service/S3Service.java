@@ -44,7 +44,7 @@ public class S3Service {
         for (int i = 0; i < photoCount; i++) {
             String s3Key = "uploads/" + orderId + "/photo_" + String.format("%02d", i) + ".jpg";
             PutObjectRequest putReq = PutObjectRequest.builder()
-                    .bucket(bucket).key(s3Key).contentType("image/jpeg").build();
+                    .bucket(bucket).key(s3Key).build();
             PutObjectPresignRequest presignReq = PutObjectPresignRequest.builder()
                     .signatureDuration(Duration.ofMinutes(30))
                     .putObjectRequest(putReq).build();

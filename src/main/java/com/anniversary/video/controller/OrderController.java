@@ -112,32 +112,41 @@ public class OrderController {
             ));
         }
 
+        // photos 배열(caption 포함 신규) 또는 s3Keys(구버전) 처리
+        @SuppressWarnings("unchecked")
+        List<Map<String, String>> photoList = (List<Map<String, String>>) body.get("photos");
         @SuppressWarnings("unchecked")
         List<String> s3Keys = (List<String>) body.get("s3Keys");
-        if (s3Keys == null || s3Keys.isEmpty()) {
-            return ResponseEntity.badRequest().body(Map.of("message", "s3Keys가 비어있습니다."));
+
+        if ((photoList == null || photoList.isEmpty()) && (s3Keys == null || s3Keys.isEmpty())) {
+            return ResponseEntity.badRequest().body(Map.of("message", "업로드된 사진 정보가 없습니다."));
         }
 
-        // 기존 OrderPhoto 있으면 삭제 (재업로드 허용)
+        // 기존 OrderPhoto 삭제
         List<OrderPhoto> existing = orderPhotoRepository.findByOrderIdOrderBySortOrder(orderId);
-        if (!existing.isEmpty()) {
-            orderPhotoRepository.deleteAll(existing);
-        }
+        if (!existing.isEmpty()) orderPhotoRepository.deleteAll(existing);
 
-        // OrderPhoto 레코드 생성
         List<OrderPhoto> photos = new ArrayList<>();
-        for (int i = 0; i < s3Keys.size(); i++) {
-            OrderPhoto photo = OrderPhoto.builder()
-                    .order(order)
-                    .s3Key(s3Keys.get(i))
-                    .sortOrder(i)
-                    .build();
-            photos.add(photo);
+        if (photoList != null && !photoList.isEmpty()) {
+            // 신규: caption 포함
+            for (int i = 0; i < photoList.size(); i++) {
+                photos.add(OrderPhoto.builder()
+                        .order(order)
+                        .s3Key(photoList.get(i).get("s3Key"))
+                        .caption(photoList.get(i).get("caption"))
+                        .sortOrder(i)
+                        .build());
+            }
+        } else {
+            // 구버전 fallback
+            for (int i = 0; i < s3Keys.size(); i++) {
+                photos.add(OrderPhoto.builder()
+                        .order(order).s3Key(s3Keys.get(i)).sortOrder(i).build());
+            }
         }
         orderPhotoRepository.saveAll(photos);
         log.info("OrderPhoto 저장 완료 - orderId: {}, count: {}", orderId, photos.size());
 
-        // 영상 생성 비동기 시작
         videoGenerationService.startVideoGeneration(orderId);
         log.info("영상 생성 시작 - orderId: {}", orderId);
 

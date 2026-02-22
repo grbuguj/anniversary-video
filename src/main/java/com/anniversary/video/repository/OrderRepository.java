@@ -28,6 +28,10 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     // 웹훅: paymentKey로 찾기
     Optional<Order> findByPaymentKey(String paymentKey);
 
+    // 이어하기: 동일 이름+전화번호의 PAID 미완료 주문
+    Optional<Order> findTopByCustomerPhoneAndCustomerNameAndStatusOrderByCreatedAtDesc(
+            String phone, String name, Order.OrderStatus status);
+
     // 통계 쿼리
     long countByStatus(Order.OrderStatus status);
     long countByStatusAndCreatedAtAfter(Order.OrderStatus status, LocalDateTime after);
