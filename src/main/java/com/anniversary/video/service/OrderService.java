@@ -77,6 +77,8 @@ public class OrderService {
                 .customerPhone(request.getCustomerPhone())
                 .customerEmail(request.getCustomerEmail())
                 .photoCount(request.getPhotoCount())
+                .introTitle(request.getIntroTitle())
+                .bgmTrack(request.getBgmTrack() != null ? request.getBgmTrack() : "bgm_01")
                 .status(Order.OrderStatus.PENDING)
                 .s3InputPath("uploads/" + System.currentTimeMillis())
                 .build();
@@ -151,6 +153,11 @@ public class OrderService {
     public Order findById(Long orderId) {
         return orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("주문을 찾을 수 없습니다: " + orderId));
+    }
+
+    @Transactional
+    public Order save(Order order) {
+        return orderRepository.save(order);
     }
 
     public List<Order> findAll() {

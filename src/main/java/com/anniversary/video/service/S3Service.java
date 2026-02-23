@@ -40,9 +40,16 @@ public class S3Service {
 
     // ── 사진 업로드용 Presigned PUT URL 생성 ──────────────────────────────
     public List<PresignedUploadInfo> generateUploadUrls(Long orderId, int photoCount) {
+        return generateUploadUrls(orderId, photoCount, "image/jpeg");
+    }
+
+    public List<PresignedUploadInfo> generateUploadUrls(Long orderId, int photoCount, String contentType) {
         List<PresignedUploadInfo> result = new ArrayList<>();
         for (int i = 0; i < photoCount; i++) {
+            // s3Key는 .jpg 고정 (RunwayML은 확장자 무관, 실제 바이트만 읽음)
             String s3Key = "uploads/" + orderId + "/photo_" + String.format("%02d", i) + ".jpg";
+            // Content-Type 미지정 → presigned URL에 서명 포함 안 됨
+            // 프론트에서 파일 타입에 맞는 헤더를 자유롭게 보낼 수 있음
             PutObjectRequest putReq = PutObjectRequest.builder()
                     .bucket(bucket).key(s3Key).build();
             PutObjectPresignRequest presignReq = PutObjectPresignRequest.builder()

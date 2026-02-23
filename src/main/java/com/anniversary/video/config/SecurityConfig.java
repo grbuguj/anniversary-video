@@ -29,6 +29,8 @@ public class SecurityConfig {
                 .requestMatchers("/api/**").permitAll()
                 .requestMatchers("/", "/index.html", "/favicon.ico").permitAll()
                 .requestMatchers("/payment/**").permitAll()
+                .requestMatchers("/bgm/**", "/css/**", "/js/**", "/fonts/**", "/images/**").permitAll()
+                .requestMatchers("/error", "/error/**").permitAll()
                 .requestMatchers("/status", "/status.html").permitAll()
                 .requestMatchers("/health").permitAll()
                 .requestMatchers("/actuator/health", "/actuator/info").permitAll()

@@ -76,7 +76,7 @@ public class VideoGenerationService {
             // ── FFmpeg: 클립 합성 + BGM ───────────────────────────────────
             List<OrderPhoto> completedPhotos =
                     orderPhotoRepository.findByOrderIdOrderBySortOrder(orderId);
-            String finalS3Key = ffmpegService.mergeClipsWithMusic(orderId, completedPhotos);
+            String finalS3Key = ffmpegService.mergeClipsWithMusic(orderId, completedPhotos, order);
 
             // ── 완료 처리 ─────────────────────────────────────────────────
             String downloadUrl = s3Service.generateDownloadUrl(finalS3Key);
@@ -95,27 +95,16 @@ public class VideoGenerationService {
     }
 
     // ── 클립 병렬 생성 ────────────────────────────────────────────────────
-    /**
-     * 각 사진을 clipTaskExecutor 풀에서 동시에 처리.
-     * 하나라도 실패하면 RuntimeException 던져 전체 주문 실패 처리.
-     */
+    private static final int CLIP_MAX_RETRY = 3;
+
     private void generateClipsInParallel(Long orderId, List<OrderPhoto> photos) {
         int total = photos.size();
         AtomicInteger done = new AtomicInteger(0);
 
         List<CompletableFuture<Void>> futures = photos.stream()
                 .map(photo -> CompletableFuture
-                        .supplyAsync(() -> {
-                            try {
-                                return generateClip(orderId, photo);
-                            } catch (Exception e) {
-                                throw new RuntimeException(
-                                        "클립 생성 실패 - sortOrder: " + photo.getSortOrder()
-                                        + ", error: " + e.getMessage(), e);
-                            }
-                        }, clipTaskExecutor)
+                        .supplyAsync(() -> generateClipWithRetry(orderId, photo), clipTaskExecutor)
                         .thenAccept(clipS3Key -> {
-                            // 각 클립 완료 즉시 DB 저장 (스레드 세이프 — 레코드가 다름)
                             photo.setClipS3Key(clipS3Key);
                             orderPhotoRepository.save(photo);
                             int n = done.incrementAndGet();
@@ -125,16 +114,45 @@ public class VideoGenerationService {
                 )
                 .collect(Collectors.toList());
 
-        // 전체 완료 대기 — 예외 발생 시 즉시 전파
         try {
             CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
         } catch (Exception e) {
-            // CompletableFuture는 예외를 CompletionException으로 감쌈 → cause 추출
             Throwable cause = e.getCause() != null ? e.getCause() : e;
             throw new RuntimeException("병렬 클립 생성 중 오류: " + cause.getMessage(), cause);
         }
 
         log.info("전체 클립 생성 완료 - orderId: {}, {}장", orderId, total);
+    }
+
+    /**
+     * 클립 1장 생성 — 실패 시 최대 CLIP_MAX_RETRY 회 재시도.
+     * 재시도 간격: 1차 10초, 2차 30초 (지수 백오프)
+     */
+    private String generateClipWithRetry(Long orderId, OrderPhoto photo) {
+        int sortOrder = photo.getSortOrder();
+        Exception lastEx = null;
+
+        for (int attempt = 1; attempt <= CLIP_MAX_RETRY; attempt++) {
+            try {
+                if (attempt > 1) {
+                    long waitMs = attempt == 2 ? 10_000L : 30_000L;
+                    log.warn("클립 재시도 {}/{} - orderId: {}, sortOrder: {}, {}초 대기",
+                            attempt, CLIP_MAX_RETRY, orderId, sortOrder, waitMs / 1000);
+                    Thread.sleep(waitMs);
+                }
+                return generateClip(orderId, photo);
+            } catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+                throw new RuntimeException("인터럽트 - sortOrder: " + sortOrder, ie);
+            } catch (Exception e) {
+                lastEx = e;
+                log.error("클립 생성 실패 {}/{} - orderId: {}, sortOrder: {}, error: {}",
+                        attempt, CLIP_MAX_RETRY, orderId, sortOrder, e.getMessage());
+            }
+        }
+        throw new RuntimeException(
+                "클립 생성 최종 실패 (" + CLIP_MAX_RETRY + "회 시도) - sortOrder: " + sortOrder
+                + ", error: " + lastEx.getMessage(), lastEx);
     }
 
     // ── RunwayML: 이미지 → 영상 클립 생성 ───────────────────────────────

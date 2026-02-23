@@ -597,6 +597,108 @@ footer {
 }
 .btn-resume-no:hover { border-color: var(--muted); color: var(--text); }
 
+/* ── 확인 모달 ───────────────────────────────── */
+.confirm-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #000000e0;
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.confirm-inner {
+  background: var(--card);
+  border: 1px solid var(--border-mid);
+  padding: 48px 40px;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+}
+
+.confirm-inner h3 {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 300;
+  margin-bottom: 16px;
+}
+
+.confirm-inner .confirm-desc {
+  font-size: 13px;
+  color: var(--muted-light);
+  line-height: 1.9;
+  margin-bottom: 12px;
+  font-weight: 300;
+}
+
+.confirm-summary {
+  border: 1px solid var(--border);
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  text-align: left;
+  background: var(--surface);
+}
+
+.confirm-summary-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--border);
+}
+.confirm-summary-row:last-child { border-bottom: none; }
+
+.confirm-summary-row .label { color: var(--muted); }
+.confirm-summary-row .value { color: var(--text); font-weight: 400; }
+
+.confirm-warning {
+  font-size: 12px;
+  color: #c9a070;
+  margin-bottom: 24px;
+  line-height: 1.8;
+  letter-spacing: .3px;
+}
+
+.confirm-btns {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-confirm-yes {
+  flex: 2;
+  background: var(--gold);
+  color: #080808;
+  border: none;
+  padding: 14px;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: background .2s;
+}
+.btn-confirm-yes:hover { background: var(--gold-light); }
+
+.btn-confirm-no {
+  flex: 1;
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--border-mid);
+  padding: 14px;
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: .5px;
+  cursor: pointer;
+  transition: border-color .2s, color .2s;
+}
+.btn-confirm-no:hover { border-color: var(--muted); color: var(--text); }
+
+@media (max-width: 600px) {
+  .confirm-inner { padding: 36px 24px; }
+}
+
 /* ── 가이드 섹션 ──────────────────────────────── */
 .guide-sequence {
   display: flex;
@@ -757,7 +859,7 @@ footer {
 .btn-next:not(:disabled):hover { background: var(--gold-light); }
 
 .btn-submit-all {
-  display: none;
+  display: block;
   width: 100%;
   margin-top: 12px;
   background: var(--gold);
@@ -774,12 +876,267 @@ footer {
 }
 .btn-submit-all:hover { background: var(--gold-light); }
 
+/* ── 벌크 업로드 그리드 ──────────────────────── */
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.photo-item {
+  position: relative;
+  aspect-ratio: 1;
+  border: 1px solid var(--border-mid);
+  overflow: hidden;
+  cursor: grab;
+  transition: transform .15s, box-shadow .15s;
+  user-select: none;
+}
+.photo-item:active { cursor: grabbing; }
+.photo-item.dragging {
+  opacity: .4;
+  border-color: var(--gold);
+}
+.photo-item.drag-over {
+  transform: scale(1.03);
+  box-shadow: 0 0 0 2px var(--gold);
+}
+
+.photo-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+}
+
+.photo-item .photo-num {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  width: 22px;
+  height: 22px;
+  background: #000000cc;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  font-size: 11px;
+  font-family: var(--serif);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.photo-item .remove-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 22px;
+  height: 22px;
+  background: #000000cc;
+  border: 1px solid #555;
+  color: #aaa;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: color .15s, border-color .15s;
+  line-height: 1;
+}
+.photo-item .remove-btn:hover {
+  color: #ff6b6b;
+  border-color: #ff6b6b;
+}
+
+.photo-count-info {
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted-light);
+  margin: 12px 0;
+  letter-spacing: .3px;
+}
+.photo-count-info .count { color: var(--gold); font-weight: 500; }
+.photo-count-info .warning { color: #c97070; }
+
+.add-more-btn {
+  width: 100%;
+  background: transparent;
+  color: var(--muted-light);
+  border: 1px dashed var(--border-mid);
+  padding: 12px;
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: .5px;
+  cursor: pointer;
+  transition: border-color .2s, color .2s;
+  margin-bottom: 12px;
+}
+.add-more-btn:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
 .progress-label {
   font-size: 11px;
   color: var(--muted);
   text-align: center;
   letter-spacing: .5px;
   margin-bottom: 24px;
+}
+
+/* ── BGM 선택 ───────────────────────────────── */
+.bgm-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--border-mid);
+  background: var(--bg);
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+}
+.bgm-option:hover { border-color: var(--gold); background: #c9a96e06; }
+.bgm-option.selected {
+  border-color: var(--gold);
+  background: #c9a96e0a;
+}
+
+.bgm-play-btn {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border-mid);
+  background: transparent;
+  color: var(--gold);
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: border-color .2s, background .2s;
+}
+.bgm-play-btn:hover { border-color: var(--gold); background: #c9a96e15; }
+.bgm-play-btn.playing { background: var(--gold); color: #080808; }
+
+.bgm-info { flex: 1; }
+.bgm-name { font-size: 13px; color: var(--text); font-weight: 400; }
+.bgm-desc { font-size: 11px; color: var(--muted); margin-top: 2px; letter-spacing: .3px; }
+
+.bgm-check {
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--border-mid);
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  color: transparent;
+  transition: border-color .2s, background .2s, color .2s;
+}
+.bgm-option.selected .bgm-check {
+  border-color: var(--gold);
+  background: var(--gold);
+  color: #080808;
+}
+
+/* ── 상단 플로우 스텝바 ─────────────────────── */
+#flow-stepper {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: #0a0a0a;
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  height: 52px;
+  align-items: center;
+  justify-content: center;
+}
+
+#flow-stepper.visible { display: flex; }
+
+.stepper-inner {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  max-width: 320px;
+  width: 100%;
+}
+
+.stepper-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.stepper-dot {
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--border-mid);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-family: var(--serif);
+  color: var(--muted);
+  flex-shrink: 0;
+  transition: border-color .3s, background .3s, color .3s;
+}
+
+.stepper-step.active .stepper-dot {
+  border-color: var(--gold);
+  background: var(--gold);
+  color: #080808;
+  font-weight: 600;
+}
+
+.stepper-step.done .stepper-dot {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: transparent;
+}
+
+.stepper-label {
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: .8px;
+  white-space: nowrap;
+  transition: color .3s;
+}
+
+.stepper-step.active .stepper-label { color: var(--text); font-weight: 500; }
+.stepper-step.done  .stepper-label  { color: var(--gold); }
+
+.stepper-line {
+  flex: 1;
+  height: 1px;
+  background: var(--border-mid);
+  margin: 0 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.stepper-line-fill {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  background: var(--gold);
+  width: 0%;
+  transition: width .5s ease;
+}
+
+/* 스텝바 보일 때 업로드 영역 아래로 내리기 */
+body.flow-active .upload-section,
+body.flow-active .done-section {
+  padding-top: 108px;
 }
 
 /* ── 반응형 ──────────────────────────────────── */
@@ -817,7 +1174,7 @@ footer {
 </section>
 
 <!-- ── 릴스 미리보기 ── -->
-<section style="padding: 80px 24px 0; display:flex; flex-direction:column; align-items:center; text-align:center;">
+<section id="preview-section" style="padding: 80px 24px 0; display:flex; flex-direction:column; align-items:center; text-align:center;">
   <span class="section-label">Preview</span>
   <h2 style="font-family:var(--serif);font-size:clamp(20px,3vw,30px);font-weight:300;margin-bottom:8px;color:var(--text)">이런 영상이 가능합니다</h2>
   <p style="font-size:13px;color:var(--muted);font-weight:300;margin-bottom:36px">부모님께 평생 잊지 못할 감동을 드리세요</p>
@@ -914,6 +1271,12 @@ footer {
     <div class="form-group">
       <label>이메일 <span style="font-size:10px;text-transform:none;font-weight:300;letter-spacing:.3px">선택</span></label>
       <input type="email" id="customerEmail" placeholder="example@email.com">
+      <div class="form-error" id="err-email"></div>
+    </div>
+    <div class="form-group">
+      <label>영상 제목 <span style="font-size:10px;text-transform:none;font-weight:300;letter-spacing:.3px">인트로에 표시</span></label>
+      <input type="text" id="introTitle" placeholder="어머니 환갑 · 홍길순 님의 60년" maxlength="20">
+      <div class="form-error" id="err-introTitle"></div>
     </div>
     <div class="form-group">
       <label>사진 수량</label>
@@ -949,6 +1312,40 @@ footer {
     </p>
   </div>
 </section>
+
+<!-- ── 결제 확인 모달 ── -->
+<div id="payment-confirm-modal" class="confirm-modal">
+  <div class="confirm-inner">
+    <span class="section-label">주문 확인</span>
+    <h3>주문 정보를 확인해 주세요</h3>
+    <p class="confirm-desc">결제 후에는 아래 정보로 진행됩니다.</p>
+    <div class="confirm-summary" id="payment-confirm-summary"></div>
+    <p class="confirm-warning">입력하신 정보가 맞는지 다시 한번 확인해 주세요.<br>결제 후에는 연락처 변경이 어렵습니다.</p>
+    <div class="confirm-btns">
+      <button class="btn-confirm-yes" onclick="confirmPayment()">확인, 결제 진행</button>
+      <button class="btn-confirm-no" onclick="cancelPaymentConfirm()">다시 확인</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── 업로드 완료 확인 모달 ── -->
+<div id="upload-confirm-modal" class="confirm-modal">
+  <div class="confirm-inner">
+    <span class="section-label">최종 확인</span>
+    <h3>업로드를 완료하시겠습니까?</h3>
+    <p class="confirm-desc">
+      총 <strong id="upload-confirm-count" style="color:var(--gold);font-weight:400"></strong>장의 사진이 업로드됩니다.
+    </p>
+    <p class="confirm-warning">
+      업로드 완료 후에는 사진을 변경하거나 추가할 수 없습니다.<br>
+      사진 순서가 올바른지 꼭 확인해 주세요.
+    </p>
+    <div class="confirm-btns">
+      <button class="btn-confirm-yes" onclick="confirmUpload()">확인, 제작 시작</button>
+      <button class="btn-confirm-no" onclick="cancelUploadConfirm()">다시 확인</button>
+    </div>
+  </div>
+</div>
 
 <!-- ── 이어하기 모달 ── -->
 <div id="resume-modal">
@@ -1005,14 +1402,14 @@ footer {
 
     <div class="guide-tip">
       <p>
-        각 사진마다 짧은 제목을 입력하시면 영상에 자막으로 표시됩니다.<br>
         얼굴이 선명하게 보이는 사진일수록 결과물이 좋습니다.<br>
-        총 <span id="guide-total" style="color:var(--gold)"></span>장을 시간순으로 준비해 주세요.
+        총 <span id="guide-total" style="color:var(--gold)"></span>장을 한번에 선택해 주세요.<br>
+        업로드 후 드래그로 순서를 변경할 수 있습니다.
       </p>
     </div>
 
-    <button class="submit-btn" onclick="startStepUpload()" style="margin-bottom:10px">
-      업로드 시작하기
+    <button class="submit-btn" onclick="startBulkUpload()" style="margin-bottom:10px">
+      사진 선택하기
     </button>
     <button class="dev-btn" id="dev-skip-upload-btn" onclick="devSkipUpload()" style="display:none">
       [DEV] 업로드 스킵
@@ -1020,71 +1417,115 @@ footer {
   </div>
 </section>
 
-<!-- ── 스텝 업로드 ── -->
+<!-- ── 벌크 업로드 ── -->
 <section class="upload-section" id="upload-section">
   <div class="upload-card">
     <div class="dev-banner" id="dev-step-banner" style="display:none">[DEV] 실제 S3 업로드 모드</div>
 
     <div class="step-header">
       <div class="step-order-num">주문번호 <span id="order-num-display" style="color:var(--gold)"></span></div>
-      <div class="step-counter" id="step-label">1 / 12</div>
+      <div class="step-counter" id="step-label">0 / 12</div>
     </div>
 
     <div class="progress-bar">
       <div class="progress-fill" id="upload-progress"></div>
     </div>
-    <div class="progress-label" id="progress-text">0 / 0 완료</div>
 
-    <h2 class="step-title-text" id="step-title">첫 번째 사진</h2>
-    <p class="step-subtitle">어린 시절 사진부터 순서대로 업로드해 주세요</p>
+    <h2 class="step-title-text">사진 업로드</h2>
+    <p class="step-subtitle">어린 시절부터 현재 순서로 선택해 주세요 · 드래그로 순서 변경 가능</p>
 
-    <div class="upload-drop" id="drop-zone" onclick="document.getElementById('file-input').click()">
-      <div id="drop-preview">
-        <div class="drop-icon">+</div>
-        <p class="drop-main-text">클릭하거나 사진을 드래그하세요</p>
-        <p class="drop-sub-text">JPG, PNG · 20MB 이하</p>
-      </div>
-      <p id="drop-text" style="font-size:12px;color:var(--muted);margin-top:8px"></p>
+    <div class="upload-drop" id="drop-zone" onclick="document.getElementById('file-input').click(); return false;">
+      <div class="drop-icon">+</div>
+      <p class="drop-main-text">클릭하거나 사진을 드래그하세요</p>
+      <p class="drop-sub-text">JPG, PNG · 20MB 이하 · 여러 장 선택 가능</p>
     </div>
-    <input type="file" id="file-input" accept="image/jpeg,image/png,image/jpg">
+    <input type="file" id="file-input" accept="image/jpeg,image/png,image/jpg" multiple>
 
-    <div style="margin-top:20px">
-      <span class="caption-label">사진 제목 <span style="font-size:10px;text-transform:none;letter-spacing:.3px;font-weight:300;color:var(--muted)">선택 · 최대 10자 · 영상 자막으로 표시</span></span>
-      <input type="text" id="step-caption" maxlength="10" placeholder="예: 1985년 돌잔치"
-             style="width:100%;background:var(--bg);border:1px solid var(--border-mid);color:var(--text);
-                    padding:13px 16px;font-size:14px;font-family:var(--sans);outline:none;
-                    transition:border-color .2s"
-             onfocus="this.style.borderColor='var(--gold)'"
-             onblur="this.style.borderColor='var(--border-mid)'"
-             oninput="document.getElementById('caption-count').textContent=this.value.length">
-      <div style="text-align:right;font-size:11px;color:var(--muted);margin-top:6px;letter-spacing:.3px">
-        <span id="caption-count">0</span> / 10
-      </div>
-    </div>
+    <div class="photo-count-info" id="photo-count-info" style="display:none"></div>
 
-    <div class="step-nav">
-      <button onclick="prevStep()" id="prev-btn" class="btn-prev">← 이전</button>
-      <button onclick="nextStep()" id="next-btn" class="btn-next" disabled>다음 →</button>
-    </div>
+    <div class="photo-grid" id="photo-grid"></div>
+
+    <button onclick="document.getElementById('file-input').click()" id="add-more-btn" class="add-more-btn" style="display:none">
+      + 사진 추가하기
+    </button>
 
     <button onclick="submitAllPhotos()" id="submit-all-btn" class="btn-submit-all">
-      업로드 완료 — 영상 제작 시작
+      다음 단계 — 음악 선택
     </button>
+    <p id="progress-text" class="progress-label" style="display:none"></p>
+  </div>
+</section>
+
+<!-- ── BGM 선택 ── -->
+<section class="upload-section" id="bgm-section">
+  <div class="upload-card">
+    <div class="step-header">
+      <div class="step-order-num">주문번호 <span id="bgm-order-num-display" style="color:var(--gold)"></span></div>
+      <div class="step-counter">FINAL STEP</div>
+    </div>
+
+    <span class="section-label">BGM 선택</span>
+    <h2 class="step-title-text">영상에 더할 음악을 골라주세요</h2>
+    <p class="step-subtitle">선택 후 ▶ 버튼으로 미리 들어볼 수 있습니다</p>
+
+    <div id="bgm-list" style="display:flex;flex-direction:column;gap:8px;margin:20px 0 28px">
+      <div style="font-size:12px;color:var(--muted)">로딩 중...</div>
+    </div>
+
+    <div style="display:flex;gap:10px">
+      <button class="btn-prev" onclick="backToUpload()">← 사진 다시 확인</button>
+      <button class="btn-confirm-yes" style="flex:2" onclick="submitWithBgm()">확인, 제작 시작</button>
+    </div>
   </div>
 </section>
 
 <!-- ── 완료 ── -->
 <section class="done-section" id="done-section">
-  <div class="done-mark">✓</div>
-  <span class="section-label">Complete</span>
-  <h2>영상이 완성되었습니다</h2>
+  <div class="done-mark" id="done-mark">✓</div>
+  <span class="section-label" id="done-label">Complete</span>
+  <h2 id="done-title">제작을 시작했습니다</h2>
   <div class="order-number" id="done-order-num"></div>
-  <p>
-    24시간 이내에 완성 영상 다운로드 링크를<br>
-    등록하신 연락처로 카카오 알림톡으로 보내드립니다.<br><br>
-    소중한 순간을 정성껏 담아드리겠습니다.
+  <p id="done-desc">
+    사진을 AI로 분석하고 영상을 제작 중입니다.<br>
+    완성되면 이 화면에서 바로 확인하실 수 있습니다.
   </p>
+
+  <!-- 제작 중 상태 -->
+  <div id="done-processing" style="margin-top:28px">
+    <div style="width:100%;height:1px;background:var(--border-mid);margin-bottom:16px;overflow:hidden">
+      <div id="done-progress-bar" style="height:100%;background:var(--gold);width:0%;transition:width 1s"></div>
+    </div>
+    <p style="font-size:12px;color:var(--muted);letter-spacing:.5px" id="done-status-text">제작 대기 중...</p>
+  </div>
+
+  <!-- 완성 후 다운로드 -->
+  <div id="done-download" style="display:none;margin-top:28px;width:100%">
+    <a id="done-download-link" href="#" target="_blank"
+       style="display:block;width:100%;background:var(--gold);color:#080808;text-decoration:none;
+              padding:16px;font-size:13px;font-weight:600;letter-spacing:1.5px;
+              text-transform:uppercase;text-align:center;box-sizing:border-box">
+      영상 다운로드 (72시간 유효)
+    </a>
+    <p style="font-size:11px;color:var(--muted);margin-top:12px;letter-spacing:.3px">
+      링크는 등록하신 연락처로도 문자 발송됩니다
+    </p>
+  </div>
 </section>
+
+<!-- ── 플로우 스텝바 ── -->
+<div id="flow-stepper">
+  <div class="stepper-inner">
+    <div class="stepper-step" id="step1">
+      <div class="stepper-dot">1</div>
+      <span class="stepper-label">사진 업로드</span>
+    </div>
+    <div class="stepper-line"><div class="stepper-line-fill" id="stepper-line-fill"></div></div>
+    <div class="stepper-step" id="step2">
+      <div class="stepper-dot">2</div>
+      <span class="stepper-label">음악 선택</span>
+    </div>
+  </div>
+</div>
 
 <footer>
   <p>움직이는 사진관 &nbsp;·&nbsp; 문의: 카카오톡 채널 @움직이는사진관</p>
@@ -1097,10 +1538,111 @@ let PORTONE_CHANNEL_KEY = '';
 let IS_DEV = false;
 let currentOrderId = null;
 let presignedUrls = [];
-let selectedFiles = [];
+let selectedBgm = 'bgm_01';
+let currentAudio = null;
 
 function scrollToOrder() {
   document.getElementById('order-section').scrollIntoView({ behavior: 'smooth' });
+}
+
+// ── 플로우 스텝바 ────────────────────────────────────────
+function setFlowStep(step) {
+  const stepper = document.getElementById('flow-stepper');
+  const s1 = document.getElementById('step1');
+  const s2 = document.getElementById('step2');
+  const fill = document.getElementById('stepper-line-fill');
+  stepper.classList.add('visible');
+  document.body.classList.add('flow-active');
+  if (step === 1) {
+    s1.className = 'stepper-step active';
+    s2.className = 'stepper-step';
+    fill.style.width = '0%';
+  } else if (step === 2) {
+    s1.className = 'stepper-step done';
+    s2.className = 'stepper-step active';
+    fill.style.width = '100%';
+  }
+}
+
+function hideFlowStepper() {
+  document.getElementById('flow-stepper').classList.remove('visible');
+  document.body.classList.remove('flow-active');
+}
+
+// ── BGM 목록 로드 + UI 렌더링 ────────────────────────────────
+async function loadBgmList() {
+  try {
+    const list = await fetch('/api/orders/bgm-list').then(r => r.json());
+    const container = document.getElementById('bgm-list');
+    container.innerHTML = '';
+    list.forEach((bgm, idx) => {
+      const isSelected = idx === 0; // 거음의 첫 번째는 기본 선택
+      if (isSelected) selectedBgm = bgm.id;
+
+      const div = document.createElement('div');
+      div.className = 'bgm-option' + (isSelected ? ' selected' : '');
+      div.dataset.id = bgm.id;
+      div.innerHTML = `
+        <button class="bgm-play-btn" data-id="${bgm.id}" onclick="toggleBgmPreview(event, '${bgm.id}')">▶</button>
+        <div class="bgm-info">
+          <div class="bgm-name">${bgm.name}</div>
+          <div class="bgm-desc">${bgm.desc}</div>
+        </div>
+        <div class="bgm-check">✓</div>
+      `;
+      div.addEventListener('click', (e) => {
+        if (e.target.classList.contains('bgm-play-btn')) return;
+        selectBgm(bgm.id);
+      });
+      container.appendChild(div);
+    });
+  } catch(e) {
+    document.getElementById('bgm-list').innerHTML =
+      '<div style="font-size:12px;color:var(--muted)">불러오기 실패, 기본 BGM으로 진행됩니다.</div>';
+  }
+}
+
+function selectBgm(id) {
+  selectedBgm = id;
+  document.querySelectorAll('.bgm-option').forEach(el => {
+    el.classList.toggle('selected', el.dataset.id === id);
+  });
+}
+
+function toggleBgmPreview(e, id) {
+  e.stopPropagation();
+  const btn = e.currentTarget;
+
+  // 이미 재생 중이면 정지
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio = null;
+    document.querySelectorAll('.bgm-play-btn').forEach(b => {
+      b.textContent = '▶'; b.classList.remove('playing');
+    });
+    if (btn.dataset.id === id && !btn.classList.contains('playing')) {
+      // 같은 버튼 두 번 누르면 정지
+      return;
+    }
+  }
+
+  // 재생
+  const audio = new Audio(`/bgm/${id}.mp3`);
+  audio.volume = 0.7;
+  currentAudio = audio;
+  btn.textContent = '■';
+  btn.classList.add('playing');
+  selectBgm(id); // 미리듣기 하면 자동 선택
+
+  audio.play().catch(() => {
+    btn.textContent = '▶'; btn.classList.remove('playing');
+    alert('현재 파일이 없습니다. BGM 파일을 먼저 넣어주세요.');
+    currentAudio = null;
+  });
+  audio.onended = () => {
+    btn.textContent = '▶'; btn.classList.remove('playing');
+    currentAudio = null;
+  };
 }
 
 // ── DEV 모드 감지 — localhost이면 바로 노출 ──────────────────────────
@@ -1116,6 +1658,7 @@ async function createOrder() {
   const name       = document.getElementById('customerName').value.trim();
   const phone      = document.getElementById('customerPhone').value.trim();
   const email      = document.getElementById('customerEmail').value.trim();
+  const introTitle = document.getElementById('introTitle').value.trim();
   const photoCount = parseInt(document.getElementById('photoCount').value);
 
   let valid = true;
@@ -1125,23 +1668,74 @@ async function createOrder() {
     showError('err-phone', '올바른 휴대폰 번호를 입력해주세요 (예: 01012345678)');
     valid = false;
   } else hideError('err-phone');
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    showError('err-email', '올바른 이메일 형식을 입력해주세요');
+    valid = false;
+  } else hideError('err-email');
+  if (!introTitle) { showError('err-introTitle', '영상 제목을 입력해주세요'); valid = false; }
+  else if (introTitle.length > 20) { showError('err-introTitle', '20자 이내로 입력해주세요'); valid = false; }
+  else hideError('err-introTitle');
   if (!valid) throw new Error('VALIDATION');
 
   const resp = await fetch('/api/orders', {
     method:  'POST',
     headers: { 'Content-Type': 'application/json' },
     body:    JSON.stringify({ customerName: name, customerPhone: phone,
-                              customerEmail: email || null, photoCount })
+                              customerEmail: email.length > 0 ? email : null, photoCount, introTitle,
+                              bgmTrack: selectedBgm })
   });
   if (!resp.ok) {
     const err = await resp.json().catch(() => ({}));
-    throw new Error(err.message || '주문 생성 실패');
+    let msg = err.message || '주문 생성 실패';
+    if (err.detail) {
+      const details = Object.entries(err.detail).map(([k,v]) => `${k}: ${v}`).join(', ');
+      msg += ' (' + details + ')';
+    }
+    throw new Error(msg);
   }
   return resp.json();
 }
 
-// ── 결제 시작 (실제) ──────────────────────────────────────────────────
-async function startPayment() {
+// ── 결제 시작 — 확인 모달 먼저 표시 ──────────────────────────────────
+function startPayment() {
+  const name       = document.getElementById('customerName').value.trim();
+  const phone      = document.getElementById('customerPhone').value.trim();
+  const email      = document.getElementById('customerEmail').value.trim();
+  const introTitle = document.getElementById('introTitle').value.trim();
+  const photoCount = document.getElementById('photoCount').value;
+
+  // 유효성 먼저 체크
+  let valid = true;
+  if (!name) { showError('err-name', '이름을 입력해주세요'); valid = false; }
+  else hideError('err-name');
+  if (!/^01[016789]\d{7,8}$/.test(phone)) {
+    showError('err-phone', '올바른 휴대폰 번호를 입력해주세요 (예: 01012345678)');
+    valid = false;
+  } else hideError('err-phone');
+  if (!introTitle) { showError('err-introTitle', '영상 제목을 입력해주세요'); valid = false; }
+  else hideError('err-introTitle');
+  if (!valid) return;
+
+  // 확인 모달에 요약 정보 표시
+  const summary = document.getElementById('payment-confirm-summary');
+  summary.innerHTML =
+    `<div class="confirm-summary-row"><span class="label">이름</span><span class="value">${name}</span></div>` +
+    `<div class="confirm-summary-row"><span class="label">연락처</span><span class="value">${phone}</span></div>` +
+    (email ? `<div class="confirm-summary-row"><span class="label">이메일</span><span class="value">${email}</span></div>` : '') +
+    `<div class="confirm-summary-row"><span class="label">영상 제목</span><span class="value">${introTitle}</span></div>` +
+    `<div class="confirm-summary-row"><span class="label">사진 수량</span><span class="value">${photoCount}장</span></div>` +
+    `<div class="confirm-summary-row"><span class="label">금액</span><span class="value" style="color:var(--gold)">29,900원</span></div>`;
+
+  document.getElementById('payment-confirm-modal').style.display = 'flex';
+}
+
+function cancelPaymentConfirm() {
+  document.getElementById('payment-confirm-modal').style.display = 'none';
+}
+
+async function confirmPayment() {
+  document.getElementById('payment-confirm-modal').style.display = 'none';
+
   const btn = document.getElementById('pay-btn');
   btn.disabled = true;
   btn.textContent = '처리 중...';
@@ -1276,8 +1870,8 @@ async function handlePaymentSuccess() {
 }
 
 // ── 업로드 가이드 화면 ────────────────────────────────────────────────
-let stepData    = [];
-let currentStep = 0;
+let stepData = [];
+let isUploading = false;
 
 function showUploadSection(orderId, devMode) {
   hideMainSections();
@@ -1285,6 +1879,7 @@ function showUploadSection(orderId, devMode) {
 
   document.getElementById('guide-section').style.display = 'block';
   document.getElementById('guide-total').textContent = total;
+  setFlowStep(1);
   if (devMode) {
     document.getElementById('dev-upload-banner').style.display = 'block';
     document.getElementById('dev-skip-upload-btn').style.display = 'block';
@@ -1292,143 +1887,254 @@ function showUploadSection(orderId, devMode) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function startStepUpload() {
+// ── 벌크 업로드 시작 ──────────────────────────────────────────────────
+function startBulkUpload() {
   document.getElementById('guide-section').style.display  = 'none';
   document.getElementById('upload-section').style.display = 'block';
+  setFlowStep(1);
 
-  stepData    = [];
-  currentStep = 0;
-  renderStep();
+  stepData = [];
+  const total = presignedUrls.length || 10;
+  document.getElementById('order-num-display').textContent = '#' + currentOrderId;
+  document.getElementById('step-label').textContent = `0 / ${total}`;
+  document.getElementById('upload-progress').style.width = '0%';
 
-  const drop = document.getElementById('drop-zone');
-  drop.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('drag-over'); });
-  drop.addEventListener('dragleave', () => drop.classList.remove('drag-over'));
-  drop.addEventListener('drop', e => {
-    e.preventDefault(); drop.classList.remove('drag-over');
-    const f = e.dataTransfer.files[0];
-    if (f) handleStepFile(f);
-  });
-  document.getElementById('file-input').addEventListener('change', e => {
-    const f = e.target.files[0];
-    if (f) handleStepFile(f);
+  // 파일 input 이벤트 — 중복 등록 방지
+  const fileInput = document.getElementById('file-input');
+  const newInput = fileInput.cloneNode(true);
+  fileInput.parentNode.replaceChild(newInput, fileInput);
+  newInput.addEventListener('change', e => {
+    if (isUploading) return;
+    handleBulkFiles(e.target.files);
     e.target.value = '';
   });
 
+  // 드래그 앤 드롭 (파일 추가용)
+  const drop = document.getElementById('drop-zone');
+  drop.addEventListener('dragover', e => { e.preventDefault(); if (!isUploading) drop.classList.add('drag-over'); });
+  drop.addEventListener('dragleave', () => drop.classList.remove('drag-over'));
+  drop.addEventListener('drop', e => {
+    e.preventDefault(); drop.classList.remove('drag-over');
+    if (isUploading) return;
+    handleBulkFiles(e.dataTransfer.files);
+  });
+
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function renderStep() {
-  const total   = presignedUrls.length || 10;
-  const stepNum = currentStep + 1;
-  const isLast  = (stepNum === total);
-  const ordinals = ['첫','두','세','네','다섯','여섯','일곱','여덟','아홉','열','열한','열두','열세','열네','열다섯'];
+function handleBulkFiles(fileList) {
+  const total = presignedUrls.length || 10;
+  const files = Array.from(fileList).filter(f => f.type.startsWith('image/'));
 
-  document.getElementById('step-label').textContent = `${stepNum} / ${total}`;
-  document.getElementById('step-title').textContent  = `${ordinals[currentStep] || stepNum}번째 사진`;
-  document.getElementById('order-num-display').textContent = '#' + currentOrderId;
+  if (files.length === 0) return;
 
-  const pct = Math.round((currentStep / total) * 100);
+  // 최대 개수 제한
+  const remaining = total - stepData.length;
+  const toAdd = files.slice(0, remaining);
+
+  toAdd.forEach(file => {
+    stepData.push({ file });
+  });
+
+  if (files.length > remaining) {
+    alert(`최대 ${total}장까지 선택할 수 있습니다. ${files.length - remaining}장이 제외되었습니다.`);
+  }
+
+  renderPhotoGrid();
+}
+
+function renderPhotoGrid() {
+  const total = presignedUrls.length || 10;
+  const count = stepData.length;
+  const grid  = document.getElementById('photo-grid');
+  const info  = document.getElementById('photo-count-info');
+  const addBtn = document.getElementById('add-more-btn');
+
+  // 카운터 업데이트
+  document.getElementById('step-label').textContent = `${count} / ${total}`;
+  const pct = Math.round((count / total) * 100);
   document.getElementById('upload-progress').style.width = pct + '%';
-  document.getElementById('progress-text').textContent   = `${currentStep} / ${total} 완료`;
 
-  const saved = stepData[currentStep];
-  if (saved && saved.file) {
-    showPreview(saved.file);
-    document.getElementById('next-btn').disabled = false;
+  // 카운트 안내
+  if (count > 0) {
+    info.style.display = 'block';
+    if (count < total) {
+      info.innerHTML = `<span style="color:var(--gold)">${count}</span> / ${total}장 선택됨 · <span style="color:var(--gold)">${total - count}장 더 추가해 주세요</span>`;
+    } else {
+      info.innerHTML = `<span style="color:var(--gold)">${count}</span> / ${total}장 선택 완료`;
+    }
   } else {
-    document.getElementById('drop-preview').innerHTML = `
-      <div class="drop-icon">+</div>
-      <p class="drop-main-text">클릭하거나 사진을 드래그하세요</p>
-      <p class="drop-sub-text">JPG, PNG · 20MB 이하</p>`;
-    document.getElementById('drop-text').textContent = '';
-    document.getElementById('next-btn').disabled = true;
+    info.style.display = 'none';
   }
-  document.getElementById('step-caption').value = (saved && saved.caption) || '';
-  document.getElementById('caption-count').textContent = document.getElementById('step-caption').value.length;
 
-  document.getElementById('prev-btn').style.visibility = (currentStep === 0) ? 'hidden' : 'visible';
+  // 추가 버튼
+  addBtn.style.display = (count > 0 && count < total) ? 'block' : 'none';
 
-  const nextBtn   = document.getElementById('next-btn');
+  // 드롭존 표시 토글
+  document.getElementById('drop-zone').style.display = count >= total ? 'none' : '';
+
+  // 그리드 렌더링
+  grid.innerHTML = '';
+  stepData.forEach((item, idx) => {
+    const div = document.createElement('div');
+    div.className = 'photo-item';
+    div.draggable = !isUploading;
+    if (isUploading) { div.style.cursor = 'default'; div.style.pointerEvents = 'none'; }
+    div.dataset.idx = idx;
+
+    // 썸네일
+    const img = document.createElement('img');
+    const url = URL.createObjectURL(item.file);
+    img.src = url;
+    img.onload = () => URL.revokeObjectURL(url);
+
+    // 번호 뱃지
+    const num = document.createElement('div');
+    num.className = 'photo-num';
+    num.textContent = idx + 1;
+
+    // 삭제 버튼
+    const rm = document.createElement('button');
+    rm.className = 'remove-btn';
+    rm.textContent = '×';
+    if (isUploading) {
+      rm.style.display = 'none'; // 업로드 중엔 완전히 숨김
+    } else {
+      rm.onclick = e => { e.stopPropagation(); removePhoto(idx); };
+    }
+
+    div.appendChild(img);
+    div.appendChild(num);
+    div.appendChild(rm);
+    grid.appendChild(div);
+  });
+
+  // 드래그 순서 변경 초기화
+  initDragReorder();
+
+  // 제출 버튼 상태
   const submitBtn = document.getElementById('submit-all-btn');
-  if (isLast) {
-    nextBtn.style.display   = 'none';
-    submitBtn.style.display = (saved && saved.file) ? 'block' : 'none';
-  } else {
-    nextBtn.style.display   = '';
-    submitBtn.style.display = 'none';
-  }
+  submitBtn.disabled = (count < total);
+  submitBtn.style.opacity = (count < total) ? '0.4' : '1';
 }
 
-function handleStepFile(file) {
-  if (!file.type.startsWith('image/')) return;
-  if (!stepData[currentStep]) stepData[currentStep] = {};
-  stepData[currentStep].file = file;
-  showPreview(file);
-  document.getElementById('next-btn').disabled = false;
+function removePhoto(idx) {
+  if (isUploading) return;
+  stepData.splice(idx, 1);
+  renderPhotoGrid();
+}
+
+// ── 드래그로 순서 변경 ────────────────────────────────────────────────
+function initDragReorder() {
+  const grid = document.getElementById('photo-grid');
+  let dragIdx = null;
+
+  grid.querySelectorAll('.photo-item').forEach(item => {
+    item.addEventListener('dragstart', e => {
+      dragIdx = parseInt(item.dataset.idx);
+      item.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+      // 투명 이미지로 기본 고스트 대체
+      const ghost = document.createElement('div');
+      ghost.style.opacity = '0';
+      document.body.appendChild(ghost);
+      e.dataTransfer.setDragImage(ghost, 0, 0);
+      setTimeout(() => ghost.remove(), 0);
+    });
+
+    item.addEventListener('dragend', () => {
+      item.classList.remove('dragging');
+      grid.querySelectorAll('.photo-item').forEach(el => el.classList.remove('drag-over'));
+      dragIdx = null;
+    });
+
+    item.addEventListener('dragover', e => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      const overIdx = parseInt(item.dataset.idx);
+      if (dragIdx !== null && overIdx !== dragIdx) {
+        item.classList.add('drag-over');
+      }
+    });
+
+    item.addEventListener('dragleave', () => {
+      item.classList.remove('drag-over');
+    });
+
+    item.addEventListener('drop', e => {
+      e.preventDefault();
+      const overIdx = parseInt(item.dataset.idx);
+      if (dragIdx !== null && overIdx !== dragIdx) {
+        // 배열에서 아이템 이동
+        const [moved] = stepData.splice(dragIdx, 1);
+        stepData.splice(overIdx, 0, moved);
+        renderPhotoGrid();
+      }
+    });
+  });
+}
+
+// ── 전체 S3 업로드 — 확인 모달 먼저 표시 ─────────────────────────────
+function submitAllPhotos() {
   const total = presignedUrls.length || 10;
-  if (currentStep + 1 === total) {
-    document.getElementById('submit-all-btn').style.display = 'block';
-  }
-}
 
-function showPreview(file) {
-  const reader = new FileReader();
-  reader.onload = e => {
-    const prev = document.getElementById('drop-preview');
-    prev.innerHTML = `<img src="${e.target.result}" style="width:100%;max-height:220px;object-fit:cover;">`;
-    document.getElementById('drop-text').textContent = file.name;
-  };
-  reader.readAsDataURL(file);
-}
-
-function prevStep() {
-  if (currentStep === 0) return;
-  if (!stepData[currentStep]) stepData[currentStep] = {};
-  stepData[currentStep].caption = document.getElementById('step-caption').value;
-  currentStep--;
-  renderStep();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function nextStep() {
-  const total = presignedUrls.length || 10;
-  if (currentStep >= total - 1) return;
-  if (!stepData[currentStep] || !stepData[currentStep].file) {
-    alert('사진을 먼저 선택해주세요.');
+  if (stepData.length < total) {
+    alert(`사진이 부족합니다. ${total - stepData.length}장을 더 추가해주세요.`);
     return;
   }
-  if (!stepData[currentStep]) stepData[currentStep] = {};
-  stepData[currentStep].caption = document.getElementById('step-caption').value.trim();
-  currentStep++;
-  renderStep();
+
+  // 오디오 정지 후 BGM 선택 화면으로 이동
+  if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+  document.getElementById('upload-section').style.display = 'none';
+  document.getElementById('bgm-section').style.display   = 'block';
+  document.getElementById('bgm-order-num-display').textContent = '#' + currentOrderId;
+  loadBgmList();
+  setFlowStep(2);
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// ── 전체 S3 업로드 + 완료 신고 ────────────────────────────────────────
-async function submitAllPhotos() {
+function backToUpload() {
+  if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+  document.getElementById('bgm-section').style.display   = 'none';
+  document.getElementById('upload-section').style.display = 'block';
+  setFlowStep(1);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function submitWithBgm() {
+  if (currentAudio) { currentAudio.pause(); currentAudio = null; }
   const total = presignedUrls.length || 10;
-  if (!stepData[currentStep]) stepData[currentStep] = {};
-  stepData[currentStep].caption = document.getElementById('step-caption').value.trim();
+  document.getElementById('upload-confirm-count').textContent = total;
+  document.getElementById('upload-confirm-modal').style.display = 'flex';
+}
 
-  for (let i = 0; i < total; i++) {
-    if (!stepData[i] || !stepData[i].file) {
-      alert(`${i+1}번째 사진이 없습니다. 이전 버튼으로 돌아가서 추가해주세요.`);
-      return;
-    }
-  }
+function cancelUploadConfirm() {
+  document.getElementById('upload-confirm-modal').style.display = 'none';
+}
 
+async function confirmUpload() {
+  document.getElementById('upload-confirm-modal').style.display = 'none';
+
+  isUploading = true;
+  renderPhotoGrid(); // 삭제버튼/드래그 비활성화 반영
+
+  const total = presignedUrls.length || 10;
+  // BGM 화면에서 호출되므로 업로드 섹션 화면으로 임시 전환하여 진행률 표시
+  document.getElementById('bgm-section').style.display    = 'none';
+  document.getElementById('upload-section').style.display = 'block';
   const btn = document.getElementById('submit-all-btn');
   btn.disabled = true;
   btn.textContent = '업로드 중...';
+  document.getElementById('progress-text').style.display = 'block';
 
   const resultPhotos = [];
 
   for (let i = 0; i < total; i++) {
-    const { file, caption } = stepData[i];
+    const { file } = stepData[i];
     const urlInfo = presignedUrls[i];
 
     document.getElementById('upload-progress').style.width = Math.round((i / total) * 100) + '%';
-    document.getElementById('progress-text').textContent   = `${i} / ${total} 완료`;
+    document.getElementById('progress-text').textContent   = `${i} / ${total} 업로드 중...`;
     document.getElementById('step-label').textContent      = `${i+1} / ${total} 업로드 중`;
 
     try {
@@ -1437,9 +2143,11 @@ async function submitAllPhotos() {
         body:   file
       });
       if (!resp.ok) throw new Error(`${i+1}번째 사진 업로드 실패 (${resp.status})`);
-      resultPhotos.push({ s3Key: urlInfo.s3Key, caption: caption || '' });
+      resultPhotos.push({ s3Key: urlInfo.s3Key, caption: '' });
     } catch (err) {
       alert(err.message);
+      isUploading = false;
+      renderPhotoGrid();
       btn.disabled = false;
       btn.textContent = '업로드 완료 — 영상 제작 시작';
       return;
@@ -1450,12 +2158,22 @@ async function submitAllPhotos() {
   document.getElementById('progress-text').textContent   = `${total} / ${total} 완료`;
 
   try {
-    await fetch('/api/orders/' + currentOrderId + '/upload-complete', {
+    const completeResp = await fetch('/api/orders/' + currentOrderId + '/upload-complete', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ photos: resultPhotos })
+      body:    JSON.stringify({ photos: resultPhotos, bgmTrack: selectedBgm })
     });
-  } catch (e) { console.error('upload-complete 오류:', e); }
+    if (!completeResp.ok) {
+      const err = await completeResp.json().catch(() => ({}));
+      throw new Error(err.message || '서버 처리 실패');
+    }
+  } catch (e) {
+    console.error('upload-complete 오류:', e);
+    alert('제작 시작 중 오류가 발생했습니다: ' + e.message + '\n잠시 후 다시 시도해주세요.');
+    btn.disabled = false;
+    btn.textContent = '다음 단계 — 음악 선택';
+    return;
+  }
 
   setTimeout(() => showDone(), 600);
 }
@@ -1468,9 +2186,63 @@ function setFileStatus(i, cls, text) {
 function showDone() {
   document.getElementById('guide-section').style.display  = 'none';
   document.getElementById('upload-section').style.display = 'none';
+  document.getElementById('bgm-section').style.display    = 'none';
   document.getElementById('done-section').style.display   = 'block';
+  hideFlowStepper();
   document.getElementById('done-order-num').textContent   = '주문번호 #' + currentOrderId;
   window.scrollTo({ top: 0, behavior: 'smooth' });
+  startStatusPolling(currentOrderId);
+}
+
+// ── 영상 완성 폴링 ────────────────────────────────────
+// 15초마다 서버에 상태 쫼리, 완성 시 다운로드 링크 표시
+let pollingTimer = null;
+let pollingProgress = 0;
+
+function startStatusPolling(orderId) {
+  pollingProgress = 5;
+  document.getElementById('done-progress-bar').style.width = pollingProgress + '%';
+  document.getElementById('done-status-text').textContent = '영상 제작 중... (RunwayML 업로드 취합 중)';
+
+  if (pollingTimer) clearInterval(pollingTimer);
+  pollingTimer = setInterval(() => pollOrderStatus(orderId), 15000);
+}
+
+async function pollOrderStatus(orderId) {
+  try {
+    const resp = await fetch('/api/orders/' + orderId + '/status');
+    if (!resp.ok) return;
+    const data = await resp.json();
+
+    if (data.status === 'PROCESSING') {
+      // 프로그레스 애니메이션 (5~90% 단계적 증가)
+      pollingProgress = Math.min(pollingProgress + 8, 90);
+      document.getElementById('done-progress-bar').style.width = pollingProgress + '%';
+      document.getElementById('done-status-text').textContent = 'AI 영상 클립 생성 중... (좌수 같으면 10~20분 소요)';
+
+    } else if (data.status === 'COMPLETED' && data.downloadUrl) {
+      clearInterval(pollingTimer);
+      pollingTimer = null;
+
+      document.getElementById('done-progress-bar').style.width = '100%';
+      document.getElementById('done-processing').style.display = 'none';
+      document.getElementById('done-download').style.display   = 'block';
+      document.getElementById('done-download-link').href       = data.downloadUrl;
+      document.getElementById('done-title').textContent        = '영상이 완성되었습니다';
+      document.getElementById('done-desc').textContent         = '아래 버튼을 눌러 다운로드하세요.';
+      document.getElementById('done-mark').style.background    = '#c9a96e22';
+
+    } else if (data.status === 'FAILED') {
+      clearInterval(pollingTimer);
+      pollingTimer = null;
+      document.getElementById('done-title').textContent     = '제작 중 문제가 발생했습니다';
+      document.getElementById('done-desc').textContent      = '진실되게 죄송합니다. 카카오톡 @움직이는사진관 으로 문의해 주세요.';
+      document.getElementById('done-status-text').textContent = '제작 실패 — 관리자가 확인 중입니다';
+      document.getElementById('done-progress-bar').style.background = '#c97070';
+    }
+  } catch(e) {
+    console.warn('상태 폴링 오류:', e);
+  }
 }
 
 // ── SMS resume ────────────────────────────────────────────────────────
@@ -1506,10 +2278,11 @@ async function handleResume(orderId) {
 
 // ── 유틸 ──────────────────────────────────────────────────────────────
 function hideMainSections() {
-  document.querySelector('.hero')          && (document.querySelector('.hero').style.display          = 'none');
-  document.querySelector('.features')      && (document.querySelector('.features').style.display      = 'none');
-  document.querySelector('.process')       && (document.querySelector('.process').style.display       = 'none');
-  document.getElementById('order-section') && (document.getElementById('order-section').style.display = 'none');
+  document.querySelector('.hero')              && (document.querySelector('.hero').style.display              = 'none');
+  document.getElementById('preview-section')   && (document.getElementById('preview-section').style.display   = 'none');
+  document.querySelector('.features')          && (document.querySelector('.features').style.display          = 'none');
+  document.querySelector('.process')           && (document.querySelector('.process').style.display           = 'none');
+  document.getElementById('order-section')     && (document.getElementById('order-section').style.display     = 'none');
 }
 
 function showLoading(msg) {

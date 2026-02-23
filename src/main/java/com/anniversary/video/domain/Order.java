@@ -42,6 +42,15 @@ public class Order {
 
     private Integer photoCount;
 
+    /** 영상 인트로에 표시될 제목 (예: 어머니 환갑, 홍길순 님의 60년) */
+    @Column(length = 50)
+    private String introTitle;
+
+    /** 선택한 BGM 트랙 (예: bgm_01, bgm_02 ...) */
+    @Column(length = 20)
+    @Builder.Default
+    private String bgmTrack = "bgm_01";
+
     @Column(length = 300)
     private String s3InputPath;
 

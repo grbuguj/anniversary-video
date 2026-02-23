@@ -5,6 +5,7 @@ import com.anniversary.video.domain.OrderPhoto;
 import com.anniversary.video.repository.OrderPhotoRepository;
 import com.anniversary.video.service.OrderService;
 import com.anniversary.video.service.S3Service;
+import com.anniversary.video.service.VideoGenerationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
@@ -30,6 +31,7 @@ public class DevController {
     private final OrderService orderService;
     private final OrderPhotoRepository orderPhotoRepository;
     private final S3Service s3Service;
+    private final VideoGenerationService videoGenerationService;
 
     /**
      * 결제 스킵 → 주문을 바로 PAID 상태로
@@ -99,6 +101,38 @@ public class DevController {
                 "photoCount", count,
                 "status",     "PROCESSING",
                 "message",    "더미 사진 " + count + "장으로 처리됨 (영상 생성 실제 실행 안 함)"
+        ));
+    }
+
+    /**
+     * 영상 생성 직접 트리거 — S3에 사진이 이미 있는 PAID 주문에 사용
+     * POST /api/dev/orders/{orderId}/trigger-video
+     */
+    @PostMapping("/orders/{orderId}/trigger-video")
+    public ResponseEntity<Map<String, Object>> triggerVideo(@PathVariable Long orderId) {
+        Order order = orderService.findById(orderId);
+
+        if (order.getStatus() != Order.OrderStatus.PAID) {
+            return ResponseEntity.badRequest().body(Map.of(
+                "message", "PAID 상태가 아닙니다. 현재: " + order.getStatus()
+            ));
+        }
+
+        List<OrderPhoto> photos = orderPhotoRepository.findByOrderIdOrderBySortOrder(orderId);
+        if (photos.isEmpty()) {
+            return ResponseEntity.badRequest().body(Map.of(
+                "message", "업로드된 사진이 없습니다. 먼저 사진을 업로드하세요."
+            ));
+        }
+
+        log.warn("[DEV] 영상 생성 트리거 - orderId: {}, 사진 {}장", orderId, photos.size());
+        videoGenerationService.startVideoGeneration(orderId);
+
+        return ResponseEntity.ok(Map.of(
+            "result",     "ok",
+            "orderId",    orderId,
+            "photoCount", photos.size(),
+            "message",    "영상 생성 시작! 로그 확인하세요. /status?orderId=" + orderId + " 에서 진행 상황 확인 가능"
         ));
     }
 }

@@ -5,6 +5,7 @@ import com.anniversary.video.domain.OrderPhoto;
 import com.anniversary.video.dto.OrderCreateRequest;
 import com.anniversary.video.dto.OrderCreateResponse;
 import com.anniversary.video.repository.OrderPhotoRepository;
+import com.anniversary.video.service.FfmpegService;
 import com.anniversary.video.service.OrderService;
 import com.anniversary.video.service.S3Service;
 import com.anniversary.video.service.VideoGenerationService;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 
 @RestController
 @RequestMapping("/api/orders")
@@ -99,6 +101,7 @@ public class OrderController {
      * }
      */
     @PostMapping("/{orderId}/upload-complete")
+    @org.springframework.transaction.annotation.Transactional
     public ResponseEntity<Map<String, Object>> uploadComplete(
             @PathVariable Long orderId,
             @RequestBody Map<String, Object> body) {
@@ -147,6 +150,14 @@ public class OrderController {
         orderPhotoRepository.saveAll(photos);
         log.info("OrderPhoto 저장 완료 - orderId: {}, count: {}", orderId, photos.size());
 
+        // BGM 선택값 업데이트
+        String bgmTrack = (String) body.get("bgmTrack");
+        if (bgmTrack != null && !bgmTrack.isBlank()) {
+            order.setBgmTrack(bgmTrack);
+            orderService.save(order);
+            log.info("BGM 설정 - orderId: {}, bgm: {}", orderId, bgmTrack);
+        }
+
         videoGenerationService.startVideoGeneration(orderId);
         log.info("영상 생성 시작 - orderId: {}", orderId);
 
@@ -158,11 +169,33 @@ public class OrderController {
         ));
     }
 
+    /** 이어하기 거부 시 기존 PAID 주문 취소 (재주문 허용) */
+    @PostMapping("/{orderId}/cancel")
+    public ResponseEntity<Map<String, Object>> cancelOrder(@PathVariable Long orderId) {
+        Order order = orderService.findById(orderId);
+        // PAID 상태만 취소 허용 (이미 제작 시작된 건 취소 불가)
+        if (order.getStatus() != Order.OrderStatus.PAID) {
+            return ResponseEntity.badRequest().body(Map.of(
+                "message", "취소할 수 없는 상태입니다: " + order.getStatus()
+            ));
+        }
+        order.updateStatus(Order.OrderStatus.FAILED);
+        order.setAdminMemo("고객 재주문 요청으로 취소");
+        log.info("주문 취소 (재주문 허용) - orderId: {}", orderId);
+        return ResponseEntity.ok(Map.of("result", "ok"));
+    }
+
     /** 다운로드 URL 재발급 (만료 시) */
     @PostMapping("/{orderId}/download-url")
     public ResponseEntity<Map<String, String>> refreshDownloadUrl(@PathVariable Long orderId) {
         String newUrl = orderService.refreshDownloadUrl(orderId);
         return ResponseEntity.ok(Map.of("downloadUrl", newUrl));
+    }
+
+    /** BGM 목록 (프론트 선택 UI용) */
+    @GetMapping("/bgm-list")
+    public ResponseEntity<List<Map<String, String>>> getBgmList() {
+        return ResponseEntity.ok(FfmpegService.BGM_LIST);
     }
 
     /** 포트원 설정 (프론트 동적 로드) */
