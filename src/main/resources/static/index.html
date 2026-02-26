@@ -5,6 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>움직이는 사진관 — 사진이 살아 움직입니다</title>
 <meta name="description" content="소중한 가족 사진을 살아 움직이는 감동 영상으로. 환갑·칠순·결혼기념일 행사 상영용 프리미엄 인생 영상.">
+<meta property="og:title" content="움직이는 사진관 — 사진이 살아 움직입니다">
+<meta property="og:description" content="소중한 가족 사진을 자연스럽게 살아 움직이는 감동 영상으로. 환갑·칠순·결혼기념일 행사 상영용 프리미엄 인생 영상. 단 29,900원.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="움직이는 사진관 — 사진이 살아 움직입니다">
+<meta name="twitter:description" content="소중한 가족 사진을 자연스럽게 살아 움직이는 감동 영상으로. 환갑·칠순·결혼기념일 행사 상영용.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600;700&family=Noto+Sans+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -36,7 +43,6 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ── 공통 ──────────────────────────────────────────── */
 .serif { font-family: var(--serif); }
 .gold  { color: var(--gold); }
 
@@ -58,7 +64,6 @@ body {
   margin: 20px auto;
 }
 
-/* ── Hero ──────────────────────────────────────────── */
 .hero {
   min-height: 100vh;
   display: flex;
@@ -160,7 +165,6 @@ body {
   font-weight: 500;
 }
 
-/* ── 특징 ──────────────────────────────────────────── */
 .features {
   padding: 120px 24px;
   max-width: 960px;
@@ -218,7 +222,6 @@ body {
   font-weight: 300;
 }
 
-/* ── 프로세스 ──────────────────────────────────────── */
 .process {
   padding: 120px 24px;
   background: var(--surface);
@@ -280,7 +283,6 @@ body {
   font-weight: 300;
 }
 
-/* ── 주문 폼 ──────────────────────────────────────── */
 .order-section {
   padding: 120px 24px;
   max-width: 520px;
@@ -398,7 +400,6 @@ body {
   letter-spacing: .3px;
 }
 
-/* ── 개발용 ──────────────────────────────────────── */
 .dev-btn {
   width: 100%;
   background: transparent;
@@ -426,7 +427,6 @@ body {
   letter-spacing: .5px;
 }
 
-/* ── 업로드 공통 ─────────────────────────────────── */
 .upload-section {
   display: none;
   padding: 80px 24px;
@@ -470,7 +470,6 @@ body {
 
 #file-input { display: none; }
 
-/* ── 완료 ──────────────────────────────────────── */
 .done-section {
   display: none;
   padding: 120px 24px;
@@ -516,7 +515,6 @@ body {
   letter-spacing: 1px;
 }
 
-/* ── 푸터 ──────────────────────────────────────── */
 footer {
   border-top: 1px solid var(--border);
   padding: 36px 24px;
@@ -527,7 +525,6 @@ footer {
   line-height: 2;
 }
 
-/* ── 이어하기 모달 ─────────────────────────────── */
 #resume-modal {
   display: none;
   position: fixed;
@@ -597,7 +594,6 @@ footer {
 }
 .btn-resume-no:hover { border-color: var(--muted); color: var(--text); }
 
-/* ── 확인 모달 ───────────────────────────────── */
 .confirm-modal {
   display: none;
   position: fixed;
@@ -699,7 +695,6 @@ footer {
   .confirm-inner { padding: 36px 24px; }
 }
 
-/* ── 가이드 섹션 ──────────────────────────────── */
 .guide-sequence {
   display: flex;
   align-items: center;
@@ -748,7 +743,6 @@ footer {
   font-weight: 300;
 }
 
-/* ── 스텝 업로드 ─────────────────────────────── */
 .step-header {
   display: flex;
   align-items: center;
@@ -811,16 +805,6 @@ footer {
   letter-spacing: .3px;
 }
 
-.caption-label {
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: var(--muted);
-  display: block;
-  margin-bottom: 8px;
-}
-
 .step-nav {
   display: flex;
   gap: 10px;
@@ -876,7 +860,6 @@ footer {
 }
 .btn-submit-all:hover { background: var(--gold-light); }
 
-/* ── 벌크 업로드 그리드 ──────────────────────── */
 .photo-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -957,8 +940,6 @@ footer {
   margin: 12px 0;
   letter-spacing: .3px;
 }
-.photo-count-info .count { color: var(--gold); font-weight: 500; }
-.photo-count-info .warning { color: #c97070; }
 
 .add-more-btn {
   width: 100%;
@@ -986,7 +967,6 @@ footer {
   margin-bottom: 24px;
 }
 
-/* ── BGM 선택 ───────────────────────────────── */
 .bgm-option {
   display: flex;
   align-items: center;
@@ -1043,7 +1023,6 @@ footer {
   color: #080808;
 }
 
-/* ── 상단 플로우 스텝바 ─────────────────────── */
 #flow-stepper {
   display: none;
   position: fixed;
@@ -1133,13 +1112,11 @@ footer {
   transition: width .5s ease;
 }
 
-/* 스텝바 보일 때 업로드 영역 아래로 내리기 */
 body.flow-active .upload-section,
 body.flow-active .done-section {
   padding-top: 108px;
 }
 
-/* ── 반응형 ──────────────────────────────────── */
 @media (max-width: 600px) {
   .feature-grid { grid-template-columns: 1fr 1fr; }
   .feature-card { border-bottom: 1px solid var(--border); }
@@ -1149,6 +1126,7 @@ body.flow-active .done-section {
   .resume-inner { padding: 36px 24px; }
   .guide-sequence { gap: 0; }
   .guide-seq-item { padding: 0 8px; }
+  .photo-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 400px) {
@@ -1159,7 +1137,6 @@ body.flow-active .done-section {
 </head>
 <body>
 
-<!-- ── Hero ── -->
 <section class="hero">
   <div class="hero-eyebrow">움직이는 사진관</div>
   <h1>부모님의 세월이<br><em>살아 움직입니다</em></h1>
@@ -1173,7 +1150,6 @@ body.flow-active .done-section {
   </div>
 </section>
 
-<!-- ── 릴스 미리보기 ── -->
 <section id="preview-section" style="padding: 80px 24px 0; display:flex; flex-direction:column; align-items:center; text-align:center;">
   <span class="section-label">Preview</span>
   <h2 style="font-family:var(--serif);font-size:clamp(20px,3vw,30px);font-weight:300;margin-bottom:8px;color:var(--text)">이런 영상이 가능합니다</h2>
@@ -1185,7 +1161,6 @@ body.flow-active .done-section {
   <script async src="//www.instagram.com/embed.js"></script>
 </section>
 
-<!-- ── 특징 ── -->
 <section class="features">
   <span class="section-label">Why Different</span>
   <h2 class="features-title">단순한 슬라이드쇼가 아닙니다</h2>
@@ -1213,7 +1188,6 @@ body.flow-active .done-section {
   </div>
 </section>
 
-<!-- ── 프로세스 ── -->
 <section class="process">
   <div class="process-inner">
     <span class="section-label" style="text-align:center;display:block">How It Works</span>
@@ -1251,7 +1225,6 @@ body.flow-active .done-section {
   </div>
 </section>
 
-<!-- ── 주문 폼 ── -->
 <section class="order-section" id="order-section">
   <span class="section-label" style="text-align:center;display:block">Order</span>
   <div class="order-card">
@@ -1275,7 +1248,7 @@ body.flow-active .done-section {
     </div>
     <div class="form-group">
       <label>영상 제목 <span style="font-size:10px;text-transform:none;font-weight:300;letter-spacing:.3px">인트로에 표시</span></label>
-      <input type="text" id="introTitle" placeholder="어머니 환갑 · 홍길순 님의 60년" maxlength="20">
+      <input type="text" id="introTitle" placeholder="예: 어머니 환갑, 부모님 결혼 30주년" maxlength="20">
       <div class="form-error" id="err-introTitle"></div>
     </div>
     <div class="form-group">
@@ -1292,7 +1265,7 @@ body.flow-active .done-section {
 
     <div class="price-box">
       <div>
-    <div class="label">프리미엄 인생 영상 1편</div>
+        <div class="label">프리미엄 인생 영상 1편</div>
         <div class="label-sub">16:9 · 1080p · 60~90초 · 24시간 내 제작</div>
       </div>
       <div class="amount">29,900원</div>
@@ -1313,7 +1286,6 @@ body.flow-active .done-section {
   </div>
 </section>
 
-<!-- ── 결제 확인 모달 ── -->
 <div id="payment-confirm-modal" class="confirm-modal">
   <div class="confirm-inner">
     <span class="section-label">주문 확인</span>
@@ -1328,7 +1300,6 @@ body.flow-active .done-section {
   </div>
 </div>
 
-<!-- ── 업로드 완료 확인 모달 ── -->
 <div id="upload-confirm-modal" class="confirm-modal">
   <div class="confirm-inner">
     <span class="section-label">최종 확인</span>
@@ -1347,11 +1318,10 @@ body.flow-active .done-section {
   </div>
 </div>
 
-<!-- ── 이어하기 모달 ── -->
 <div id="resume-modal">
   <div class="resume-inner">
     <span class="section-label">미완료 주문</span>
-  <h3>이전 주문이 있습니다</h3>
+    <h3>이전 주문이 있습니다</h3>
     <p>
       <strong id="resume-name" style="color:var(--gold);font-weight:400"></strong>님의 주문
       <strong id="resume-order-id" style="color:var(--gold);font-weight:400"></strong>이<br>
@@ -1364,7 +1334,6 @@ body.flow-active .done-section {
   </div>
 </div>
 
-<!-- ── 업로드 가이드 ── -->
 <section class="upload-section" id="guide-section">
   <div class="upload-card">
     <div class="dev-banner" id="dev-upload-banner" style="display:none">[DEV] 실제 S3 업로드 모드</div>
@@ -1417,7 +1386,6 @@ body.flow-active .done-section {
   </div>
 </section>
 
-<!-- ── 벌크 업로드 ── -->
 <section class="upload-section" id="upload-section">
   <div class="upload-card">
     <div class="dev-banner" id="dev-step-banner" style="display:none">[DEV] 실제 S3 업로드 모드</div>
@@ -1437,9 +1405,9 @@ body.flow-active .done-section {
     <div class="upload-drop" id="drop-zone" onclick="document.getElementById('file-input').click(); return false;">
       <div class="drop-icon">+</div>
       <p class="drop-main-text">클릭하거나 사진을 드래그하세요</p>
-      <p class="drop-sub-text">JPG, PNG · 20MB 이하 · 여러 장 선택 가능</p>
+      <p class="drop-sub-text">JPG, PNG, HEIC · 20MB 이하 · 여러 장 선택 가능</p>
     </div>
-    <input type="file" id="file-input" accept="image/jpeg,image/png,image/jpg" multiple>
+    <input type="file" id="file-input" accept="image/jpeg,image/png,image/jpg,image/heic,image/heif" multiple>
 
     <div class="photo-count-info" id="photo-count-info" style="display:none"></div>
 
@@ -1456,7 +1424,6 @@ body.flow-active .done-section {
   </div>
 </section>
 
-<!-- ── BGM 선택 ── -->
 <section class="upload-section" id="bgm-section">
   <div class="upload-card">
     <div class="step-header">
@@ -1479,7 +1446,6 @@ body.flow-active .done-section {
   </div>
 </section>
 
-<!-- ── 완료 ── -->
 <section class="done-section" id="done-section">
   <div class="done-mark" id="done-mark">✓</div>
   <span class="section-label" id="done-label">Complete</span>
@@ -1490,7 +1456,6 @@ body.flow-active .done-section {
     완성되면 이 화면에서 바로 확인하실 수 있습니다.
   </p>
 
-  <!-- 제작 중 상태 -->
   <div id="done-processing" style="margin-top:28px">
     <div style="width:100%;height:1px;background:var(--border-mid);margin-bottom:16px;overflow:hidden">
       <div id="done-progress-bar" style="height:100%;background:var(--gold);width:0%;transition:width 1s"></div>
@@ -1498,7 +1463,6 @@ body.flow-active .done-section {
     <p style="font-size:12px;color:var(--muted);letter-spacing:.5px" id="done-status-text">제작 대기 중...</p>
   </div>
 
-  <!-- 완성 후 다운로드 -->
   <div id="done-download" style="display:none;margin-top:28px;width:100%">
     <a id="done-download-link" href="#" target="_blank"
        style="display:block;width:100%;background:var(--gold);color:#080808;text-decoration:none;
@@ -1512,7 +1476,6 @@ body.flow-active .done-section {
   </div>
 </section>
 
-<!-- ── 플로우 스텝바 ── -->
 <div id="flow-stepper">
   <div class="stepper-inner">
     <div class="stepper-step" id="step1">
@@ -1545,7 +1508,6 @@ function scrollToOrder() {
   document.getElementById('order-section').scrollIntoView({ behavior: 'smooth' });
 }
 
-// ── 플로우 스텝바 ────────────────────────────────────────
 function setFlowStep(step) {
   const stepper = document.getElementById('flow-stepper');
   const s1 = document.getElementById('step1');
@@ -1569,14 +1531,13 @@ function hideFlowStepper() {
   document.body.classList.remove('flow-active');
 }
 
-// ── BGM 목록 로드 + UI 렌더링 ────────────────────────────────
 async function loadBgmList() {
   try {
     const list = await fetch('/api/orders/bgm-list').then(r => r.json());
     const container = document.getElementById('bgm-list');
     container.innerHTML = '';
     list.forEach((bgm, idx) => {
-      const isSelected = idx === 0; // 거음의 첫 번째는 기본 선택
+      const isSelected = idx === 0;
       if (isSelected) selectedBgm = bgm.id;
 
       const div = document.createElement('div');
@@ -1613,30 +1574,36 @@ function toggleBgmPreview(e, id) {
   e.stopPropagation();
   const btn = e.currentTarget;
 
-  // 이미 재생 중이면 정지
-  if (currentAudio) {
-    currentAudio.pause();
-    currentAudio = null;
+  function resetAllBtns() {
     document.querySelectorAll('.bgm-play-btn').forEach(b => {
       b.textContent = '▶'; b.classList.remove('playing');
     });
-    if (btn.dataset.id === id && !btn.classList.contains('playing')) {
-      // 같은 버튼 두 번 누르면 정지
-      return;
-    }
   }
 
-  // 재생
+  // 같은 곡 재생 중이면 정지
+  if (currentAudio && btn.classList.contains('playing')) {
+    currentAudio.pause();
+    currentAudio = null;
+    resetAllBtns();
+    return;
+  }
+
+  // 다른 곡이거나 없으면 → 기존 정지 후 새로 재생
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio = null;
+    resetAllBtns();
+  }
+
   const audio = new Audio(`/bgm/${id}.mp3`);
   audio.volume = 0.7;
   currentAudio = audio;
   btn.textContent = '■';
   btn.classList.add('playing');
-  selectBgm(id); // 미리듣기 하면 자동 선택
+  selectBgm(id);
 
   audio.play().catch(() => {
     btn.textContent = '▶'; btn.classList.remove('playing');
-    alert('현재 파일이 없습니다. BGM 파일을 먼저 넣어주세요.');
     currentAudio = null;
   });
   audio.onended = () => {
@@ -1645,7 +1612,6 @@ function toggleBgmPreview(e, id) {
   };
 }
 
-// ── DEV 모드 감지 — localhost이면 바로 노출 ──────────────────────────
 function detectDevMode() {
   IS_DEV = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
   if (IS_DEV) {
@@ -1653,7 +1619,6 @@ function detectDevMode() {
   }
 }
 
-// ── 주문 공통 생성 ────────────────────────────────────────────────────
 async function createOrder() {
   const name       = document.getElementById('customerName').value.trim();
   const phone      = document.getElementById('customerPhone').value.trim();
@@ -1696,7 +1661,6 @@ async function createOrder() {
   return resp.json();
 }
 
-// ── 결제 시작 — 확인 모달 먼저 표시 ──────────────────────────────────
 function startPayment() {
   const name       = document.getElementById('customerName').value.trim();
   const phone      = document.getElementById('customerPhone').value.trim();
@@ -1704,7 +1668,6 @@ function startPayment() {
   const introTitle = document.getElementById('introTitle').value.trim();
   const photoCount = document.getElementById('photoCount').value;
 
-  // 유효성 먼저 체크
   let valid = true;
   if (!name) { showError('err-name', '이름을 입력해주세요'); valid = false; }
   else hideError('err-name');
@@ -1716,7 +1679,6 @@ function startPayment() {
   else hideError('err-introTitle');
   if (!valid) return;
 
-  // 확인 모달에 요약 정보 표시
   const summary = document.getElementById('payment-confirm-summary');
   summary.innerHTML =
     `<div class="confirm-summary-row"><span class="label">이름</span><span class="value">${name}</span></div>` +
@@ -1743,7 +1705,6 @@ async function confirmPayment() {
   try {
     const orderData = await createOrder();
 
-    // 이어하기: 미완료 주문 감지
     if (orderData.isExistingOrder) {
       showResumeModal(orderData);
       btn.disabled = false;
@@ -1777,7 +1738,6 @@ async function confirmPayment() {
   }
 }
 
-// ── [DEV] 결제 스킵 ───────────────────────────────────────────────────
 async function devSkipPayment() {
   const skipBtn = document.getElementById('dev-skip-pay-btn');
   const payBtn  = document.getElementById('pay-btn');
@@ -1802,16 +1762,13 @@ async function devSkipPayment() {
   }
 }
 
-// ── [DEV] 업로드 스킵 ─────────────────────────────────────────────────
 async function devSkipUpload() {
   const btn = document.getElementById('dev-skip-upload-btn');
   btn.disabled = true;
   btn.textContent = '처리 중...';
 
   try {
-    const resp = await fetch(`/api/dev/orders/${currentOrderId}/skip-upload`, {
-      method: 'POST'
-    });
+    const resp = await fetch(`/api/dev/orders/${currentOrderId}/skip-upload`, { method: 'POST' });
     if (!resp.ok) {
       const err = await resp.json().catch(() => ({}));
       throw new Error(err.message || '업로드 스킵 실패');
@@ -1826,7 +1783,6 @@ async function devSkipUpload() {
   }
 }
 
-// ── 결제 성공 리다이렉트 처리 ──────────────────────────────────────────
 async function handlePaymentSuccess() {
   const params    = new URLSearchParams(window.location.search);
   const paymentId = params.get('paymentId');
@@ -1864,12 +1820,11 @@ async function handlePaymentSuccess() {
       <div style="font-size:36px;color:var(--gold);margin-bottom:20px">—</div>
       <div style="font-family:var(--serif);font-size:20px;font-weight:300;margin-bottom:12px">결제 처리 오류</div>
       <div style="font-size:13px;color:var(--muted);margin-bottom:8px">${e.message}</div>
-      <div style="font-size:12px;color:var(--muted);margin-bottom:28px">주문번호: #${orderId} &nbsp;·&nbsp; 문의: 카카오톡 @기념일영상</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:28px">주문번호: #${orderId} &nbsp;·&nbsp; 문의: 카카오톡 @움직이는사진관</div>
       <a href="/" style="padding:12px 32px;background:var(--gold);color:#080808;text-decoration:none;font-size:12px;font-weight:600;letter-spacing:1px">처음으로 돌아가기</a>`;
   }
 }
 
-// ── 업로드 가이드 화면 ────────────────────────────────────────────────
 let stepData = [];
 let isUploading = false;
 
@@ -1887,7 +1842,6 @@ function showUploadSection(orderId, devMode) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// ── 벌크 업로드 시작 ──────────────────────────────────────────────────
 function startBulkUpload() {
   document.getElementById('guide-section').style.display  = 'none';
   document.getElementById('upload-section').style.display = 'block';
@@ -1899,7 +1853,6 @@ function startBulkUpload() {
   document.getElementById('step-label').textContent = `0 / ${total}`;
   document.getElementById('upload-progress').style.width = '0%';
 
-  // 파일 input 이벤트 — 중복 등록 방지
   const fileInput = document.getElementById('file-input');
   const newInput = fileInput.cloneNode(true);
   fileInput.parentNode.replaceChild(newInput, fileInput);
@@ -1909,7 +1862,6 @@ function startBulkUpload() {
     e.target.value = '';
   });
 
-  // 드래그 앤 드롭 (파일 추가용)
   const drop = document.getElementById('drop-zone');
   drop.addEventListener('dragover', e => { e.preventDefault(); if (!isUploading) drop.classList.add('drag-over'); });
   drop.addEventListener('dragleave', () => drop.classList.remove('drag-over'));
@@ -1924,20 +1876,32 @@ function startBulkUpload() {
 
 function handleBulkFiles(fileList) {
   const total = presignedUrls.length || 10;
-  const files = Array.from(fileList).filter(f => f.type.startsWith('image/'));
+  const MAX_SIZE = 20 * 1024 * 1024; // 20MB
+
+  const files = Array.from(fileList).filter(f =>
+    f.type.startsWith('image/') ||
+    f.name.toLowerCase().endsWith('.heic') ||
+    f.name.toLowerCase().endsWith('.heif')
+  );
 
   if (files.length === 0) return;
 
-  // 최대 개수 제한
+  const oversized = files.filter(f => f.size > MAX_SIZE);
+  if (oversized.length > 0) {
+    alert(`파일 크기 초과 (20MB 이하만 가능):\n${oversized.map(f => f.name).join('\n')}\n\n위 파일은 제외됩니다.`);
+  }
+  const validFiles = files.filter(f => f.size <= MAX_SIZE);
+  if (validFiles.length === 0) return;
+
   const remaining = total - stepData.length;
-  const toAdd = files.slice(0, remaining);
+  const toAdd = validFiles.slice(0, remaining);
 
   toAdd.forEach(file => {
     stepData.push({ file });
   });
 
-  if (files.length > remaining) {
-    alert(`최대 ${total}장까지 선택할 수 있습니다. ${files.length - remaining}장이 제외되었습니다.`);
+  if (validFiles.length > remaining) {
+    alert(`최대 ${total}장까지 선택할 수 있습니다. ${validFiles.length - remaining}장이 제외되었습니다.`);
   }
 
   renderPhotoGrid();
@@ -1950,12 +1914,10 @@ function renderPhotoGrid() {
   const info  = document.getElementById('photo-count-info');
   const addBtn = document.getElementById('add-more-btn');
 
-  // 카운터 업데이트
   document.getElementById('step-label').textContent = `${count} / ${total}`;
   const pct = Math.round((count / total) * 100);
   document.getElementById('upload-progress').style.width = pct + '%';
 
-  // 카운트 안내
   if (count > 0) {
     info.style.display = 'block';
     if (count < total) {
@@ -1967,13 +1929,9 @@ function renderPhotoGrid() {
     info.style.display = 'none';
   }
 
-  // 추가 버튼
   addBtn.style.display = (count > 0 && count < total) ? 'block' : 'none';
-
-  // 드롭존 표시 토글
   document.getElementById('drop-zone').style.display = count >= total ? 'none' : '';
 
-  // 그리드 렌더링
   grid.innerHTML = '';
   stepData.forEach((item, idx) => {
     const div = document.createElement('div');
@@ -1982,23 +1940,20 @@ function renderPhotoGrid() {
     if (isUploading) { div.style.cursor = 'default'; div.style.pointerEvents = 'none'; }
     div.dataset.idx = idx;
 
-    // 썸네일
     const img = document.createElement('img');
     const url = URL.createObjectURL(item.file);
     img.src = url;
     img.onload = () => URL.revokeObjectURL(url);
 
-    // 번호 뱃지
     const num = document.createElement('div');
     num.className = 'photo-num';
     num.textContent = idx + 1;
 
-    // 삭제 버튼
     const rm = document.createElement('button');
     rm.className = 'remove-btn';
     rm.textContent = '×';
     if (isUploading) {
-      rm.style.display = 'none'; // 업로드 중엔 완전히 숨김
+      rm.style.display = 'none';
     } else {
       rm.onclick = e => { e.stopPropagation(); removePhoto(idx); };
     }
@@ -2009,10 +1964,8 @@ function renderPhotoGrid() {
     grid.appendChild(div);
   });
 
-  // 드래그 순서 변경 초기화
   initDragReorder();
 
-  // 제출 버튼 상태
   const submitBtn = document.getElementById('submit-all-btn');
   submitBtn.disabled = (count < total);
   submitBtn.style.opacity = (count < total) ? '0.4' : '1';
@@ -2024,7 +1977,6 @@ function removePhoto(idx) {
   renderPhotoGrid();
 }
 
-// ── 드래그로 순서 변경 ────────────────────────────────────────────────
 function initDragReorder() {
   const grid = document.getElementById('photo-grid');
   let dragIdx = null;
@@ -2034,7 +1986,6 @@ function initDragReorder() {
       dragIdx = parseInt(item.dataset.idx);
       item.classList.add('dragging');
       e.dataTransfer.effectAllowed = 'move';
-      // 투명 이미지로 기본 고스트 대체
       const ghost = document.createElement('div');
       ghost.style.opacity = '0';
       document.body.appendChild(ghost);
@@ -2065,7 +2016,6 @@ function initDragReorder() {
       e.preventDefault();
       const overIdx = parseInt(item.dataset.idx);
       if (dragIdx !== null && overIdx !== dragIdx) {
-        // 배열에서 아이템 이동
         const [moved] = stepData.splice(dragIdx, 1);
         stepData.splice(overIdx, 0, moved);
         renderPhotoGrid();
@@ -2074,7 +2024,6 @@ function initDragReorder() {
   });
 }
 
-// ── 전체 S3 업로드 — 확인 모달 먼저 표시 ─────────────────────────────
 function submitAllPhotos() {
   const total = presignedUrls.length || 10;
 
@@ -2083,7 +2032,6 @@ function submitAllPhotos() {
     return;
   }
 
-  // 오디오 정지 후 BGM 선택 화면으로 이동
   if (currentAudio) { currentAudio.pause(); currentAudio = null; }
   document.getElementById('upload-section').style.display = 'none';
   document.getElementById('bgm-section').style.display   = 'block';
@@ -2116,10 +2064,16 @@ async function confirmUpload() {
   document.getElementById('upload-confirm-modal').style.display = 'none';
 
   isUploading = true;
-  renderPhotoGrid(); // 삭제버튼/드래그 비활성화 반영
+  renderPhotoGrid();
+
+  // 이탈 방지
+  window._uploadGuard = (e) => {
+    e.preventDefault();
+    e.returnValue = '';
+  };
+  window.addEventListener('beforeunload', window._uploadGuard);
 
   const total = presignedUrls.length || 10;
-  // BGM 화면에서 호출되므로 업로드 섹션 화면으로 임시 전환하여 진행률 표시
   document.getElementById('bgm-section').style.display    = 'none';
   document.getElementById('upload-section').style.display = 'block';
   const btn = document.getElementById('submit-all-btn');
@@ -2145,6 +2099,7 @@ async function confirmUpload() {
       if (!resp.ok) throw new Error(`${i+1}번째 사진 업로드 실패 (${resp.status})`);
       resultPhotos.push({ s3Key: urlInfo.s3Key, caption: '' });
     } catch (err) {
+      window.removeEventListener('beforeunload', window._uploadGuard);
       alert(err.message);
       isUploading = false;
       renderPhotoGrid();
@@ -2157,6 +2112,10 @@ async function confirmUpload() {
   document.getElementById('upload-progress').style.width = '100%';
   document.getElementById('progress-text').textContent   = `${total} / ${total} 완료`;
 
+  // 서버 전송 중 피드백
+  document.getElementById('step-label').textContent = '제작 요청 중...';
+  btn.textContent = '제작 요청 중...';
+
   try {
     const completeResp = await fetch('/api/orders/' + currentOrderId + '/upload-complete', {
       method:  'POST',
@@ -2168,19 +2127,17 @@ async function confirmUpload() {
       throw new Error(err.message || '서버 처리 실패');
     }
   } catch (e) {
+    window.removeEventListener('beforeunload', window._uploadGuard);
     console.error('upload-complete 오류:', e);
     alert('제작 시작 중 오류가 발생했습니다: ' + e.message + '\n잠시 후 다시 시도해주세요.');
     btn.disabled = false;
     btn.textContent = '다음 단계 — 음악 선택';
+    isUploading = false;
     return;
   }
 
+  window.removeEventListener('beforeunload', window._uploadGuard);
   setTimeout(() => showDone(), 600);
-}
-
-function setFileStatus(i, cls, text) {
-  const el = document.getElementById('file-status-' + i);
-  if (el) { el.className = 'file-status ' + cls; el.textContent = text; }
 }
 
 function showDone() {
@@ -2194,15 +2151,13 @@ function showDone() {
   startStatusPolling(currentOrderId);
 }
 
-// ── 영상 완성 폴링 ────────────────────────────────────
-// 15초마다 서버에 상태 쫼리, 완성 시 다운로드 링크 표시
 let pollingTimer = null;
 let pollingProgress = 0;
 
 function startStatusPolling(orderId) {
   pollingProgress = 5;
   document.getElementById('done-progress-bar').style.width = pollingProgress + '%';
-  document.getElementById('done-status-text').textContent = '영상 제작 중... (RunwayML 업로드 취합 중)';
+  document.getElementById('done-status-text').textContent = '영상 제작 중...';
 
   if (pollingTimer) clearInterval(pollingTimer);
   pollingTimer = setInterval(() => pollOrderStatus(orderId), 15000);
@@ -2215,10 +2170,9 @@ async function pollOrderStatus(orderId) {
     const data = await resp.json();
 
     if (data.status === 'PROCESSING') {
-      // 프로그레스 애니메이션 (5~90% 단계적 증가)
       pollingProgress = Math.min(pollingProgress + 8, 90);
       document.getElementById('done-progress-bar').style.width = pollingProgress + '%';
-      document.getElementById('done-status-text').textContent = 'AI 영상 클립 생성 중... (좌수 같으면 10~20분 소요)';
+      document.getElementById('done-status-text').textContent = 'AI 영상 클립 생성 중... (10~20분 소요)';
 
     } else if (data.status === 'COMPLETED' && data.downloadUrl) {
       clearInterval(pollingTimer);
@@ -2236,7 +2190,7 @@ async function pollOrderStatus(orderId) {
       clearInterval(pollingTimer);
       pollingTimer = null;
       document.getElementById('done-title').textContent     = '제작 중 문제가 발생했습니다';
-      document.getElementById('done-desc').textContent      = '진실되게 죄송합니다. 카카오톡 @움직이는사진관 으로 문의해 주세요.';
+      document.getElementById('done-desc').textContent      = '죄송합니다. 카카오톡 @움직이는사진관 으로 문의해 주세요.';
       document.getElementById('done-status-text').textContent = '제작 실패 — 관리자가 확인 중입니다';
       document.getElementById('done-progress-bar').style.background = '#c97070';
     }
@@ -2245,7 +2199,6 @@ async function pollOrderStatus(orderId) {
   }
 }
 
-// ── SMS resume ────────────────────────────────────────────────────────
 async function handleResume(orderId) {
   hideMainSections();
   const loadingDiv = showLoading('주문 정보 확인 중...');
@@ -2260,95 +2213,128 @@ async function handleResume(orderId) {
       return;
     }
     if (statusData.status !== 'PAID') {
-      loadingDiv.innerHTML = '<div style="font-size:13px;color:var(--muted)">업로드할 수 없는 주문 상태입니다 (' + statusData.status + ')</div>';
+      loadingDiv.innerHTML = '<div style="font-size:13px;color:var(--muted)">이미 처리된 주문입니다.</div>';
       return;
     }
 
-    const urlResp  = await fetch('/api/orders/' + orderId + '/upload-urls');
+    currentOrderId = orderId;
+    const urlResp = await fetch('/api/orders/' + orderId + '/upload-urls');
     if (!urlResp.ok) throw new Error('업로드 URL 발급 실패');
-    presignedUrls  = (await urlResp.json()).presignedUrls || [];
-    currentOrderId = parseInt(orderId);
+    const urlData = await urlResp.json();
+    presignedUrls = urlData.presignedUrls || [];
+
     loadingDiv.remove();
-    showUploadSection(orderId, false);
+    showUploadSection(orderId, IS_DEV);
   } catch (e) {
-    loadingDiv.innerHTML = '<div style="font-size:13px;color:var(--muted);margin-bottom:24px">' + e.message + '</div>' +
-      '<a href="/" style="padding:12px 32px;background:var(--gold);color:#080808;text-decoration:none;font-size:12px;font-weight:600;letter-spacing:1px">처음으로</a>';
+    loadingDiv.innerHTML = `<div style="font-size:13px;color:var(--muted)">${e.message}</div>`;
   }
 }
-
-// ── 유틸 ──────────────────────────────────────────────────────────────
-function hideMainSections() {
-  document.querySelector('.hero')              && (document.querySelector('.hero').style.display              = 'none');
-  document.getElementById('preview-section')   && (document.getElementById('preview-section').style.display   = 'none');
-  document.querySelector('.features')          && (document.querySelector('.features').style.display          = 'none');
-  document.querySelector('.process')           && (document.querySelector('.process').style.display           = 'none');
-  document.getElementById('order-section')     && (document.getElementById('order-section').style.display     = 'none');
-}
-
-function showLoading(msg) {
-  const div = document.createElement('div');
-  div.style.cssText = 'display:flex;flex-direction:column;align-items:center;justify-content:center;padding:120px 20px;text-align:center;gap:16px';
-  div.innerHTML = `<div style="font-family:var(--serif);font-size:20px;font-weight:300;color:var(--text)">${msg}</div><div style="font-size:12px;color:var(--muted);letter-spacing:.5px">잠시만 기다려주세요</div>`;
-  document.body.insertBefore(div, document.querySelector('footer'));
-  return div;
-}
-
-function showError(id, msg) { const el = document.getElementById(id); el.textContent = msg; el.style.display = 'block'; }
-function hideError(id)      { document.getElementById(id).style.display = 'none'; }
-
-// ── DOMContentLoaded ──────────────────────────────────────────────────
-window.addEventListener('DOMContentLoaded', async () => {
-  detectDevMode();
-
-  try {
-    const cfg = await fetch('/api/orders/payment-config').then(r => r.json());
-    PORTONE_STORE_ID    = cfg.storeId;
-    PORTONE_CHANNEL_KEY = cfg.channelKey;
-  } catch(e) { console.error('포트원 설정 로드 실패', e); }
-
-  if (window.location.pathname === '/payment/success') {
-    handlePaymentSuccess();
-  } else if (window.location.pathname === '/payment/fail') {
-    const params = new URLSearchParams(window.location.search);
-    alert('결제가 취소되었습니다: ' + (params.get('message') || ''));
-    window.location.href = '/';
-  }
-
-  const resumeId = new URLSearchParams(window.location.search).get('resume');
-  if (resumeId) handleResume(resumeId);
-});
-
-// ── 이어하기 모달 ─────────────────────────────────────────────────────
-let pendingExistingOrderData = null;
 
 function showResumeModal(orderData) {
-  pendingExistingOrderData = orderData;
-  document.getElementById('resume-name').textContent     = orderData.existingCustomerName || '고객';
+  document.getElementById('resume-name').textContent     = orderData.customerName || '';
   document.getElementById('resume-order-id').textContent = '#' + orderData.orderId;
-  document.getElementById('resume-modal').style.display  = 'flex';
+  const modal = document.getElementById('resume-modal');
+  modal.style.display = 'flex';
+  modal._orderId = orderData.orderId;
 }
 
-function resumeExistingOrder() {
-  document.getElementById('resume-modal').style.display = 'none';
-  const data = pendingExistingOrderData;
-  currentOrderId = data.orderId;
-  presignedUrls  = data.presignedUrls || [];
-  showUploadSection(data.orderId, IS_DEV);
+async function resumeExistingOrder() {
+  const modal   = document.getElementById('resume-modal');
+  const orderId = modal._orderId;
+  modal.style.display = 'none';
+  await handleResume(orderId);
 }
 
 async function closeResumeModal() {
   document.getElementById('resume-modal').style.display = 'none';
-  const data = pendingExistingOrderData;
-  pendingExistingOrderData = null;
-
-  try { await fetch(`/api/orders/${data.orderId}/cancel`, { method: 'POST' }); }
-  catch(e) { console.warn('기존 주문 취소 실패, 무시:', e); }
-
-  const btn = document.getElementById('pay-btn');
-  btn.disabled    = false;
-  btn.textContent = '결제하고 사진 업로드하기';
-  await startPayment();
+  try {
+    const modal   = document.getElementById('resume-modal');
+    const orderId = modal._orderId;
+    if (orderId) await fetch('/api/orders/' + orderId + '/cancel', { method: 'POST' }).catch(() => {});
+  } catch(e) {}
 }
+
+function showError(id, msg) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+function hideError(id) {
+  const el = document.getElementById(id);
+  if (el) el.style.display = 'none';
+}
+
+function hideMainSections() {
+  ['hero', 'preview-section', 'features', 'process', 'order-section'].forEach(id => {
+    const el = document.getElementById(id) || document.querySelector('.' + id);
+    // hero/features/process are sections by class
+  });
+  document.querySelector('.hero').style.display          = 'none';
+  document.getElementById('preview-section').style.display = 'none';
+  document.querySelector('.features').style.display     = 'none';
+  document.querySelector('.process').style.display      = 'none';
+  document.querySelector('.order-section').style.display = 'none';
+  document.querySelector('footer').style.display        = 'none';
+}
+
+function showLoading(msg) {
+  const div = document.createElement('div');
+  div.style.cssText = 'position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg);z-index:9000;text-align:center;padding:40px';
+  div.innerHTML = `<div style="font-family:var(--serif);font-size:20px;font-weight:300;color:var(--text);margin-bottom:12px">${msg}</div>`;
+  document.body.appendChild(div);
+  return div;
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  detectDevMode();
+
+  // beforeunload 기본 제거
+  window._uploadGuard = null;
+
+  // 결제 성공 리다이렉트 처리
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('paymentId') || params.get('payment_id')) {
+    await handlePaymentSuccess();
+    return;
+  }
+
+  // resume 파라미터
+  const resumeOrderId = params.get('orderId') || params.get('resume');
+  if (resumeOrderId && !params.get('paymentId')) {
+    await handleResume(parseInt(resumeOrderId));
+    return;
+  }
+
+  // 포트원 설정 로드
+  try {
+    const cfg = await fetch('/api/orders/payment-config').then(r => r.json());
+    PORTONE_STORE_ID   = cfg.storeId   || '';
+    PORTONE_CHANNEL_KEY = cfg.channelKey || '';
+  } catch(e) {
+    console.warn('결제 설정 로드 실패:', e);
+  }
+
+  // localStorage 미완료 주문 확인
+  const savedOrderId   = localStorage.getItem('pendingOrderId');
+  const savedOrderName = localStorage.getItem('pendingOrderName');
+  if (savedOrderId && savedOrderName) {
+    try {
+      const statusResp = await fetch('/api/orders/' + savedOrderId + '/status');
+      if (statusResp.ok) {
+        const statusData = await statusResp.json();
+        if (statusData.status === 'PAID') {
+          showResumeModal({ orderId: parseInt(savedOrderId), customerName: savedOrderName });
+          document.getElementById('resume-modal')._orderId = parseInt(savedOrderId);
+        } else {
+          localStorage.removeItem('pendingOrderId');
+          localStorage.removeItem('pendingOrderName');
+        }
+      }
+    } catch(e) {}
+  }
+});
 </script>
 </body>
 </html>
