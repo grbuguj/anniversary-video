@@ -1,11 +1,8 @@
 package com.anniversary.video.controller;
 
 import com.anniversary.video.domain.Order;
-import com.anniversary.video.domain.OrderPhoto;
 import com.anniversary.video.dto.OrderCreateRequest;
 import com.anniversary.video.dto.OrderCreateResponse;
-import com.anniversary.video.repository.OrderPhotoRepository;
-import com.anniversary.video.service.FfmpegService;
 import com.anniversary.video.service.OrderService;
 import com.anniversary.video.service.S3Service;
 import com.anniversary.video.service.VideoGenerationService;
@@ -16,11 +13,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
 
 @RestController
 @RequestMapping("/api/orders")
@@ -30,7 +25,6 @@ public class OrderController {
 
     private final OrderService orderService;
     private final S3Service s3Service;
-    private final OrderPhotoRepository orderPhotoRepository;
     private final VideoGenerationService videoGenerationService;
 
     @Value("${portone.store-id}")
@@ -59,10 +53,7 @@ public class OrderController {
         ));
     }
 
-    /**
-     * 결제 성공 후 S3 업로드 URL 재발급
-     * — 토스 리다이렉트 후 presignedUrls가 소실되므로 이 API로 재획득
-     */
+    /** 결제 성공 후 S3 업로드 URL 재발급 */
     @GetMapping("/{orderId}/upload-urls")
     public ResponseEntity<Map<String, Object>> getUploadUrls(@PathVariable Long orderId) {
         Order order = orderService.findById(orderId);
@@ -92,79 +83,22 @@ public class OrderController {
     }
 
     /**
-     * 사진 업로드 완료 신고
-     * 프론트가 S3 업로드 끝나면 이 API 호출 → OrderPhoto 저장 → 영상 생성 시작
-     *
-     * Request body:
-     * {
-     *   "s3Keys": ["uploads/1/photo_00.jpg", "uploads/1/photo_01.jpg", ...]
-     * }
+     * 사진 업로드 완료 신고 → 영상 생성 시작
+     * 비즈니스 로직은 OrderService.handleUploadComplete()에 위임
      */
     @PostMapping("/{orderId}/upload-complete")
-    @org.springframework.transaction.annotation.Transactional
     public ResponseEntity<Map<String, Object>> uploadComplete(
             @PathVariable Long orderId,
             @RequestBody Map<String, Object> body) {
 
-        Order order = orderService.findById(orderId);
-
-        // PAID 상태만 허용
-        if (order.getStatus() != Order.OrderStatus.PAID) {
-            return ResponseEntity.badRequest().body(Map.of(
-                    "message", "결제 완료 상태의 주문만 업로드 완료 처리가 가능합니다. 현재 상태: " + order.getStatus()
-            ));
-        }
-
-        // photos 배열(caption 포함 신규) 또는 s3Keys(구버전) 처리
-        @SuppressWarnings("unchecked")
-        List<Map<String, String>> photoList = (List<Map<String, String>>) body.get("photos");
-        @SuppressWarnings("unchecked")
-        List<String> s3Keys = (List<String>) body.get("s3Keys");
-
-        if ((photoList == null || photoList.isEmpty()) && (s3Keys == null || s3Keys.isEmpty())) {
-            return ResponseEntity.badRequest().body(Map.of("message", "업로드된 사진 정보가 없습니다."));
-        }
-
-        // 기존 OrderPhoto 삭제
-        List<OrderPhoto> existing = orderPhotoRepository.findByOrderIdOrderBySortOrder(orderId);
-        if (!existing.isEmpty()) orderPhotoRepository.deleteAll(existing);
-
-        List<OrderPhoto> photos = new ArrayList<>();
-        if (photoList != null && !photoList.isEmpty()) {
-            // 신규: caption 포함
-            for (int i = 0; i < photoList.size(); i++) {
-                photos.add(OrderPhoto.builder()
-                        .order(order)
-                        .s3Key(photoList.get(i).get("s3Key"))
-                        .caption(photoList.get(i).get("caption"))
-                        .sortOrder(i)
-                        .build());
-            }
-        } else {
-            // 구버전 fallback
-            for (int i = 0; i < s3Keys.size(); i++) {
-                photos.add(OrderPhoto.builder()
-                        .order(order).s3Key(s3Keys.get(i)).sortOrder(i).build());
-            }
-        }
-        orderPhotoRepository.saveAll(photos);
-        log.info("OrderPhoto 저장 완료 - orderId: {}, count: {}", orderId, photos.size());
-
-        // BGM 선택값 업데이트
-        String bgmTrack = (String) body.get("bgmTrack");
-        if (bgmTrack != null && !bgmTrack.isBlank()) {
-            order.setBgmTrack(bgmTrack);
-            orderService.save(order);
-            log.info("BGM 설정 - orderId: {}, bgm: {}", orderId, bgmTrack);
-        }
-
+        int photoCount = orderService.handleUploadComplete(orderId, body);
         videoGenerationService.startVideoGeneration(orderId);
         log.info("영상 생성 시작 - orderId: {}", orderId);
 
         return ResponseEntity.ok(Map.of(
                 "result",     "ok",
                 "orderId",    orderId,
-                "photoCount", photos.size(),
+                "photoCount", photoCount,
                 "message",    "영상 제작이 시작되었습니다. 24시간 내 완성 후 문자로 안내드립니다."
         ));
     }
@@ -173,14 +107,12 @@ public class OrderController {
     @PostMapping("/{orderId}/cancel")
     public ResponseEntity<Map<String, Object>> cancelOrder(@PathVariable Long orderId) {
         Order order = orderService.findById(orderId);
-        // PAID 상태만 취소 허용 (이미 제작 시작된 건 취소 불가)
         if (order.getStatus() != Order.OrderStatus.PAID) {
             return ResponseEntity.badRequest().body(Map.of(
                 "message", "취소할 수 없는 상태입니다: " + order.getStatus()
             ));
         }
-        order.updateStatus(Order.OrderStatus.FAILED);
-        order.setAdminMemo("고객 재주문 요청으로 취소");
+        orderService.markAsFailed(orderId, "고객 재주문 요청으로 취소");
         log.info("주문 취소 (재주문 허용) - orderId: {}", orderId);
         return ResponseEntity.ok(Map.of("result", "ok"));
     }
@@ -195,7 +127,7 @@ public class OrderController {
     /** BGM 목록 (프론트 선택 UI용) */
     @GetMapping("/bgm-list")
     public ResponseEntity<List<Map<String, String>>> getBgmList() {
-        return ResponseEntity.ok(FfmpegService.BGM_LIST);
+        return ResponseEntity.ok(BgmConstants.BGM_LIST);
     }
 
     /** 포트원 설정 (프론트 동적 로드) */

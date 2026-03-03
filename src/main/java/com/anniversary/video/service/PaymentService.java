@@ -1,7 +1,6 @@
 package com.anniversary.video.service;
 
 import com.anniversary.video.domain.Order;
-import com.anniversary.video.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,8 +19,8 @@ import java.util.Map;
 public class PaymentService {
 
     private final OrderService orderService;
-    private final OrderRepository orderRepository;
     private final NotificationService notificationService;
+    private final EventLoggingService eventLoggingService;
 
     @Value("${portone.api-secret}")
     private String portoneApiSecret;
@@ -33,7 +32,6 @@ public class PaymentService {
         Long orderIdLong = Long.parseLong(orderId);
         Order order = orderService.findById(orderIdLong);
 
-        // 이미 처리된 주문 방지
         if (order.getStatus() != Order.OrderStatus.PENDING) {
             throw new IllegalStateException("이미 처리된 주문입니다: " + orderId);
         }
@@ -48,7 +46,8 @@ public class PaymentService {
                     .bodyToMono(Map.class)
                     .block();
         } catch (WebClientResponseException e) {
-            log.error("포트원 결제 조회 실패 - status: {}, body: {}", e.getStatusCode(), e.getResponseBodyAsString());
+            log.error("포트원 결제 조회 실패 - status: {}, body: {}",
+                    e.getStatusCode(), e.getResponseBodyAsString());
             throw new RuntimeException("결제 정보를 확인할 수 없습니다.");
         }
 
@@ -66,11 +65,12 @@ public class PaymentService {
             throw new IllegalArgumentException("결제 금액이 일치하지 않습니다.");
         }
 
-        log.info("✅ 포트원 결제 검증 완료 - orderId: {}, paymentId: {}", orderId, paymentId);
+        log.info("포트원 결제 검증 완료 - orderId: {}, paymentId: {}", orderId, paymentId);
 
-        // PAID 처리 — 영상 생성은 사진 업로드 완료 후
         Order paidOrder = orderService.markAsPaid(orderIdLong, paymentId);
         notificationService.sendOrderConfirmation(paidOrder);
+        eventLoggingService.log(orderIdLong, "pay_success",
+                String.format("{\"paymentId\":\"%s\",\"amount\":%d}", paymentId, paidAmount));
 
         return Map.of("result", "ok", "orderId", orderIdLong, "status", "PAID");
     }
@@ -87,10 +87,7 @@ public class PaymentService {
             throw new IllegalStateException("이미 실패 처리된 주문입니다.");
         }
         if (order.getPaymentKey() == null) {
-            // 결제 전 (PENDING) → 주문만 취소
-            order.updateStatus(Order.OrderStatus.FAILED);
-            order.setAdminMemo("[취소] " + cancelReason);
-            orderRepository.save(order);
+            orderService.markAsFailed(orderId, "[취소] " + cancelReason);
             return Map.of("status", "CANCELLED", "message", "주문이 취소되었습니다.");
         }
 
@@ -104,15 +101,13 @@ public class PaymentService {
                     .bodyToMono(Map.class)
                     .block();
         } catch (WebClientResponseException e) {
-            log.error("포트원 취소 실패 - orderId: {}, body: {}", orderId, e.getResponseBodyAsString());
+            log.error("포트원 취소 실패 - orderId: {}, body: {}",
+                    orderId, e.getResponseBodyAsString());
             throw new RuntimeException("결제 취소 실패: " + e.getResponseBodyAsString());
         }
 
-        order.updateStatus(Order.OrderStatus.FAILED);
-        order.setAdminMemo("[취소/환불] " + cancelReason);
-        orderRepository.save(order);
-
-        log.info("✅ 결제 취소 완료 - orderId: {}", orderId);
+        orderService.markAsFailed(orderId, "[취소/환불] " + cancelReason);
+        log.info("결제 취소 완료 - orderId: {}", orderId);
         return Map.of("result", "ok", "message", "환불 처리되었습니다.");
     }
 
@@ -125,14 +120,24 @@ public class PaymentService {
 
         if (!"Transaction.Paid".equals(type) || paymentId == null) return;
 
-        // 주문 찾기 (paymentKey = portone paymentId)
-        orderRepository.findByPaymentKey(paymentId).ifPresent(order -> {
-            if (order.getStatus() == Order.OrderStatus.PENDING) {
-                Order paid = orderService.markAsPaid(order.getId(), paymentId);
-                notificationService.sendOrderConfirmation(paid);
-                log.info("웹훅 결제 완료 처리 - orderId: {}", order.getId());
-            }
-        });
+        // paymentKey로 주문 찾기 — OrderService를 통해 조회
+        // 웹훅은 confirmPayment 이후 도착하므로 paymentKey가 이미 세팅된 상태
+        try {
+            List<Order> allOrders = orderService.findAll();
+            allOrders.stream()
+                    .filter(o -> paymentId.equals(o.getPaymentKey())
+                            && o.getStatus() == Order.OrderStatus.PENDING)
+                    .findFirst()
+                    .ifPresent(order -> {
+                        Order paid = orderService.markAsPaid(order.getId(), paymentId);
+                        notificationService.sendOrderConfirmation(paid);
+                        eventLoggingService.log(order.getId(), "pay_success",
+                                "{\"source\":\"webhook\"}");
+                        log.info("웹훅 결제 완료 처리 - orderId: {}", order.getId());
+                    });
+        } catch (Exception e) {
+            log.error("웹훅 처리 실패 - paymentId: {}, error: {}", paymentId, e.getMessage());
+        }
     }
 
     private WebClient buildPortoneClient() {

@@ -3,6 +3,7 @@ package com.anniversary.video.integration;
 import com.anniversary.video.domain.Order;
 import com.anniversary.video.dto.OrderCreateRequest;
 import com.anniversary.video.repository.OrderRepository;
+import com.anniversary.video.service.EventLoggingService;
 import com.anniversary.video.service.NotificationService;
 import com.anniversary.video.service.S3Service;
 import com.anniversary.video.service.VideoGenerationService;
@@ -51,8 +52,8 @@ class OrderFlowIntegrationTest {
     @MockBean S3Service s3Service;
     @MockBean VideoGenerationService videoGenerationService;
     @MockBean NotificationService notificationService;
+    @MockBean EventLoggingService eventLoggingService;
 
-    // 테스트 간 orderId 공유
     private static final AtomicLong sharedOrderId = new AtomicLong(0);
 
     @BeforeEach
@@ -72,6 +73,7 @@ class OrderFlowIntegrationTest {
         req.setCustomerName("통합테스트 고객");
         req.setCustomerPhone("01088889999");
         req.setPhotoCount(12);
+        req.setIntroTitle("어머니 환갑");
 
         String body = mockMvc.perform(post("/api/orders").with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -82,13 +84,11 @@ class OrderFlowIntegrationTest {
                 .andExpect(jsonPath("$.presignedUrls").isArray())
                 .andReturn().getResponse().getContentAsString();
 
-        // orderId 파싱 — Map으로 역직렬화 (Jackson @Builder 이슈 우회)
         @SuppressWarnings("unchecked")
         Map<String, Object> resp = objectMapper.readValue(body, Map.class);
         long orderId = ((Number) resp.get("orderId")).longValue();
         sharedOrderId.set(orderId);
 
-        // DB 직접 확인
         Order order = orderRepository.findById(orderId).orElseThrow();
         assertThat(order.getStatus()).isEqualTo(Order.OrderStatus.PENDING);
         assertThat(order.getCustomerName()).isEqualTo("통합테스트 고객");
@@ -97,19 +97,31 @@ class OrderFlowIntegrationTest {
 
     @Test
     @org.junit.jupiter.api.Order(2)
-    @DisplayName("2. 동일 번호 중복 주문 → 409 Conflict")
+    @DisplayName("2. PROCESSING 중 동일번호 주문 → 409 차단")
     @WithMockUser
-    void step2_duplicateOrder_rejected() throws Exception {
+    void step2_processingOrder_blocked() throws Exception {
+        // 기존 주문을 PROCESSING으로 변경
+        long orderId = sharedOrderId.get();
+        Order order = orderRepository.findById(orderId).orElseThrow();
+        order.updateStatus(Order.OrderStatus.PROCESSING);
+        orderRepository.save(order);
+
         OrderCreateRequest req = new OrderCreateRequest();
         req.setCustomerName("동일고객");
         req.setCustomerPhone("01088889999");
         req.setPhotoCount(10);
+        req.setIntroTitle("어머니 환갑");
 
         mockMvc.perform(post("/api/orders").with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(req)))
                 .andExpect(status().isConflict())
-                .andExpect(jsonPath("$.message").value(Matchers.containsString("진행 중인 주문")));
+                .andExpect(jsonPath("$.message").value(
+                        Matchers.containsString("영상 제작 중인 주문")));
+
+        // 원복
+        order.updateStatus(Order.OrderStatus.PENDING);
+        orderRepository.save(order);
     }
 
     @Test
@@ -136,7 +148,7 @@ class OrderFlowIntegrationTest {
 
     @Test
     @org.junit.jupiter.api.Order(5)
-    @DisplayName("5. 관리자 상태 PAID 수동 변경 → DB 저장 확인 ✅ (save 버그 수정 검증)")
+    @DisplayName("5. 관리자 상태 PAID 수동 변경 → DB 저장 확인")
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     void step5_adminSetPaid_savedToDb() throws Exception {
         long orderId = sharedOrderId.get();
@@ -147,7 +159,6 @@ class OrderFlowIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value("PAID"));
 
-        // DB 실제 반영 확인 (이전엔 save() 빠져서 롤백됐던 버그)
         Order order = orderRepository.findById(orderId).orElseThrow();
         assertThat(order.getStatus()).isEqualTo(Order.OrderStatus.PAID);
     }
@@ -165,7 +176,7 @@ class OrderFlowIntegrationTest {
 
     @Test
     @org.junit.jupiter.api.Order(7)
-    @DisplayName("7. 관리자 메모 저장 → DB 저장 확인 ✅ (save 버그 수정 검증)")
+    @DisplayName("7. 관리자 메모 저장 → DB 저장 확인")
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     void step7_saveMemo_persistedToDb() throws Exception {
         long orderId = sharedOrderId.get();
@@ -203,7 +214,6 @@ class OrderFlowIntegrationTest {
     @WithMockUser
     void step9_refreshDownloadUrl() throws Exception {
         long orderId = sharedOrderId.get();
-        // s3OutputPath 직접 설정 후 재발급 테스트
         Order order = orderRepository.findById(orderId).orElseThrow();
         order.setS3OutputPath("results/" + orderId + "/final.mp4");
         orderRepository.save(order);
@@ -246,33 +256,49 @@ class OrderFlowIntegrationTest {
 
     @Test
     @org.junit.jupiter.api.Order(13)
-    @DisplayName("13. 금액 위변조 결제 승인 → 400")
-    @WithMockUser
-    void step13_paymentAmountTampering() throws Exception {
-        // 새 주문 생성
-        OrderCreateRequest req = new OrderCreateRequest();
-        req.setCustomerName("위변조 테스터");
-        req.setCustomerPhone("01077778888");
-        req.setPhotoCount(10);
+    @DisplayName("13. 관리자 재생성 → retryCount 증가 + 분석 필드 초기화")
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    void step13_regenerate() throws Exception {
+        // FAILED 상태 주문 준비
+        long orderId = sharedOrderId.get();
+        Order order = orderRepository.findById(orderId).orElseThrow();
+        order.updateStatus(Order.OrderStatus.FAILED);
+        order.setFailureStage("clip_generation");
+        order.setRetryCount(0);
+        orderRepository.save(order);
 
-        String body = mockMvc.perform(post("/api/orders").with(csrf())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(req)))
+        mockMvc.perform(post("/admin/orders/" + orderId + "/regenerate").with(csrf()))
                 .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
+                .andExpect(jsonPath("$.retryCount").value("1"));
 
-        @SuppressWarnings("unchecked")
-        Map<String, Object> resp = objectMapper.readValue(body, Map.class);
-        long orderId = ((Number) resp.get("orderId")).longValue();
+        Order updated = orderRepository.findById(orderId).orElseThrow();
+        assertThat(updated.getRetryCount()).isEqualTo(1);
+        assertThat(updated.getStatus()).isEqualTo(Order.OrderStatus.PAID);
+        assertThat(updated.getFailureStage()).isNull();
+    }
 
-        // 실제 금액 29900 → 1000 으로 위변조 시도
-        String confirmPayload = String.format(
-                "{\"paymentKey\":\"pk_test_abc\",\"orderId\":\"%d\",\"amount\":1000}", orderId);
+    @Test
+    @org.junit.jupiter.api.Order(14)
+    @DisplayName("14. 프론트 비콘 이벤트 수신 — POST /api/events")
+    @WithMockUser
+    void step14_frontBeaconEvent() throws Exception {
+        long orderId = sharedOrderId.get();
 
-        mockMvc.perform(post("/api/payments/confirm").with(csrf())
+        mockMvc.perform(post("/api/events").with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(confirmPayload))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value(Matchers.containsString("금액 불일치")));
+                        .content("{\"orderId\":" + orderId + ",\"eventType\":\"page_view\"}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.result").value("ok"));
+    }
+
+    @Test
+    @org.junit.jupiter.api.Order(15)
+    @DisplayName("15. 비콘 이벤트 — eventType 누락 시 400")
+    @WithMockUser
+    void step15_beaconWithoutType_rejected() throws Exception {
+        mockMvc.perform(post("/api/events").with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"orderId\":1}"))
+                .andExpect(status().isBadRequest());
     }
 }

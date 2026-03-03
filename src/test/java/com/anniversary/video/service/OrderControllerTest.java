@@ -1,9 +1,6 @@
 package com.anniversary.video.service;
 
 import com.anniversary.video.controller.OrderController;
-import com.anniversary.video.repository.OrderPhotoRepository;
-import com.anniversary.video.service.S3Service;
-import com.anniversary.video.service.VideoGenerationService;
 import com.anniversary.video.dto.OrderCreateRequest;
 import com.anniversary.video.dto.OrderCreateResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
@@ -25,13 +23,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(OrderController.class)
+@TestPropertySource(properties = {
+        "portone.store-id=test-store-id",
+        "portone.channel-key=test-channel-key"
+})
 class OrderControllerTest {
 
     @Autowired MockMvc mockMvc;
     @Autowired ObjectMapper objectMapper;
     @MockBean  OrderService orderService;
     @MockBean  S3Service s3Service;
-    @MockBean  OrderPhotoRepository orderPhotoRepository;
     @MockBean  VideoGenerationService videoGenerationService;
 
     @Test
@@ -88,11 +89,22 @@ class OrderControllerTest {
     }
 
     @Test
-    @DisplayName("GET /api/orders/payment-config - clientKey 반환")
+    @DisplayName("GET /api/orders/payment-config - storeId, channelKey 반환")
     @WithMockUser
     void getPaymentConfig_returns200() throws Exception {
         mockMvc.perform(get("/api/orders/payment-config"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.clientKey").exists());
+                .andExpect(jsonPath("$.storeId").value("test-store-id"))
+                .andExpect(jsonPath("$.channelKey").value("test-channel-key"));
+    }
+
+    @Test
+    @DisplayName("GET /api/orders/bgm-list - BGM 목록 반환")
+    @WithMockUser
+    void getBgmList_returns200() throws Exception {
+        mockMvc.perform(get("/api/orders/bgm-list"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$[0].id").value("bgm_01"));
     }
 }

@@ -13,11 +13,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -29,6 +32,7 @@ class OrderServiceTest {
     @Mock private OrderRepository orderRepository;
     @Mock private OrderPhotoRepository orderPhotoRepository;
     @Mock private S3Service s3Service;
+    @Mock private EventLoggingService eventLoggingService;
 
     private OrderCreateRequest validRequest;
 
@@ -38,6 +42,7 @@ class OrderServiceTest {
         validRequest.setCustomerName("홍길동");
         validRequest.setCustomerPhone("01012345678");
         validRequest.setPhotoCount(12);
+        validRequest.setIntroTitle("어머니 환갑");
     }
 
     @Test
@@ -64,6 +69,7 @@ class OrderServiceTest {
         assertThat(resp.getAmount()).isEqualTo(29900);
         assertThat(resp.getPresignedUrls()).isNotEmpty();
         then(orderRepository).should(times(1)).save(any());
+        then(eventLoggingService).should().log(eq(1L), eq("order_created"), any());
     }
 
     @Test
@@ -90,9 +96,10 @@ class OrderServiceTest {
     }
 
     @Test
-    @DisplayName("COMPLETED 상태 완료 처리")
+    @DisplayName("COMPLETED 상태 완료 처리 + genMinutes 계산")
     void markAsCompleted_success() {
         Order order = Order.builder().id(1L).status(Order.OrderStatus.PROCESSING).build();
+        order.setGenStartedAt(LocalDateTime.now().minusMinutes(5));
         given(orderRepository.findById(1L)).willReturn(Optional.of(order));
         given(orderRepository.save(any())).willReturn(order);
 
@@ -100,18 +107,44 @@ class OrderServiceTest {
 
         assertThat(result.getStatus()).isEqualTo(Order.OrderStatus.COMPLETED);
         assertThat(result.getDownloadUrl()).isEqualTo("https://cdn.example.com/dl");
+        assertThat(result.getGenCompletedAt()).isNotNull();
+        assertThat(result.getGenMinutes()).isNotNull();
+        assertThat(result.getGenMinutes()).isGreaterThan(BigDecimal.ZERO);
     }
 
     @Test
-    @DisplayName("실패 처리 - 메모 저장")
-    void markAsFailed_withMemo() {
+    @DisplayName("실패 처리 - 메모 + failureStage 저장")
+    void markAsFailed_withStage() {
         Order order = Order.builder().id(1L).status(Order.OrderStatus.PROCESSING).build();
         given(orderRepository.findById(1L)).willReturn(Optional.of(order));
         given(orderRepository.save(any())).willReturn(order);
 
-        orderService.markAsFailed(1L, "RunwayML 타임아웃");
+        orderService.markAsFailed(1L, "RunwayML 타임아웃", "clip_generation");
 
         assertThat(order.getStatus()).isEqualTo(Order.OrderStatus.FAILED);
         assertThat(order.getAdminMemo()).contains("RunwayML 타임아웃");
+        assertThat(order.getFailureStage()).isEqualTo("clip_generation");
+    }
+
+    @Test
+    @DisplayName("재생성 준비 - retryCount 증가 + 분석 필드 초기화")
+    void prepareRegeneration_success() {
+        Order order = Order.builder().id(1L).status(Order.OrderStatus.FAILED)
+                .retryCount(1).failureStage("ffmpeg_merge").build();
+        order.setGenStartedAt(LocalDateTime.now().minusMinutes(10));
+        order.setGenCompletedAt(LocalDateTime.now());
+        order.setGenMinutes(BigDecimal.TEN);
+
+        given(orderRepository.findById(1L)).willReturn(Optional.of(order));
+        given(orderRepository.save(any())).willReturn(order);
+
+        Order result = orderService.prepareRegeneration(1L);
+
+        assertThat(result.getRetryCount()).isEqualTo(2);
+        assertThat(result.getStatus()).isEqualTo(Order.OrderStatus.PAID);
+        assertThat(result.getGenStartedAt()).isNull();
+        assertThat(result.getGenCompletedAt()).isNull();
+        assertThat(result.getGenMinutes()).isNull();
+        assertThat(result.getFailureStage()).isNull();
     }
 }

@@ -2,10 +2,9 @@ package com.anniversary.video.controller;
 
 import com.anniversary.video.domain.Order;
 import com.anniversary.video.dto.AdminOrderResponse;
-import com.anniversary.video.repository.OrderRepository;
 import com.anniversary.video.service.OrderService;
-import com.anniversary.video.service.S3Service;
 import com.anniversary.video.service.PaymentService;
+import com.anniversary.video.service.S3Service;
 import com.anniversary.video.service.VideoGenerationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +22,6 @@ import java.util.stream.Collectors;
 public class AdminController {
 
     private final OrderService orderService;
-    private final OrderRepository orderRepository;   // 직접 save 호출
     private final PaymentService paymentService;
     private final VideoGenerationService videoGenerationService;
     private final S3Service s3Service;
@@ -47,23 +45,20 @@ public class AdminController {
         return ResponseEntity.ok(AdminOrderResponse.from(orderService.findById(orderId)));
     }
 
-    /**
-     * 상태 수동 변경 — ✅ save() 추가 (버그 수정)
-     * body: { "status": "COMPLETED", "downloadUrl": "..." }
-     */
+    /** 상태 수동 변경 */
     @PutMapping("/orders/{orderId}/status")
     public ResponseEntity<Map<String, Object>> updateStatus(
             @PathVariable Long orderId,
             @RequestBody Map<String, String> body) {
 
-        Order order = orderService.findById(orderId);
         Order.OrderStatus newStatus = Order.OrderStatus.valueOf(body.get("status"));
-        order.updateStatus(newStatus);
+        Order order = orderService.updateStatus(orderId, newStatus);
 
         // COMPLETED 수동 처리 시 다운로드 URL 직접 입력 가능
         if (body.containsKey("downloadUrl")) {
             order.setDownloadUrl(body.get("downloadUrl"));
             order.setDownloadExpiresAt(LocalDateTime.now().plusHours(72));
+            orderService.save(order);
         }
         // COMPLETED + S3 결과 파일 있으면 자동 URL 재발급
         if (newStatus == Order.OrderStatus.COMPLETED
@@ -71,9 +66,9 @@ public class AdminController {
                 && order.getDownloadUrl() == null) {
             order.setDownloadUrl(s3Service.generateDownloadUrl(order.getS3OutputPath()));
             order.setDownloadExpiresAt(LocalDateTime.now().plusHours(72));
+            orderService.save(order);
         }
 
-        orderRepository.save(order);  // ✅ 저장
         log.info("관리자 상태 변경 - orderId: {}, status: {}", orderId, newStatus);
 
         return ResponseEntity.ok(Map.of(
@@ -83,30 +78,21 @@ public class AdminController {
         ));
     }
 
-    /**
-     * 메모 저장 — ✅ save() 추가 (버그 수정)
-     */
+    /** 메모 저장 */
     @PutMapping("/orders/{orderId}/memo")
     public ResponseEntity<Map<String, String>> updateMemo(
             @PathVariable Long orderId,
             @RequestBody Map<String, String> body) {
 
-        Order order = orderService.findById(orderId);
-        order.setAdminMemo(body.get("memo"));
-        orderRepository.save(order);  // ✅ 저장
+        orderService.updateMemo(orderId, body.get("memo"));
         log.info("메모 저장 - orderId: {}", orderId);
         return ResponseEntity.ok(Map.of("result", "ok"));
     }
 
-    /**
-     * 영상 재생성 — ✅ save() + retryCount 증가 (버그 수정)
-     */
+    /** 영상 재생성 */
     @PostMapping("/orders/{orderId}/regenerate")
     public ResponseEntity<Map<String, String>> regenerate(@PathVariable Long orderId) {
-        Order order = orderService.findById(orderId);
-        order.setRetryCount(order.getRetryCount() + 1);
-        order.updateStatus(Order.OrderStatus.PAID);
-        orderRepository.save(order);  // ✅ 저장
+        Order order = orderService.prepareRegeneration(orderId);
         videoGenerationService.startVideoGeneration(orderId);
         log.info("관리자 재생성 - orderId: {}, retry: {}", orderId, order.getRetryCount());
         return ResponseEntity.ok(Map.of("result", "ok", "retryCount", String.valueOf(order.getRetryCount())));

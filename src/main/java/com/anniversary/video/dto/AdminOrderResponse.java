@@ -4,6 +4,7 @@ import com.anniversary.video.domain.Order;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
@@ -17,12 +18,18 @@ public class AdminOrderResponse {
     private int amount;
     private String status;
     private Integer photoCount;
+    private String introTitle;
+    private String bgmTrack;
     private String paymentKey;
     private String s3OutputPath;
     private String downloadUrl;
     private LocalDateTime downloadExpiresAt;
     private String adminMemo;
     private int retryCount;
+    private LocalDateTime genStartedAt;
+    private LocalDateTime genCompletedAt;
+    private BigDecimal genMinutes;
+    private String failureStage;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -35,12 +42,18 @@ public class AdminOrderResponse {
                 .amount(order.getAmount() != null ? order.getAmount() : 29900)
                 .status(order.getStatus().name())
                 .photoCount(order.getPhotoCount())
+                .introTitle(order.getIntroTitle())
+                .bgmTrack(order.getBgmTrack())
                 .paymentKey(order.getPaymentKey())
                 .s3OutputPath(order.getS3OutputPath())
                 .downloadUrl(order.getDownloadUrl())
                 .downloadExpiresAt(order.getDownloadExpiresAt())
                 .adminMemo(order.getAdminMemo())
                 .retryCount(order.getRetryCount() != null ? order.getRetryCount() : 0)
+                .genStartedAt(order.getGenStartedAt())
+                .genCompletedAt(order.getGenCompletedAt())
+                .genMinutes(order.getGenMinutes())
+                .failureStage(order.getFailureStage())
                 .createdAt(order.getCreatedAt())
                 .updatedAt(order.getUpdatedAt())
                 .build();

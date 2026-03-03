@@ -32,10 +32,18 @@ public class NotificationService {
     @Value("${slack.webhook-url:}")
     private String slackWebhookUrl;
 
+    private EventLoggingService eventLoggingService;
+
+    /** 순환참조 방지를 위해 setter 주입 */
+    @org.springframework.beans.factory.annotation.Autowired
+    public void setEventLoggingService(EventLoggingService eventLoggingService) {
+        this.eventLoggingService = eventLoggingService;
+    }
+
     // ── 주문 접수 알림 ────────────────────────────────────────────────────
     public void sendOrderConfirmation(Order order) {
         String text = String.format(
-                "[기념일 영상] 주문 접수 완료! 🎬\n\n" +
+                "[움직이는 사진관] 주문 접수 완료! 🎬\n\n" +
                 "안녕하세요 %s님,\n" +
                 "주문번호 #%d 이 정상 접수되었습니다.\n\n" +
                 "• 상품: 프리미엄 인생 영상 (16:9 · 1080p)\n" +
@@ -47,12 +55,13 @@ public class NotificationService {
         sendSms(order.getCustomerPhone(), text);
         sendSlack(String.format("✅ 새 주문 #%d — %s (%s)",
                 order.getId(), order.getCustomerName(), order.getCustomerPhone()));
+        logNotifyEvent(order.getId(), "order_confirmation");
     }
 
     // ── 영상 완성 알림 ────────────────────────────────────────────────────
     public void sendCompletionAlert(Order order, String downloadUrl) {
         String text = String.format(
-                "[기념일 영상] 영상이 완성되었어요! 🎉\n\n" +
+                "[움직이는 사진관] 영상이 완성되었어요! 🎉\n\n" +
                 "%s님의 소중한 순간을 담은 영상이 완성되었습니다.\n\n" +
                 "📥 다운로드 링크 (72시간 유효):\n%s\n\n" +
                 "진행 상황 확인: " + baseUrl + "/status?orderId=" + order.getId() + "\n\n" +
@@ -61,39 +70,52 @@ public class NotificationService {
         );
         sendSms(order.getCustomerPhone(), text);
         sendSlack(String.format("🎬 영상 완성 #%d — %s", order.getId(), order.getCustomerName()));
+        logNotifyEvent(order.getId(), "completion_alert");
     }
 
     // ── 업로드 리마인더 (사진 업로드 안 한 고객) ────────────────────────────
     public void sendUploadReminder(Order order) {
         String text = String.format(
-                "[기념일 영상] 사진 업로드가 남아있어요 📸\n\n" +
+                "[움직이는 사진관] 사진 업로드가 남아있어요 📸\n\n" +
                 "%s님, 결제는 완료되었지만 아직 사진 업로드를 안 하셨네요.\n\n" +
                 "사진을 업로드해야 영상 제작이 시작됩니다.\n" +
                 "아래 링크로 접속해 주세요:\n" +
                 "%s/?resume=%d\n\n" +
-                "문의: 카카오톡 @기념일영상",
+                "문의: 카카오톡 @움직이는사진관",
                 order.getCustomerName(), baseUrl, order.getId()
         );
         sendSms(order.getCustomerPhone(), text);
         log.info("업로드 리마인더 SMS - orderId: {}", order.getId());
+        logNotifyEvent(order.getId(), "upload_reminder");
     }
 
     // ── 실패 알림 (관리자 슬랙) ──────────────────────────────────────────
     public void sendFailureAlert(Order order) {
         String msg = String.format(
-                "🚨 영상 생성 실패!\n주문 #%d — %s (%s)\n메모: %s\n관리자 확인 필요",
+                "🚨 영상 생성 실패!\n주문 #%d — %s (%s)\n실패 단계: %s\n메모: %s\n관리자 확인 필요",
                 order.getId(), order.getCustomerName(),
                 order.getCustomerPhone(),
+                order.getFailureStage() != null ? order.getFailureStage() : "-",
                 order.getAdminMemo() != null ? order.getAdminMemo() : "-"
         );
         log.error(msg);
         sendSlack(msg);
+        logNotifyEvent(order.getId(), "failure_alert");
+    }
+
+    // ── 이벤트 로깅 헬퍼 ──────────────────────────────────────────────────
+    private void logNotifyEvent(Long orderId, String subType) {
+        if (eventLoggingService != null) {
+            eventLoggingService.log(orderId, "notify_sent",
+                    String.format("{\"type\":\"%s\"}", subType));
+        }
     }
 
     // ── 솔라피 SMS ────────────────────────────────────────────────────────
     private void sendSms(String to, String text) {
         if (apiKey.equals("placeholder") || apiKey.isBlank()) {
-            log.info("[SMS 미설정] to={}, 내용 앞30자: {}", to, text.substring(0, Math.min(30, text.length())));
+            log.info("[SMS 미설정] to={}, 내용 앞30자: {}",
+                    to, text.substring(0, Math.min(30, text.length())));
             return;
         }
         try {

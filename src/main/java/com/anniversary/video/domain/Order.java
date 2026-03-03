@@ -69,6 +69,20 @@ public class Order {
     @Builder.Default
     private Integer retryCount = 0;
 
+    /** 영상 생성 시작 시각 */
+    private LocalDateTime genStartedAt;
+
+    /** 영상 생성 완료 시각 */
+    private LocalDateTime genCompletedAt;
+
+    /** 생성 소요 시간 (분) */
+    @Column(precision = 6, scale = 2)
+    private java.math.BigDecimal genMinutes;
+
+    /** 실패 단계 (clip_generation, ffmpeg_merge, s3_upload 등) */
+    @Column(length = 30)
+    private String failureStage;
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
     private List<OrderPhoto> photos = new ArrayList<>();

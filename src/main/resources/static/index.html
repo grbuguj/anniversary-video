@@ -1465,6 +1465,7 @@ body.flow-active .done-section {
 
   <div id="done-download" style="display:none;margin-top:28px;width:100%">
     <a id="done-download-link" href="#" target="_blank"
+       onclick="trackEvent('download_click', currentOrderId)"
        style="display:block;width:100%;background:var(--gold);color:#080808;text-decoration:none;
               padding:16px;font-size:13px;font-weight:600;letter-spacing:1.5px;
               text-transform:uppercase;text-align:center;box-sizing:border-box">
@@ -1503,6 +1504,16 @@ let currentOrderId = null;
 let presignedUrls = [];
 let selectedBgm = 'bgm_01';
 let currentAudio = null;
+
+// ── 이벤트 비콘 (fire-and-forget) ─────────────────────────────
+function trackEvent(eventType, orderId, extra) {
+  try {
+    const body = { eventType };
+    if (orderId) body.orderId = Number(orderId);
+    if (extra)   body.payload = JSON.stringify(extra);
+    navigator.sendBeacon('/api/events', new Blob([JSON.stringify(body)], { type: 'application/json' }));
+  } catch(e) { /* 이벤트 로깅 실패는 무시 */ }
+}
 
 function scrollToOrder() {
   document.getElementById('order-section').scrollIntoView({ behavior: 'smooth' });
@@ -1689,6 +1700,7 @@ function startPayment() {
     `<div class="confirm-summary-row"><span class="label">금액</span><span class="value" style="color:var(--gold)">29,900원</span></div>`;
 
   document.getElementById('payment-confirm-modal').style.display = 'flex';
+  trackEvent('pay_start');
 }
 
 function cancelPaymentConfirm() {
@@ -1807,6 +1819,7 @@ async function handlePaymentSuccess() {
     }
 
     currentOrderId = parseInt(orderId);
+    trackEvent('pay_success', currentOrderId);
     const urlResp  = await fetch('/api/orders/' + orderId + '/upload-urls');
     if (!urlResp.ok) throw new Error('업로드 URL 발급 실패');
     const urlData  = await urlResp.json();
@@ -1830,6 +1843,7 @@ let isUploading = false;
 
 function showUploadSection(orderId, devMode) {
   hideMainSections();
+  trackEvent('upload_start', orderId);
   const total = presignedUrls.length || 10;
 
   document.getElementById('guide-section').style.display = 'block';
@@ -2137,6 +2151,7 @@ async function confirmUpload() {
   }
 
   window.removeEventListener('beforeunload', window._uploadGuard);
+  trackEvent('upload_complete', currentOrderId, { photoCount: resultPhotos.length, bgm: selectedBgm });
   setTimeout(() => showDone(), 600);
 }
 
@@ -2289,6 +2304,7 @@ function showLoading(msg) {
 
 document.addEventListener('DOMContentLoaded', async () => {
   detectDevMode();
+  trackEvent('page_view');
 
   // beforeunload 기본 제거
   window._uploadGuard = null;
