@@ -1,0 +1,1 @@
+ALTER TABLE orders ADD COLUMN intro_title VARCHAR(50) NULL;
