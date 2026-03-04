@@ -3,8 +3,8 @@ version: '3.8'
 services:
   app:
     build: .
-    ports:
-      - "8081:8081"
+    expose:
+      - "8081"
     environment:
       SPRING_PROFILES_ACTIVE: prod
       DB_URL: jdbc:mysql://db:3306/anniversary_video?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
@@ -17,22 +17,21 @@ services:
       PORTONE_STORE_ID: ${PORTONE_STORE_ID}
       PORTONE_CHANNEL_KEY: ${PORTONE_CHANNEL_KEY}
       PORTONE_API_SECRET: ${PORTONE_API_SECRET}
-      RUNWAYML_API_KEY: ${RUNWAYML_API_KEY}
-      SOLAPI_API_KEY: ${SOLAPI_API_KEY:-placeholder}
-      SOLAPI_API_SECRET: ${SOLAPI_API_SECRET:-placeholder}
-      SOLAPI_SENDER: ${SOLAPI_SENDER:-01000000000}
+      XAI_API_KEY: ${XAI_API_KEY}
+      SOLAPI_API_KEY: ${SOLAPI_API_KEY}
+      SOLAPI_API_SECRET: ${SOLAPI_API_SECRET}
+      SOLAPI_SENDER: ${SOLAPI_SENDER}
       ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
       ADMIN_PASSWORD: ${ADMIN_PASSWORD}
       CLOUDFRONT_DOMAIN: ${CLOUDFRONT_DOMAIN:-}
       SLACK_WEBHOOK_URL: ${SLACK_WEBHOOK_URL:-}
-      APP_BASE_URL: ${APP_BASE_URL:-http://localhost:8081}
+      APP_BASE_URL: https://${DOMAIN}
     depends_on:
       db:
         condition: service_healthy
     restart: unless-stopped
     volumes:
       - /tmp/anniversary:/tmp/anniversary
-      - /var/log/anniversary:/var/log/anniversary
 
   db:
     image: mysql:8.0
@@ -49,6 +48,26 @@ services:
       timeout: 5s
       retries: 5
     restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/certbot/conf:/etc/letsencrypt
+      - ./nginx/certbot/www:/var/www/certbot
+    depends_on:
+      - app
+    restart: unless-stopped
+
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./nginx/certbot/conf:/etc/letsencrypt
+      - ./nginx/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
 
 volumes:
   mysql_data:

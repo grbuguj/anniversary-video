@@ -1146,7 +1146,7 @@ body.flow-active .done-section {
   </p>
   <div class="cta-wrap">
     <button class="cta-btn" onclick="scrollToOrder()">지금 주문하기</button>
-    <p class="price-hint">단 <strong>29,900원</strong> · 8시간 내 제작 · 1080p 16:9</p>
+    <p class="price-hint">단 <strong>29,900원</strong> · 8시간 내 제작 · HD 16:9</p>
   </div>
 </section>
 
@@ -1181,7 +1181,7 @@ body.flow-active .done-section {
     <div class="feature-card">
       <span class="feature-num">03</span>
       <h3>행사 상영 최적화</h3>
-      <p>1920×1080 풀HD 가로형 제작. 빔프로젝터·TV 어디서든 바로 상영 가능합니다.</p>
+      <p>HD 가로형(16:9) 제작. 빔프로젝터·TV 어디서든 바로 상영 가능합니다.</p>
     </div>
     <div class="feature-card">
       <span class="feature-num">04</span>
@@ -1207,7 +1207,7 @@ body.flow-active .done-section {
         <span class="step-num">02</span>
         <div class="step-content">
           <h4>사진 업로드 — 5분</h4>
-          <p>가족 사진 10장을 나이 순서대로 업로드합니다. 어린 시절부터 현재까지 시간 순으로 준비해 주세요.</p>
+          <p>사진 10장을 나이 순서대로 업로드합니다. 어린 시절부터 현재까지 시간 순으로 준비해 주세요.</p>
         </div>
       </div>
       <div class="step">
@@ -1255,7 +1255,7 @@ body.flow-active .done-section {
     <div class="price-box">
       <div>
         <div class="label">프리미엄 인생 영상 1편</div>
-        <div class="label-sub">16:9 · 1080p · 약 1분 · 8시간 내 제작</div>
+        <div class="label-sub">HD 16:9 · 약 1분 · 8시간 내 제작</div>
       </div>
       <div class="amount">29,900원</div>
     </div>
@@ -1270,7 +1270,8 @@ body.flow-active .done-section {
 
     <p class="notice">
       보안 안전결제 · 개인정보는 영상 제작에만 사용됩니다<br>
-      결제 후 취소는 영상 제작 시작 전까지 가능합니다
+      결제 후 취소는 영상 제작 시작 전까지 가능합니다<br>
+      영상 불만족 시 무료 재제작 1회 제공
     </p>
   </div>
 </section>
@@ -1381,7 +1382,7 @@ body.flow-active .done-section {
 
     <div class="step-header">
       <div class="step-order-num">주문번호 <span id="order-num-display" style="color:var(--gold)"></span></div>
-      <div class="step-counter" id="step-label">0 / 12</div>
+      <div class="step-counter" id="step-label">0 / 10</div>
     </div>
 
     <div class="progress-bar">
@@ -1482,7 +1483,11 @@ body.flow-active .done-section {
 
 <footer>
   <p>시간의 사진관 &nbsp;·&nbsp; 문의: 카카오톡 채널 @시간의사진관</p>
-  <p style="margin-top:6px">ⓒ 2026 시간의 사진관. All rights reserved.</p>
+  <p style="margin-top:8px;font-size:11px;color:var(--muted);line-height:1.8">
+    대표: 김재웅 &nbsp;·&nbsp; 사업자등록번호: 292-32-01725<br>
+    인천광역시 서구 솔빛로 13, 542동 2003호(청라동)
+  </p>
+  <p style="margin-top:8px;font-size:10px;color:var(--muted);opacity:.6">ⓒ 2026 시간의 사진관</p>
 </footer>
 
 <script>
@@ -1717,7 +1722,7 @@ async function confirmPayment() {
       storeId:     PORTONE_STORE_ID,
       channelKey:  PORTONE_CHANNEL_KEY,
       paymentId:   String(orderData.orderId),
-      orderName:   '프리미엄 기념일 인생 영상',
+      orderName:   '프리미엄 인생 영상 1편',
       totalAmount: orderData.amount,
       currency:    'CURRENCY_KRW',
       payMethod:   'CARD',
