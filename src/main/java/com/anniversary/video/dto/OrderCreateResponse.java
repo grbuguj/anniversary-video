@@ -11,6 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 public class OrderCreateResponse {
     private Long orderId;
+    private String accessToken;
     private int amount;
     private List<PresignedUrlInfo> presignedUrls;
 

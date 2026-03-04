@@ -2,11 +2,13 @@ package com.anniversary.video.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.concurrent.Executor;
 
 @Configuration
+@EnableAsync
 public class AsyncConfig {
 
     /**
@@ -26,13 +28,13 @@ public class AsyncConfig {
 
     /**
      * 클립 병렬 생성 전용 풀
-     * RunwayML 무료 concurrent 5개 제한 → 4로 여유 확보
+     * xAI Grok Imagine: 60 RPM → 5개 병렬 실행 (10장 기준 2배치 여유)
      */
     @Bean(name = "clipTaskExecutor")
     public Executor clipTaskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(4);
-        executor.setMaxPoolSize(4);
+        executor.setCorePoolSize(5);
+        executor.setMaxPoolSize(5);
         executor.setQueueCapacity(100);
         executor.setThreadNamePrefix("ClipGen-");
         executor.initialize();

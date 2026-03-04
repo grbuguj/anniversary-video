@@ -69,6 +69,7 @@ public class OrderService {
 
             return OrderCreateResponse.builder()
                     .orderId(existing.getId())
+                    .accessToken(existing.getAccessToken())
                     .amount(existing.getAmount())
                     .presignedUrls(urls)
                     .isExistingOrder(true)
@@ -106,7 +107,8 @@ public class OrderService {
         eventLoggingService.log(saved.getId(), "order_created", null);
 
         return OrderCreateResponse.builder()
-                .orderId(saved.getId()).amount(saved.getAmount())
+                .orderId(saved.getId()).accessToken(saved.getAccessToken())
+                .amount(saved.getAmount())
                 .presignedUrls(presignedUrlInfos).build();
     }
 
@@ -264,6 +266,11 @@ public class OrderService {
     public Order findById(Long orderId) {
         return orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("주문을 찾을 수 없습니다: " + orderId));
+    }
+
+    public Order findByAccessToken(String accessToken) {
+        return orderRepository.findByAccessToken(accessToken)
+                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 접근입니다."));
     }
 
     @Transactional

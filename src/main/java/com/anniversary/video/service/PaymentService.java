@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -72,7 +73,8 @@ public class PaymentService {
         eventLoggingService.log(orderIdLong, "pay_success",
                 String.format("{\"paymentId\":\"%s\",\"amount\":%d}", paymentId, paidAmount));
 
-        return Map.of("result", "ok", "orderId", orderIdLong, "status", "PAID");
+        return Map.of("result", "ok", "orderId", orderIdLong,
+                "accessToken", paidOrder.getAccessToken(), "status", "PAID");
     }
 
     // ── 결제 취소 (환불) ──────────────────────────────────────────────────

@@ -34,7 +34,7 @@ public class SecurityConfig {
                 .requestMatchers("/status", "/status.html").permitAll()
                 .requestMatchers("/health").permitAll()
                 .requestMatchers("/actuator/health", "/actuator/info").permitAll()
-                .requestMatchers("/h2-console/**").permitAll()
+                .requestMatchers("/h2-console/**").hasRole("ADMIN")
                 // Spring 기본 로그인 URL 허용
                 .requestMatchers("/login", "/login?logout").permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN")

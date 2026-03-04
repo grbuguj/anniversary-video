@@ -1,11 +1,12 @@
 -- ============================================================
--- anniversary_video 데이터베이스 — 최종 스키마 (V1 ~ V4 반영)
+-- anniversary_video 데이터베이스 — 최종 스키마 (V1 ~ V5 반영)
 -- MySQL 8.0+
 -- 이 파일은 참조용입니다. 실제 DB는 Flyway migration으로 관리됩니다.
 -- ============================================================
 
 CREATE TABLE IF NOT EXISTS orders (
     id                   BIGINT       NOT NULL AUTO_INCREMENT,
+    access_token         VARCHAR(36)  NOT NULL,
     customer_name        VARCHAR(50)  NOT NULL,
     customer_phone       VARCHAR(20)  NOT NULL,
     customer_email       VARCHAR(100),
@@ -31,7 +32,8 @@ CREATE TABLE IF NOT EXISTS orders (
     INDEX idx_status (status),
     INDEX idx_phone (customer_phone),
     INDEX idx_created_at (created_at),
-    INDEX idx_payment_key (payment_key)
+    INDEX idx_payment_key (payment_key),
+    UNIQUE KEY uk_access_token (access_token)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS order_photos (

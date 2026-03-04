@@ -106,7 +106,13 @@ public class FfmpegService {
         Path fontPath = prepareFont(workDir);
         Path introClip = workDir.resolve("intro.mp4");
 
-        if (fontPath == null) {
+        // drawtext 필터 사용 가능 여부 확인
+        boolean hasDrawtext = checkDrawtextAvailable();
+
+        if (fontPath == null || !hasDrawtext) {
+            if (!hasDrawtext) {
+                log.warn("FFmpeg에 drawtext 필터가 없습니다 (--enable-libfreetype 필요). 텍스트 없는 인트로 생성");
+            }
             runFfmpeg(
                 "-f", "lavfi",
                 "-i", "color=c=black:size=1920x1080:rate=30:duration=4",
@@ -114,6 +120,7 @@ public class FfmpegService {
                 "-an",
                 introClip.toString()
             );
+            log.info("인트로 클립 생성 완료 (텍스트 없음): {}", introClip);
             return introClip;
         }
 
@@ -143,6 +150,20 @@ public class FfmpegService {
 
         log.info("인트로 클립 생성 완료: {}", introClip);
         return introClip;
+    }
+
+    /** FFmpeg drawtext 필터 사용 가능 여부 확인 */
+    private boolean checkDrawtextAvailable() {
+        try {
+            ProcessBuilder pb = new ProcessBuilder("ffmpeg", "-filters");
+            pb.redirectErrorStream(true);
+            Process p = pb.start();
+            String output = new String(p.getInputStream().readAllBytes());
+            p.waitFor();
+            return output.contains("drawtext");
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     // ── 한국어 폰트 준비 ────────────────────────────────────────────────────

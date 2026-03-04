@@ -32,6 +32,17 @@ public class DevController {
     private final OrderPhotoRepository orderPhotoRepository;
     private final S3Service s3Service;
     private final VideoGenerationService videoGenerationService;
+    private final com.anniversary.video.service.NotificationService notificationService;
+
+    /**
+     * SMS 테스트 — 지정 번호로 테스트 문자 발송
+     * POST /api/dev/test-sms?phone=01012345678
+     */
+    @PostMapping("/test-sms")
+    public ResponseEntity<Map<String, Object>> testSms(@RequestParam String phone) {
+        notificationService.sendTestSms(phone);
+        return ResponseEntity.ok(Map.of("result", "ok", "to", phone, "message", "SMS 발송 시도! 로그 확인하세요."));
+    }
 
     /**
      * 결제 스킵 → 주문을 바로 PAID 상태로
@@ -42,8 +53,7 @@ public class DevController {
         orderService.markAsPaid(orderId, "DEV_SKIP_" + orderId);
         log.warn("[DEV] 결제 스킵 - orderId: {}", orderId);
         // presigned URL도 함께 반환 — DEV에서도 실제 S3 업로드 가능
-        int photoCount = orderService.findById(orderId).getPhotoCount() != null
-                ? orderService.findById(orderId).getPhotoCount() : 12;
+        int photoCount = 10;
         List<S3Service.PresignedUploadInfo> uploadInfos = s3Service.generateUploadUrls(orderId, photoCount);
         List<Map<String, Object>> urls = uploadInfos.stream()
                 .map(i -> Map.<String, Object>of(
@@ -101,6 +111,41 @@ public class DevController {
                 "photoCount", count,
                 "status",     "PROCESSING",
                 "message",    "더미 사진 " + count + "장으로 처리됨 (영상 생성 실제 실행 안 함)"
+        ));
+    }
+
+    /**
+     * FFmpeg 머지만 트리거 — 클립이 이미 S3에 있는 주문에서 FFmpeg 파이프라인만 테스트
+     * clipS3Key가 없는 사진은 건너뜀
+     * POST /api/dev/orders/{orderId}/trigger-merge
+     */
+    @PostMapping("/orders/{orderId}/trigger-merge")
+    public ResponseEntity<Map<String, Object>> triggerMerge(@PathVariable Long orderId) {
+        Order order = orderService.findById(orderId);
+
+        List<OrderPhoto> photos = orderPhotoRepository.findByOrderIdOrderBySortOrder(orderId);
+        List<OrderPhoto> clipsReady = photos.stream()
+                .filter(p -> p.getClipS3Key() != null && !p.getClipS3Key().isBlank())
+                .collect(Collectors.toList());
+
+        if (clipsReady.isEmpty()) {
+            return ResponseEntity.badRequest().body(Map.of(
+                "message", "클립이 하나도 없습니다. 먼저 영상 생성을 실행하세요."
+            ));
+        }
+
+        log.warn("[DEV] FFmpeg 머지 트리거 - orderId: {}, 전체 {}장 중 클립 {}개 사용",
+                orderId, photos.size(), clipsReady.size());
+
+        // 비동기로 FFmpeg 머지 실행
+        videoGenerationService.startMergeOnly(orderId);
+
+        return ResponseEntity.ok(Map.of(
+            "result",      "ok",
+            "orderId",     orderId,
+            "totalPhotos", photos.size(),
+            "clipsReady",  clipsReady.size(),
+            "message",     "FFmpeg 머지 시작! 클립 " + clipsReady.size() + "개로 영상 생성 중"
         ));
     }
 

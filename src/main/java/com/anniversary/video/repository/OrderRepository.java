@@ -13,6 +13,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     List<Order> findAllByOrderByCreatedAtDesc();
 
+    Optional<Order> findByAccessToken(String accessToken);
+
     // 스케줄러: 상태 + 생성시간 기준
     List<Order> findByStatusAndCreatedAtBefore(Order.OrderStatus status, LocalDateTime before);
 

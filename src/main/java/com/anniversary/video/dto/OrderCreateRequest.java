@@ -19,9 +19,8 @@ public class OrderCreateRequest {
     @Email(message = "올바른 이메일 주소를 입력해주세요")
     private String customerEmail;
 
-    @Min(value = 10, message = "사진은 최소 10장 이상 업로드해야 합니다")
-    @Max(value = 15, message = "사진은 최대 15장까지 업로드 가능합니다")
-    private int photoCount;
+    /** 고정 10장 — 프론트에서 항상 10을 전송, 백엔드에서도 10으로 강제 */
+    private int photoCount = 10;
 
     @NotBlank(message = "영상 제목은 필수입니다")
     @Size(max = 20, message = "영상 제목은 20자 이내로 입력해주세요")

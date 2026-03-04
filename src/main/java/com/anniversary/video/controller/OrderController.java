@@ -40,12 +40,13 @@ public class OrderController {
         return ResponseEntity.ok(orderService.createOrder(request));
     }
 
-    /** 주문 상태 조회 */
-    @GetMapping("/{orderId}/status")
-    public ResponseEntity<Map<String, Object>> getOrderStatus(@PathVariable Long orderId) {
-        Order order = orderService.findById(orderId);
+    /** 주문 상태 조회 (accessToken 기반) */
+    @GetMapping("/t/{accessToken}/status")
+    public ResponseEntity<Map<String, Object>> getOrderStatus(@PathVariable String accessToken) {
+        Order order = orderService.findByAccessToken(accessToken);
         return ResponseEntity.ok(Map.of(
                 "orderId",     order.getId(),
+                "accessToken", order.getAccessToken(),
                 "status",      order.getStatus(),
                 "photoCount",  order.getPhotoCount() != null ? order.getPhotoCount() : 0,
                 "downloadUrl", order.getDownloadUrl() != null ? order.getDownloadUrl() : "",
@@ -53,10 +54,10 @@ public class OrderController {
         ));
     }
 
-    /** 결제 성공 후 S3 업로드 URL 재발급 */
-    @GetMapping("/{orderId}/upload-urls")
-    public ResponseEntity<Map<String, Object>> getUploadUrls(@PathVariable Long orderId) {
-        Order order = orderService.findById(orderId);
+    /** 결제 성공 후 S3 업로드 URL 재발급 (accessToken 기반) */
+    @GetMapping("/t/{accessToken}/upload-urls")
+    public ResponseEntity<Map<String, Object>> getUploadUrls(@PathVariable String accessToken) {
+        Order order = orderService.findByAccessToken(accessToken);
 
         if (order.getStatus() == Order.OrderStatus.PENDING) {
             return ResponseEntity.badRequest().body(Map.of("message", "결제가 완료되지 않은 주문입니다."));
@@ -66,9 +67,9 @@ public class OrderController {
             return ResponseEntity.badRequest().body(Map.of("message", "이미 제작이 시작된 주문입니다."));
         }
 
-        int photoCount = order.getPhotoCount() != null ? order.getPhotoCount() : 12;
+        int photoCount = 10;
         List<S3Service.PresignedUploadInfo> uploadInfos =
-                s3Service.generateUploadUrls(orderId, photoCount);
+                s3Service.generateUploadUrls(order.getId(), photoCount);
 
         List<Map<String, Object>> urls = uploadInfos.stream()
                 .map(i -> Map.<String, Object>of(
@@ -78,19 +79,20 @@ public class OrderController {
                 ))
                 .collect(Collectors.toList());
 
-        log.info("업로드 URL 재발급 - orderId: {}, photoCount: {}", orderId, photoCount);
-        return ResponseEntity.ok(Map.of("orderId", orderId, "presignedUrls", urls));
+        log.info("업로드 URL 재발급 - orderId: {}, photoCount: {}", order.getId(), photoCount);
+        return ResponseEntity.ok(Map.of("orderId", order.getId(), "presignedUrls", urls));
     }
 
     /**
-     * 사진 업로드 완료 신고 → 영상 생성 시작
-     * 비즈니스 로직은 OrderService.handleUploadComplete()에 위임
+     * 사진 업로드 완료 신고 → 영상 생성 시작 (accessToken 기반)
      */
-    @PostMapping("/{orderId}/upload-complete")
+    @PostMapping("/t/{accessToken}/upload-complete")
     public ResponseEntity<Map<String, Object>> uploadComplete(
-            @PathVariable Long orderId,
+            @PathVariable String accessToken,
             @RequestBody Map<String, Object> body) {
 
+        Order order = orderService.findByAccessToken(accessToken);
+        Long orderId = order.getId();
         int photoCount = orderService.handleUploadComplete(orderId, body);
         videoGenerationService.startVideoGeneration(orderId);
         log.info("영상 생성 시작 - orderId: {}", orderId);
@@ -103,24 +105,25 @@ public class OrderController {
         ));
     }
 
-    /** 이어하기 거부 시 기존 PAID 주문 취소 (재주문 허용) */
-    @PostMapping("/{orderId}/cancel")
-    public ResponseEntity<Map<String, Object>> cancelOrder(@PathVariable Long orderId) {
-        Order order = orderService.findById(orderId);
+    /** 이어하기 거부 시 기존 PAID 주문 취소 (accessToken 기반) */
+    @PostMapping("/t/{accessToken}/cancel")
+    public ResponseEntity<Map<String, Object>> cancelOrder(@PathVariable String accessToken) {
+        Order order = orderService.findByAccessToken(accessToken);
         if (order.getStatus() != Order.OrderStatus.PAID) {
             return ResponseEntity.badRequest().body(Map.of(
                 "message", "취소할 수 없는 상태입니다: " + order.getStatus()
             ));
         }
-        orderService.markAsFailed(orderId, "고객 재주문 요청으로 취소");
-        log.info("주문 취소 (재주문 허용) - orderId: {}", orderId);
+        orderService.markAsFailed(order.getId(), "고객 재주문 요청으로 취소");
+        log.info("주문 취소 (재주문 허용) - orderId: {}", order.getId());
         return ResponseEntity.ok(Map.of("result", "ok"));
     }
 
-    /** 다운로드 URL 재발급 (만료 시) */
-    @PostMapping("/{orderId}/download-url")
-    public ResponseEntity<Map<String, String>> refreshDownloadUrl(@PathVariable Long orderId) {
-        String newUrl = orderService.refreshDownloadUrl(orderId);
+    /** 다운로드 URL 재발급 (accessToken 기반) */
+    @PostMapping("/t/{accessToken}/download-url")
+    public ResponseEntity<Map<String, String>> refreshDownloadUrl(@PathVariable String accessToken) {
+        Order order = orderService.findByAccessToken(accessToken);
+        String newUrl = orderService.refreshDownloadUrl(order.getId());
         return ResponseEntity.ok(Map.of("downloadUrl", newUrl));
     }
 

@@ -43,7 +43,7 @@ public class NotificationService {
     // ── 주문 접수 알림 ────────────────────────────────────────────────────
     public void sendOrderConfirmation(Order order) {
         String text = String.format(
-                "[움직이는 사진관] 주문 접수 완료! 🎬\n\n" +
+                "[시간의 사진관] 주문 접수 완료! 🎬\n\n" +
                 "안녕하세요 %s님,\n" +
                 "주문번호 #%d 이 정상 접수되었습니다.\n\n" +
                 "• 상품: 프리미엄 인생 영상 (16:9 · 1080p)\n" +
@@ -61,10 +61,10 @@ public class NotificationService {
     // ── 영상 완성 알림 ────────────────────────────────────────────────────
     public void sendCompletionAlert(Order order, String downloadUrl) {
         String text = String.format(
-                "[움직이는 사진관] 영상이 완성되었어요! 🎉\n\n" +
+                "[시간의 사진관] 영상이 완성되었어요! 🎉\n\n" +
                 "%s님의 소중한 순간을 담은 영상이 완성되었습니다.\n\n" +
                 "📥 다운로드 링크 (72시간 유효):\n%s\n\n" +
-                "진행 상황 확인: " + baseUrl + "/status?orderId=" + order.getId() + "\n\n" +
+                "진행 상황 확인:\n" + baseUrl + "/?token=" + order.getAccessToken() + "\n\n" +
                 "행사에서 소중하게 사용해 주세요 💕",
                 order.getCustomerName(), downloadUrl
         );
@@ -76,13 +76,13 @@ public class NotificationService {
     // ── 업로드 리마인더 (사진 업로드 안 한 고객) ────────────────────────────
     public void sendUploadReminder(Order order) {
         String text = String.format(
-                "[움직이는 사진관] 사진 업로드가 남아있어요 📸\n\n" +
+                "[시간의 사진관] 사진 업로드가 남아있어요 📸\n\n" +
                 "%s님, 결제는 완료되었지만 아직 사진 업로드를 안 하셨네요.\n\n" +
                 "사진을 업로드해야 영상 제작이 시작됩니다.\n" +
                 "아래 링크로 접속해 주세요:\n" +
-                "%s/?resume=%d\n\n" +
-                "문의: 카카오톡 @움직이는사진관",
-                order.getCustomerName(), baseUrl, order.getId()
+                "%s/?token=%s\n\n" +
+                "문의: 카카오톡 @시간의사진관",
+                order.getCustomerName(), baseUrl, order.getAccessToken()
         );
         sendSms(order.getCustomerPhone(), text);
         log.info("업로드 리마인더 SMS - orderId: {}", order.getId());
@@ -109,6 +109,11 @@ public class NotificationService {
             eventLoggingService.log(orderId, "notify_sent",
                     String.format("{\"type\":\"%s\"}", subType));
         }
+    }
+
+    // ── SMS 테스트 (DevController용) ───────────────────────────────
+    public void sendTestSms(String to) {
+        sendSms(to, "[시간의 사진관] SMS 테스트 발송 성공! 🎉");
     }
 
     // ── 솔라피 SMS ────────────────────────────────────────────────────────

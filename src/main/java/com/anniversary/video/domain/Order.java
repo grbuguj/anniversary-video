@@ -6,6 +6,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "orders")
@@ -18,6 +19,10 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    /** 고객 접근용 보안 토큰 (URL에 노출, orderId 대신 사용) */
+    @Column(nullable = false, unique = true, length = 36)
+    private String accessToken;
 
     @Column(nullable = false, length = 50)
     private String customerName;
@@ -101,6 +106,7 @@ public class Order {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
         if (this.retryCount == null) this.retryCount = 0;
+        if (this.accessToken == null) this.accessToken = UUID.randomUUID().toString();
     }
 
     @PreUpdate
