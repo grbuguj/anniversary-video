@@ -15,7 +15,8 @@ RUN apk add --no-cache ffmpeg tzdata
 ENV TZ=Asia/Seoul
 
 WORKDIR /app
+RUN mkdir -p /var/log/anniversary /tmp/anniversary
 COPY --from=build /app/build/libs/*.jar app.jar
 
 EXPOSE 8081
-ENTRYPOINT ["java", "-Xmx384m", "-Xms256m", "-jar", "-Dspring.profiles.active=${SPRING_PROFILES_ACTIVE:prod}", "app.jar"]
+ENTRYPOINT ["sh", "-c", "java -Xmx384m -Xms256m -Dspring.profiles.active=${SPRING_PROFILES_ACTIVE:-prod} -jar app.jar"]
