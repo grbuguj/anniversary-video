@@ -1246,6 +1246,12 @@ body.flow-active .done-section {
     </div>
 
     <div class="form-group">
+      <label>이메일 <span style="font-size:10px;letter-spacing:.3px;text-transform:none;font-weight:300">결제 영수증 발송</span></label>
+      <input type="email" id="customerEmail" placeholder="example@email.com" maxlength="100">
+      <div class="form-error" id="err-email"></div>
+    </div>
+
+    <div class="form-group">
       <label>영상 제목 <span style="font-size:10px;text-transform:none;font-weight:300;letter-spacing:.3px">인트로에 표시</span></label>
       <input type="text" id="introTitle" placeholder="예: 어머니 환갑, 부모님 결혼 30주년" maxlength="20">
       <div class="form-error" id="err-introTitle"></div>
@@ -1628,6 +1634,7 @@ function detectDevMode() {
 async function createOrder() {
   const name       = document.getElementById('customerName').value.trim();
   const phone      = document.getElementById('customerPhone').value.trim();
+  const email      = document.getElementById('customerEmail').value.trim();
   const introTitle = document.getElementById('introTitle').value.trim();
   const photoCount = parseInt(document.getElementById('photoCount').value);
 
@@ -1638,6 +1645,10 @@ async function createOrder() {
     showError('err-phone', '올바른 휴대폰 번호를 입력해주세요 (예: 01012345678)');
     valid = false;
   } else hideError('err-phone');
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    showError('err-email', '올바른 이메일 주소를 입력해주세요');
+    valid = false;
+  } else hideError('err-email');
   if (!introTitle) { showError('err-introTitle', '영상 제목을 입력해주세요'); valid = false; }
   else if (introTitle.length > 20) { showError('err-introTitle', '20자 이내로 입력해주세요'); valid = false; }
   else hideError('err-introTitle');
@@ -1646,7 +1657,7 @@ async function createOrder() {
   const resp = await fetch('/api/orders', {
     method:  'POST',
     headers: { 'Content-Type': 'application/json' },
-    body:    JSON.stringify({ customerName: name, customerPhone: phone,
+    body:    JSON.stringify({ customerName: name, customerPhone: phone, customerEmail: email,
                               photoCount, introTitle, bgmTrack: selectedBgm })
   });
   if (!resp.ok) {
@@ -1664,6 +1675,7 @@ async function createOrder() {
 function startPayment() {
   const name       = document.getElementById('customerName').value.trim();
   const phone      = document.getElementById('customerPhone').value.trim();
+  const email      = document.getElementById('customerEmail').value.trim();
   const introTitle = document.getElementById('introTitle').value.trim();
 
   let valid = true;
@@ -1673,6 +1685,10 @@ function startPayment() {
     showError('err-phone', '올바른 휴대폰 번호를 입력해주세요 (예: 01012345678)');
     valid = false;
   } else hideError('err-phone');
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    showError('err-email', '올바른 이메일 주소를 입력해주세요');
+    valid = false;
+  } else hideError('err-email');
   if (!introTitle) { showError('err-introTitle', '영상 제목을 입력해주세요'); valid = false; }
   else hideError('err-introTitle');
   if (!valid) return;
@@ -1681,6 +1697,7 @@ function startPayment() {
   summary.innerHTML =
     `<div class="confirm-summary-row"><span class="label">이름</span><span class="value">${name}</span></div>` +
     `<div class="confirm-summary-row"><span class="label">연락처</span><span class="value">${phone}</span></div>` +
+    `<div class="confirm-summary-row"><span class="label">이메일</span><span class="value">${email}</span></div>` +
     `<div class="confirm-summary-row"><span class="label">영상 제목</span><span class="value">${introTitle}</span></div>` +
     `<div class="confirm-summary-row"><span class="label">사진 수량</span><span class="value">10장</span></div>` +
     `<div class="confirm-summary-row"><span class="label">금액</span><span class="value" style="color:var(--gold)">29,900원</span></div>`;
@@ -1729,6 +1746,7 @@ async function confirmPayment() {
       customer: {
         fullName:    document.getElementById('customerName').value.trim(),
         phoneNumber: document.getElementById('customerPhone').value.trim(),
+        email:       document.getElementById('customerEmail').value.trim(),
       },
       redirectUrl: window.location.origin + '/payment/success',
     });
