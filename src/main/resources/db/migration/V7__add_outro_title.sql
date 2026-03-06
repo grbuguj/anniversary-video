@@ -1,0 +1,1 @@
+ALTER TABLE orders ADD COLUMN outro_title VARCHAR(50) NULL;

@@ -1251,11 +1251,6 @@ body.flow-active .done-section {
       <div class="form-error" id="err-email"></div>
     </div>
 
-    <div class="form-group">
-      <label>영상 제목 <span style="font-size:10px;text-transform:none;font-weight:300;letter-spacing:.3px">인트로에 표시</span></label>
-      <input type="text" id="introTitle" placeholder="예: 어머니 환갑, 부모님 결혼 30주년" maxlength="20">
-      <div class="form-error" id="err-introTitle"></div>
-    </div>
     <input type="hidden" id="photoCount" value="10">
 
     <div class="price-box">
@@ -1420,6 +1415,38 @@ body.flow-active .done-section {
   </div>
 </section>
 
+<section class="upload-section" id="title-section" style="display:none">
+  <div class="upload-card">
+    <div class="step-header">
+      <div class="step-order-num">주문번호 <span id="title-order-num-display" style="color:var(--gold)"></span></div>
+    </div>
+    <span class="section-label">영상 제목 설정</span>
+    <h2 class="serif" style="font-size:22px;font-weight:300;margin-bottom:24px">인트로 &middot; 아웃트로</h2>
+
+    <div class="form-group">
+      <label>인트로 제목 <span style="font-size:10px;text-transform:none;font-weight:300;letter-spacing:.3px">영상 시작 화면에 표시</span></label>
+      <input type="text" id="introTitleInput" placeholder="예: 어머니 환갑, 부모님 결혼 30주년" maxlength="20">
+      <div class="form-error" id="err-introTitle"></div>
+    </div>
+
+    <div class="form-group">
+      <label>아웃트로 문구 <span style="font-size:10px;text-transform:none;font-weight:300;letter-spacing:.3px">영상 마지막 화면에 표시</span></label>
+      <input type="text" id="outroTitleInput" placeholder="예: 감사합니다, 사랑합니다" maxlength="20" value="감사합니다">
+      <div class="form-error" id="err-outroTitle"></div>
+    </div>
+
+    <div style="font-size:11px;color:var(--muted);line-height:1.8;margin:16px 0 24px;letter-spacing:.3px">
+      인트로: 검정 화면에 큰 글씨로 표시됩니다<br>
+      아웃트로: 영상 마지막에 "시간의 사진관" 로고와 함께 표시됩니다
+    </div>
+
+    <div style="display:flex;gap:10px">
+      <button onclick="backToUploadFromTitle()" style="flex:1;background:transparent;color:var(--muted-light);border:1px solid var(--border-mid);padding:14px;font-size:13px;font-family:var(--sans);cursor:pointer">뒤로</button>
+      <button onclick="goToBgmFromTitle()" style="flex:2;background:var(--gold);color:#080808;border:none;padding:14px;font-size:13px;font-weight:600;letter-spacing:1px;font-family:var(--sans);cursor:pointer">다음 — 음악 선택</button>
+    </div>
+  </div>
+</section>
+
 <section class="upload-section" id="bgm-section">
   <div class="upload-card">
     <div class="step-header">
@@ -1477,12 +1504,17 @@ body.flow-active .done-section {
   <div class="stepper-inner">
     <div class="stepper-step" id="step1">
       <div class="stepper-dot">1</div>
-      <span class="stepper-label">사진 업로드</span>
+      <span class="stepper-label">사진</span>
     </div>
-    <div class="stepper-line"><div class="stepper-line-fill" id="stepper-line-fill"></div></div>
+    <div class="stepper-line"><div class="stepper-line-fill" id="stepper-line-fill-1"></div></div>
     <div class="stepper-step" id="step2">
       <div class="stepper-dot">2</div>
-      <span class="stepper-label">음악 선택</span>
+      <span class="stepper-label">제목</span>
+    </div>
+    <div class="stepper-line"><div class="stepper-line-fill" id="stepper-line-fill-2"></div></div>
+    <div class="stepper-step" id="step3">
+      <div class="stepper-dot">3</div>
+      <span class="stepper-label">음악</span>
     </div>
   </div>
 </div>
@@ -1524,17 +1556,25 @@ function setFlowStep(step) {
   const stepper = document.getElementById('flow-stepper');
   const s1 = document.getElementById('step1');
   const s2 = document.getElementById('step2');
-  const fill = document.getElementById('stepper-line-fill');
+  const s3 = document.getElementById('step3');
+  const fill1 = document.getElementById('stepper-line-fill-1');
+  const fill2 = document.getElementById('stepper-line-fill-2');
   stepper.classList.add('visible');
   document.body.classList.add('flow-active');
+  s1.className = 'stepper-step'; s2.className = 'stepper-step'; s3.className = 'stepper-step';
+  fill1.style.width = '0%'; fill2.style.width = '0%';
   if (step === 1) {
     s1.className = 'stepper-step active';
-    s2.className = 'stepper-step';
-    fill.style.width = '0%';
   } else if (step === 2) {
     s1.className = 'stepper-step done';
     s2.className = 'stepper-step active';
-    fill.style.width = '100%';
+    fill1.style.width = '100%';
+  } else if (step === 3) {
+    s1.className = 'stepper-step done';
+    s2.className = 'stepper-step done';
+    s3.className = 'stepper-step active';
+    fill1.style.width = '100%';
+    fill2.style.width = '100%';
   }
 }
 
@@ -1635,7 +1675,6 @@ async function createOrder() {
   const name       = document.getElementById('customerName').value.trim();
   const phone      = document.getElementById('customerPhone').value.trim();
   const email      = document.getElementById('customerEmail').value.trim();
-  const introTitle = document.getElementById('introTitle').value.trim();
   const photoCount = parseInt(document.getElementById('photoCount').value);
 
   let valid = true;
@@ -1649,16 +1688,13 @@ async function createOrder() {
     showError('err-email', '올바른 이메일 주소를 입력해주세요');
     valid = false;
   } else hideError('err-email');
-  if (!introTitle) { showError('err-introTitle', '영상 제목을 입력해주세요'); valid = false; }
-  else if (introTitle.length > 20) { showError('err-introTitle', '20자 이내로 입력해주세요'); valid = false; }
-  else hideError('err-introTitle');
   if (!valid) throw new Error('VALIDATION');
 
   const resp = await fetch('/api/orders', {
     method:  'POST',
     headers: { 'Content-Type': 'application/json' },
     body:    JSON.stringify({ customerName: name, customerPhone: phone, customerEmail: email,
-                              photoCount, introTitle, bgmTrack: selectedBgm })
+                              photoCount, bgmTrack: selectedBgm })
   });
   if (!resp.ok) {
     const err = await resp.json().catch(() => ({}));
@@ -1676,7 +1712,6 @@ function startPayment() {
   const name       = document.getElementById('customerName').value.trim();
   const phone      = document.getElementById('customerPhone').value.trim();
   const email      = document.getElementById('customerEmail').value.trim();
-  const introTitle = document.getElementById('introTitle').value.trim();
 
   let valid = true;
   if (!name) { showError('err-name', '이름을 입력해주세요'); valid = false; }
@@ -1689,8 +1724,6 @@ function startPayment() {
     showError('err-email', '올바른 이메일 주소를 입력해주세요');
     valid = false;
   } else hideError('err-email');
-  if (!introTitle) { showError('err-introTitle', '영상 제목을 입력해주세요'); valid = false; }
-  else hideError('err-introTitle');
   if (!valid) return;
 
   const summary = document.getElementById('payment-confirm-summary');
@@ -1698,7 +1731,6 @@ function startPayment() {
     `<div class="confirm-summary-row"><span class="label">이름</span><span class="value">${name}</span></div>` +
     `<div class="confirm-summary-row"><span class="label">연락처</span><span class="value">${phone}</span></div>` +
     `<div class="confirm-summary-row"><span class="label">이메일</span><span class="value">${email}</span></div>` +
-    `<div class="confirm-summary-row"><span class="label">영상 제목</span><span class="value">${introTitle}</span></div>` +
     `<div class="confirm-summary-row"><span class="label">사진 수량</span><span class="value">10장</span></div>` +
     `<div class="confirm-summary-row"><span class="label">금액</span><span class="value" style="color:var(--gold)">29,900원</span></div>`;
 
@@ -2059,18 +2091,35 @@ function submitAllPhotos() {
 
   if (currentAudio) { currentAudio.pause(); currentAudio = null; }
   document.getElementById('upload-section').style.display = 'none';
-  document.getElementById('bgm-section').style.display   = 'block';
+  document.getElementById('title-section').style.display  = 'block';
+  document.getElementById('title-order-num-display').textContent = '#' + currentOrderId;
+  setFlowStep(2);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function backToUploadFromTitle() {
+  document.getElementById('title-section').style.display  = 'none';
+  document.getElementById('upload-section').style.display = 'block';
+  setFlowStep(1);
+}
+
+function goToBgmFromTitle() {
+  const intro = document.getElementById('introTitleInput').value.trim();
+  if (!intro) { document.getElementById('err-introTitle').textContent = '인트로 제목을 입력해주세요'; document.getElementById('err-introTitle').style.display = 'block'; return; }
+  document.getElementById('err-introTitle').style.display = 'none';
+  document.getElementById('title-section').style.display  = 'none';
+  document.getElementById('bgm-section').style.display    = 'block';
   document.getElementById('bgm-order-num-display').textContent = '#' + currentOrderId;
   loadBgmList();
-  setFlowStep(2);
+  setFlowStep(3);
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function backToUpload() {
   if (currentAudio) { currentAudio.pause(); currentAudio = null; }
   document.getElementById('bgm-section').style.display   = 'none';
-  document.getElementById('upload-section').style.display = 'block';
-  setFlowStep(1);
+  document.getElementById('title-section').style.display  = 'block';
+  setFlowStep(2);
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -2158,7 +2207,12 @@ async function confirmUpload() {
     const completeResp = await fetch('/api/orders/t/' + currentAccessToken + '/upload-complete', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ photos: resultPhotos, bgmTrack: selectedBgm })
+      body:    JSON.stringify({
+        photos: resultPhotos,
+        bgmTrack: selectedBgm,
+        introTitle: document.getElementById('introTitleInput').value.trim(),
+        outroTitle: document.getElementById('outroTitleInput').value.trim() || '감사합니다'
+      })
     });
     if (!completeResp.ok) {
       const err = await completeResp.json().catch(() => ({}));
@@ -2182,6 +2236,7 @@ async function confirmUpload() {
 function showDone() {
   document.getElementById('guide-section').style.display  = 'none';
   document.getElementById('upload-section').style.display = 'none';
+  document.getElementById('title-section').style.display  = 'none';
   document.getElementById('bgm-section').style.display    = 'none';
   document.getElementById('done-section').style.display   = 'block';
   hideFlowStepper();

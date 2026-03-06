@@ -51,6 +51,9 @@ public class Order {
     @Column(length = 50)
     private String introTitle;
 
+    @Column(length = 50)
+    private String outroTitle;
+
     /** 선택한 BGM 트랙 (예: bgm_01, bgm_02 ...) */
     @Column(length = 20)
     @Builder.Default

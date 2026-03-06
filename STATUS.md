@@ -1,154 +1,166 @@
-# 프로젝트 현황 — 움직이는 사진관
+# 프로젝트 상태 — 시간의 사진관
 
-> **작업 전 반드시 이 파일 먼저 읽고 시작할 것**
-> 작업 완료 시 해당 항목 업데이트 필수
-> 마지막 전체 코드 검토: 2026-02-24
+> 최종 업데이트: 2026-03-06
 
 ---
 
-## 전체 파일 구조 (실제 존재 확인 완료)
+## ✅ 완료된 작업
 
-```
-src/main/java/com/anniversary/video/
-├── AnniversaryVideoApplication.java
-├── config/
-│   ├── AsyncConfig.java          ✅
-│   ├── CorsConfig.java           ✅
-│   ├── GlobalExceptionHandler.java ✅
-│   ├── S3Config.java             ✅
-│   └── SecurityConfig.java       ✅
-├── controller/
-│   ├── AdminController.java      ✅
-│   ├── DevController.java        ✅ (@Profile("local"))
-│   ├── HealthController.java     ✅
-│   ├── OrderController.java      ✅
-│   ├── PageController.java       ✅
-│   └── PaymentController.java    ✅
-├── domain/
-│   ├── Order.java                ✅
-│   └── OrderPhoto.java           ✅
-├── dto/
-│   ├── AdminOrderResponse.java   ✅
-│   ├── OrderCreateRequest.java   ✅
-│   ├── OrderCreateResponse.java  ✅
-│   └── PaymentConfirmRequest.java ✅
-├── repository/
-│   ├── OrderPhotoRepository.java ✅
-│   └── OrderRepository.java      ✅
-└── service/
-    ├── FfmpegService.java        ✅
-    ├── NotificationService.java  ✅
-    ├── OrderScheduler.java       ✅
-    ├── OrderService.java         ✅
-    ├── PaymentService.java       ✅
-    ├── S3Service.java            ✅
-    └── VideoGenerationService.java ✅
+### 인프라
+- [x] EC2 t3.medium (4GB RAM) 서울 리전 배포
+- [x] EBS 20GB + Swap 2GB
+- [x] Elastic IP 할당 (43.202.235.146)
+- [x] Docker Compose (app + MySQL + Nginx + Certbot)
+- [x] SSL 인증서 (Let's Encrypt)
+- [x] 도메인 연결 (timephoto.kr → 가비아 DNS)
+- [x] Dockerfile 수정 (/var/log/anniversary 디렉토리 생성, sh -c entrypoint)
+- [x] ffmpeg 정적 바이너리 설치 (EC2 호스트)
 
-src/main/resources/
-├── application.properties        ✅ (환경변수로 모두 외부화)
-├── application-local.properties  ✅ (H2 파일DB)
-├── application-prod.properties   ✅ (MySQL)
-├── bgm/                          ← 서버사이드 BGM 없음 (static/bgm에 있음)
-├── db/
-│   ├── schema.sql                ✅
-│   └── migration/
-│       ├── V1__init_schema.sql   ✅
-│       ├── V2__add_caption_to_order_photos.sql ✅
-│       └── V3__add_intro_title_to_orders.sql   ✅
-├── fonts/
-│   └── NotoSansKR-Regular.ttf   ✅
-├── logback-spring.xml            ✅
-└── static/
-    ├── index.html                ✅
-    ├── status.html               ✅
-    ├── bgm/
-    │   └── bgm_01.mp3            ✅ (bgm_02, bgm_03은 없음)
-    └── admin/
-        └── index.html            ✅ (9.9KB, 대시보드 UI 있음)
-```
+### 결제
+- [x] 포트원 V2 + KG이니시스 테스트 연동
+- [x] 결제창 호출 정상 확인
+- [x] 웹훅 URL 등록 (https://timephoto.kr/api/payments/webhook)
+- [x] 이메일 필드 추가 (KG이니시스 V2 필수)
+- [x] 포트원 계정 새로 생성 (시간의사진관 / bugs10613@gmail.com)
 
----
+### 영상 생성
+- [x] xAI Grok Imagine Video API 연동 (RunwayML에서 전환)
+- [x] 10장 병렬 생성 (5쓰레드)
+- [x] FFmpeg 인트로 + 클립 합치기 + BGM
+- [x] 아웃트로 추가 (감사합니다 + 시간의 사진관)
+- [x] S3 업로드 → 다운로드 URL 생성
+- [x] 전체 플로우 테스트 성공 (주문 #7: 3.78분 완성)
 
-## ✅ 실제 완성된 것 (코드 전체 확인)
-
-### 도메인 / DB
-- [x] Order 엔티티 (PENDING→PAID→PROCESSING→COMPLETED/FAILED), retryCount, introTitle, bgmTrack
-- [x] OrderPhoto 엔티티 (s3Key, sortOrder, clipS3Key, caption)
-- [x] Flyway 마이그레이션 V1(초기스키마) V2(caption) V3(intro_title)
-- [x] OrderRepository — 상태별 조회, stuck 감지, 이어하기, 웹훅, 통계 쿼리 전부 구현
-- [x] OrderPhotoRepository — findByOrderIdOrderBySortOrder
-- [x] local: H2 파일DB / prod: MySQL 프로파일 분리, Flyway on/off 분리
-
-### 서비스
-- [x] OrderService — 주문생성 (PROCESSING 중복방지 Rate limit + 동일 이름+전화 이어하기 감지), 상태전환, 다운로드 URL 재발급
-- [x] PaymentService — 포트원 V2 결제조회+금액위변조검증, 취소/환불, 웹훅 처리
-- [x] S3Service — presigned PUT/GET, URL→S3 다운로드, 로컬→S3 업로드, S3→로컬 다운로드
-- [x] VideoGenerationService — RunwayML gen3a_turbo 호출, 병렬 클립 생성(clipTaskExecutor 4개), 재시도 3회(10초/30초 백오프), 10분 폴링 타임아웃
-- [x] FfmpegService — 인트로 클립(fadeIn 텍스트, 폰트 없으면 검정화면 fallback), concat, BGM 삽입(없으면 무음 fallback), 1920x1080 최종인코딩, S3업로드, tmp 작업 디렉터리 cleanup
-- [x] NotificationService — 솔라피 HMAC-SHA256 인증, SMS 4종(주문확인/완성/업로드리마인더/실패), Slack 웹훅. apiKey="placeholder"면 로그만 출력
-- [x] OrderScheduler — PENDING 24h 자동만료(매시 정각), PAID 2h 리마인더(매시 30분), /tmp 3h 정리(매시 20분), PROCESSING 2h stuck→자동재시도 2회→최종실패(매 10분)
-
-### 컨트롤러
-- [x] OrderController — 주문생성, 상태조회, 업로드URL발급, 업로드완료(BGM저장 포함), 주문취소, 다운로드URL재발급, BGM목록, 포트원 설정
-- [x] PaymentController — 결제검증, 포트원 웹훅, 결제취소
-- [x] AdminController — 주문목록(상태필터), 상세, 상태수동변경(COMPLETED 시 URL 자동발급), 메모, 재생성, URL재발급, 대시보드통계, 취소/환불
-- [x] DevController (@Profile("local")) — 결제스킵, 업로드스킵(더미 OrderPhoto 생성), 영상생성직접트리거
-- [x] PageController — /payment/success, /payment/fail, /status 라우팅
-- [x] HealthController
-
-### 설정
-- [x] AsyncConfig — videoTaskExecutor(corePool=1, queue=20), clipTaskExecutor(corePool=4, queue=100)
-- [x] SecurityConfig — /admin/** ROLE_ADMIN, /api/** 퍼블릭, CSRF 예외(/api/**, /admin/**, /h2-console/**), Spring 기본 폼 로그인
-- [x] S3Config — S3Client, S3Presigner 빈 등록
-- [x] CorsConfig — /api/** CORS 허용 (운영 시 실제 도메인으로 제한 필요)
-- [x] GlobalExceptionHandler — Validation/IllegalArg/IllegalState/Runtime 예외 처리
+### SMS
+- [x] 솔라피 연동
+- [x] 결제 접수 알림
+- [x] 사진 업로드 리마인더
+- [x] 영상 완성 알림 (일시적 연결 에러 발생, 재시도 필요)
 
 ### 프론트엔드
-- [x] index.html — 랜딩(히어로/특징/프로세스), 주문폼, 포트원 V2 결제, 결제확인 모달, 결제 성공 리다이렉트 처리, 업로드 가이드, 벌크 업로드(3열 그리드), 드래그 순서변경(ghost 이미지 제거), BGM 선택+미리듣기, 업로드완료 확인 모달, 업로드 중 UI 락(isUploading), 제작 완료 폴링(15초), 이어하기 모달, DEV 모드, 플로우 스텝바, 완료/실패 화면
-- [x] status.html — SMS 링크로 접근 시 상태 확인 페이지
-- [x] admin/index.html — 관리자 대시보드 (9.9KB, 통계카드 + 주문목록 + 상태변경 UI)
-- [x] bgm/bgm_01.mp3
+- [x] 반응형 다크 프리미엄 디자인
+- [x] 주문폼: 이름, 연락처, 이메일
+- [x] 사진 10장 드래그&드롭 업로드
+- [x] 인트로/아웃트로 제목 입력 스텝 추가
+- [x] BGM 3곡 선택
+- [x] 3단계 스테퍼 (사진 → 제목 → 음악)
+- [x] 결제 확인 모달
+- [x] 영상 제작 진행 화면
+- [x] 이어하기 모달 (기존 PAID 주문 감지)
+- [x] footer 사업자 정보 (전자상거래법)
+- [x] 환불/취소 정책
+
+### DB 마이그레이션
+- [x] V1: 초기 스키마 (orders, order_photos, order_events)
+- [x] V2: caption 컬럼 추가
+- [x] V3: intro_title 컬럼 추가
+- [x] V4: analytics 스키마 (daily_funnel_metrics, hourly_sla_metrics)
+- [x] V5: access_token 추가
+- [x] V6: s3_key, s3key nullable 허용
+- [x] V7: outro_title 컬럼 추가
 
 ---
 
-## ❌ 없거나 미완성인 것
+## ⏳ 진행 중
 
-| 항목 | 상태 | 비고 |
-|------|------|------|
-| bgm_02.mp3, bgm_03.mp3 | ❌ 파일 없음 | BGM_LIST에 3개 등록돼 있는데 파일은 bgm_01만 있음. 선택해도 bgm_01로 fallback 됨 |
-| RunwayML API 크레딧 | ❌ 미구매 | dev.runwayml.com 크레딧 없으면 클립 생성 전체 불가. $10 최소 구매 필요 |
-| 포트원 실계좌 연동 | ❌ 미확인 | PORTONE_STORE_ID, PORTONE_CHANNEL_KEY, PORTONE_API_SECRET 환경변수 설정 여부 불명 |
-| 솔라피 발신번호 인증 | ❌ 미확인 | SOLAPI_SENDER 환경변수 + 발신번호 사전등록 여부 불명 |
-| 환경변수 전체 | ❌ 미설정 | application.properties 모두 ${ENV_VAR} 방식. 로컬 실행 위한 .env 또는 IDE 환경변수 설정 필요 |
-| 배포 서버 | ❌ 미구성 | EC2/Railway 등 서버 없음. FFmpeg 설치, MySQL, 환경변수 세팅 필요 |
-| CloudFront 배포 | ❌ 미구성 | cloudfront.domain 설정 필요. 현재 presigned S3 URL 직접 사용 중 |
-| 엔드투엔드 테스트 | ❌ 미진행 | 실결제→업로드→RunwayML→FFmpeg→SMS 전체 플로우 테스트 필요 |
+### PG 실연동
+- [ ] KG이니시스 바로오픈 — MID 발급됨 (MOI0995823), 키파일 등록 대기 (2영업일)
+- [ ] KG이니시스 초기등록비 납부 — 문자 대기 중
+- [ ] KG이니시스 signkey 설정 → 포트원 실연동 채널 생성
+- [ ] 카카오페이 — 전자계약 진행 필요
+- [ ] NHN KCP — 바로오픈 접수됨
 
----
+### 카카오 비즈채널
+- [ ] 채널 생성 완료 (시간의사진관)
+- [ ] 공개 설정 완료
+- [ ] 검색 허용 완료
+- [ ] 홈 URL 설정 필요 (https://timephoto.kr)
 
-## ⚠️ 알려진 문제 / 주의사항
-
-| 항목 | 내용 |
-|------|------|
-| caption 미입력 | 프론트에서 업로드 시 `caption: ''` 고정 전송. 자막 기능 쓰려면 입력 UI 추가 필요 |
-| CorsConfig allowedOriginPatterns("*") | 운영 배포 전 실제 도메인으로 좁혀야 함 |
-| SecurityConfig 기본 로그인 폼 | Spring 기본 폼(/login) 사용 중. 관리자 로그인 UI가 기본 Spring 화이트라벨 페이지임 |
-| V1 schema.sql vs Flyway | `db/schema.sql`이 따로 있고 Flyway `V1__init_schema.sql`도 있음. local(H2)은 Flyway off → schema.sql 적용되는지 확인 필요 |
-| RunwayML promptText | 영어 고정. 한국 노인 사진에 최적화된 프롬프트로 튜닝 여지 있음 |
-| BGM fallback 로직 | bgmTrack 못 찾으면 bgm_01로 fallback → bgm_01도 없으면 무음 오디오 생성 (정상 동작) |
+### 통신판매업 신고
+- [ ] 사업자등록증 ✅ (일반과세자, 292-32-01725)
+- [ ] 구매안전서비스 이용확인증 — KG이니시스 에스크로 확인증 발급 대기
+- [ ] 정부24 신고 → 호스트서버 소재지: 서울 강남구 테헤란로 231, 12층 (AWS 한국)
 
 ---
 
-## 다음 작업 우선순위
+## 🔧 수정 필요
 
-1. **로컬 실행 확인** — 환경변수(.env 또는 IDE) 세팅하고 실제 서버 뜨는지 확인
-2. **bgm_02.mp3, bgm_03.mp3 파일 추가** — `src/main/resources/static/bgm/`에 넣기
-3. **RunwayML 크레딧 구매** — dev.runwayml.com ($10) → 클립 생성 실제 테스트
-4. **포트원 실계좌 연동 + 결제 테스트** — 환경변수 설정 후 실결제 플로우 확인
-5. **솔라피 발신번호 등록** — SMS 발송 테스트
-6. **엔드투엔드 테스트** — 전체 플로우 1회 완주
-7. **배포** — 서버, FFmpeg 설치, MySQL, 환경변수 설정
+### 버그
+- [ ] 업로드 카운트 불일치 — 상단 vs 하단 숫자 다름
+- [ ] "10~20분 소요" → "8시간 내 완성 후 문자로 안내드립니다"로 변경
+- [ ] favicon.ico 404 에러 (서비스 영향 없음)
+
+### 개선
+- [ ] Grok 프롬프트 튜닝 (얼굴 보존 강화, 현재 70점)
+- [ ] footer에 연락처(전화번호) 추가
+- [ ] footer에 통신판매신고번호 추가 (발급 후)
+- [ ] og:image 소셜 공유 썸네일
+- [ ] 샘플 영상 교체 (실 서비스 영상으로)
+- [ ] FAQ 섹션 추가
+- [ ] 리뷰 섹션 추가 (런칭 후)
 
 ---
 
-_마지막 업데이트: 2026-02-24 (전체 코드 직접 확인)_
+## 📊 비용 구조
+
+### 월 고정비
+| 항목 | 비용 |
+|---|---|
+| EC2 t3.medium | ~$38/월 (~55,000원) |
+| EBS 20GB | ~$1.6/월 (~2,300원) |
+| Elastic IP | 무료 (연결 상태) |
+| 도메인 (timephoto.kr) | ~15,000원/년 |
+| **월 합계** | **~60,000원** |
+
+### 건당 변동비
+| 항목 | 비용 |
+|---|---|
+| xAI Grok (10클립) | ~$3.00 (~4,300원) |
+| S3 저장/전송 | ~100원 |
+| SMS 2~3건 | ~60원 |
+| **건당 합계** | **~4,460원** |
+
+### 손익분기
+- 판매가: 29,900원
+- 건당 마진: ~25,440원
+- 손익분기: 월 2.4건 (월 고정비 ÷ 건당 마진)
+
+---
+
+## 🔑 계정/키 정보 (참조용)
+
+| 서비스 | 계정 | 비고 |
+|---|---|---|
+| AWS | grbuguj | EC2 서울, S3 스톡홀름 |
+| 포트원 | bugs10613@gmail.com | 시간의사진관 상점 |
+| xAI | - | Grok Imagine Video API |
+| 솔라피 | - | 발신번호: 010-4622-2849 |
+| 가비아 | - | timephoto.kr 도메인 |
+| 카카오비즈 | bugs0613@naver.com | 시간의사진관 채널 |
+| GitHub | grbuguj | anniversary-video 레포 |
+
+---
+
+## 📁 주요 파일
+
+```
+├── Dockerfile                  # 멀티스테이지 빌드 (JDK→JRE + ffmpeg)
+├── docker-compose.yml          # app + db + nginx + certbot
+├── deploy.sh                   # EC2 원클릭 배포 스크립트
+├── .env.example                # 환경변수 템플릿
+├── nginx/conf.d/default.conf   # HTTPS 리버스 프록시
+├── src/main/resources/
+│   ├── static/index.html       # 고객 랜딩페이지 (SPA)
+│   ├── static/admin/           # 관리자 대시보드
+│   ├── static/bgm/             # BGM 파일 3곡
+│   ├── application.properties  # 기본 설정 (환경변수 참조)
+│   ├── application-prod.properties  # 운영 설정 (MySQL + Flyway)
+│   └── db/migration/V1~V7     # Flyway 마이그레이션
+└── src/main/java/.../
+    ├── service/VideoGenerationService.java  # Grok API + 영상 생성
+    ├── service/FfmpegService.java           # 인트로/아웃트로/합치기/BGM
+    ├── service/OrderService.java            # 주문 CRUD
+    ├── service/PaymentService.java          # 포트원 결제
+    ├── service/NotificationService.java     # SMS/Slack
+    └── controller/OrderController.java      # API 엔드포인트
+```

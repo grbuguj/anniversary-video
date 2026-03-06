@@ -22,7 +22,6 @@ public class OrderCreateRequest {
     /** 고정 10장 — 프론트에서 항상 10을 전송, 백엔드에서도 10으로 강제 */
     private int photoCount = 10;
 
-    @NotBlank(message = "영상 제목은 필수입니다")
     @Size(max = 20, message = "영상 제목은 20자 이내로 입력해주세요")
     private String introTitle;
 

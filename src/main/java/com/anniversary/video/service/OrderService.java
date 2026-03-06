@@ -161,6 +161,19 @@ public class OrderService {
             order.setBgmTrack(bgmTrack);
             log.info("BGM 설정 - orderId: {}, bgm: {}", orderId, bgmTrack);
         }
+
+        // 인트로/아웃트로 제목 업데이트
+        String introTitle = (String) body.get("introTitle");
+        if (introTitle != null && !introTitle.isBlank()) {
+            order.setIntroTitle(introTitle);
+            log.info("인트로 설정 - orderId: {}, title: {}", orderId, introTitle);
+        }
+        String outroTitle = (String) body.get("outroTitle");
+        if (outroTitle != null && !outroTitle.isBlank()) {
+            order.setOutroTitle(outroTitle);
+            log.info("아웃트로 설정 - orderId: {}, title: {}", orderId, outroTitle);
+        }
+
         orderRepository.save(order);
 
         eventLoggingService.log(orderId, "upload_complete",

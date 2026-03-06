@@ -36,7 +36,12 @@ public class FfmpegService {
                     ? order.getIntroTitle() : "소중한 순간들";
             Path introClip = createIntroClip(workDir, introTitle);
 
-            // 2. S3에서 각 클립 다운로드
+            // 2. 아웃트로 클립 생성
+            String outroTitle = (order.getOutroTitle() != null && !order.getOutroTitle().isBlank())
+                    ? order.getOutroTitle() : "감사합니다";
+            Path outroClip = createOutroClip(workDir, outroTitle);
+
+            // 3. S3에서 각 클립 다운로드
             List<Path> localClips = new ArrayList<>();
             localClips.add(introClip);
             for (OrderPhoto photo : photos) {
@@ -46,11 +51,14 @@ public class FfmpegService {
                 localClips.add(localClip);
             }
 
-            if (localClips.size() <= 1) {
+            // 아웃트로를 마지막에 추가
+            localClips.add(outroClip);
+
+            if (localClips.size() <= 2) {
                 throw new RuntimeException("다운로드된 클립이 없습니다 - orderId: " + orderId);
             }
 
-            // 3. concat 리스트 파일 생성
+            // 4. concat 리스트 파일 생성
             Path concatFile = workDir.resolve("concat.txt");
             StringBuilder sb = new StringBuilder();
             for (Path clip : localClips) {
@@ -59,7 +67,7 @@ public class FfmpegService {
             Files.writeString(concatFile, sb.toString());
             log.info("concat.txt 생성 완료, 클립 {}개 (인트로 포함)", localClips.size());
 
-            // 4. 클립 합치기
+            // 5. 클립 합치기
             Path mergedVideo = workDir.resolve("merged.mp4");
             runFfmpeg(
                     "-f", "concat", "-safe", "0",
@@ -68,11 +76,11 @@ public class FfmpegService {
                     mergedVideo.toString()
             );
 
-            // 5. BGM 준비
+            // 6. BGM 준비
             String bgmTrack = (order.getBgmTrack() != null) ? order.getBgmTrack() : "bgm_01";
             Path bgmPath = prepareBgm(workDir, getTotalDuration(mergedVideo), bgmTrack);
 
-            // 6. BGM 삽입 + 16:9 1080p 최종 인코딩
+            // 7. BGM 삽입 + 16:9 1080p 최종 인코딩
             Path finalVideo = workDir.resolve("final.mp4");
             runFfmpeg(
                     "-i", mergedVideo.toString(),
@@ -89,7 +97,7 @@ public class FfmpegService {
                     finalVideo.toString()
             );
 
-            // 7. S3 업로드
+            // 8. S3 업로드
             String s3Key = "results/" + orderId + "/final.mp4";
             s3Service.uploadFile(finalVideo, s3Key, "video/mp4");
 
@@ -150,6 +158,53 @@ public class FfmpegService {
 
         log.info("인트로 클립 생성 완료: {}", introClip);
         return introClip;
+    }
+
+    // ── 아웃트로 클립 생성 ───────────────────────────────────────────────────────────
+    private Path createOutroClip(Path workDir, String outroTitle) throws Exception {
+        Path fontPath = prepareFont(workDir);
+        Path outroClip = workDir.resolve("outro.mp4");
+
+        boolean hasDrawtext = checkDrawtextAvailable();
+
+        if (fontPath == null || !hasDrawtext) {
+            runFfmpeg(
+                "-f", "lavfi",
+                "-i", "color=c=black:size=1920x1080:rate=30:duration=4",
+                "-c:v", "libx264", "-crf", "18", "-preset", "medium",
+                "-an",
+                outroClip.toString()
+            );
+            log.info("아웃트로 클립 생성 완료 (텍스트 없음): {}", outroClip);
+            return outroClip;
+        }
+
+        String safeTitle = outroTitle.replace("'", "\\'").replace(":", "\\:");
+        String subText   = "시간의 사진관";
+        String fadeAlpha = "if(lt(t\\\\,0.5)\\\\,0\\\\,if(lt(t\\\\,1.5)\\\\,(t-0.5)\\\\,if(lt(t\\\\,3.2)\\\\,1\\\\,if(lt(t\\\\,4)\\\\,(4-t)/0.8\\\\,0))))";
+        String font      = fontPath.toAbsolutePath().toString();
+
+        String vf = String.format(
+            "drawtext=fontfile='%s':text='%s':fontcolor=white:fontsize=56" +
+            ":x=(w-text_w)/2:y=(h-text_h)/2-70:alpha='%s'" +
+            ",drawbox=x=(w-200)/2:y=(h)/2+10:w=200:h=1:color=0xC9A96E@1:t=fill" +
+            ",drawtext=fontfile='%s':text='%s':fontcolor=0xC9A96E:fontsize=26" +
+            ":x=(w-text_w)/2:y=(h-text_h)/2+50:alpha='%s'",
+            font, safeTitle, fadeAlpha,
+            font, subText,   fadeAlpha
+        );
+
+        runFfmpeg(
+            "-f", "lavfi",
+            "-i", "color=c=black:size=1920x1080:rate=30:duration=4",
+            "-vf", vf,
+            "-c:v", "libx264", "-crf", "18", "-preset", "medium",
+            "-an",
+            outroClip.toString()
+        );
+
+        log.info("아웃트로 클립 생성 완료: {}", outroClip);
+        return outroClip;
     }
 
     /** FFmpeg drawtext 필터 사용 가능 여부 확인 */
