@@ -12,6 +12,10 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="시간의 사진관 — 사진이 살아 움직입니다">
     <meta name="twitter:description" content="소중한 가족 사진을 자연스럽게 살아 움직이는 감동 영상으로. 환갑·칠순·결혼기념일 행사 상영용.">
+    <meta property="og:image" content="https://timephoto.kr/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:image" content="https://timephoto.kr/og-image.png">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='15' fill='%23c9a96e'/><circle cx='16' cy='16' r='7' fill='%23080808'/><circle cx='16' cy='16' r='4' fill='%23282828'/></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -569,10 +573,13 @@
         .step-preview-scroll {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   overflow-x: auto;
   padding: 0 4px 16px;
   -webkit-overflow-scrolling: touch;
+  max-width: 720px;
+  margin: 0 auto;
 }
 .step-preview-scroll::-webkit-scrollbar { height: 2px; }
 .step-preview-scroll::-webkit-scrollbar-track { background: var(--border); }
@@ -1284,11 +1291,11 @@
     <h2 style="font-family:var(--serif);font-size:clamp(20px,3vw,30px);font-weight:300;margin-bottom:8px;color:var(--text)">실제 완성 영상</h2>
     <p style="font-size:13px;color:var(--muted);font-weight:300;margin-bottom:32px">사진 한 장이 이렇게 살아 움직입니다</p>
 
-    <div style="max-width:720px;width:100%">
+    <div style="max-width:720px;width:100%;margin:0 auto">
         <div class="sample-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
             <div style="position:relative;border:1px solid var(--border);overflow:hidden">
-                <video autoplay muted loop playsinline style="width:100%;display:block;aspect-ratio:16/9;background:#000" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-                    <source src="/sample1.mp4" type="video/mp4">
+                <video autoplay muted loop playsinline style="width:100%;display:block;aspect-ratio:16/9;background:#000">
+                    <source src="/sample1.mp4" type="video/mp4" onerror="this.parentElement.style.display='none';this.parentElement.nextElementSibling.style.display='flex'">
                 </video>
                 <div style="display:none;aspect-ratio:16/9;background:#0d0d0d;align-items:center;justify-content:center;color:var(--muted);font-size:12px;letter-spacing:.5px">영상 준비 중</div>
                 <div style="padding:12px 14px;background:var(--card);border-top:1px solid var(--border)">
@@ -1296,8 +1303,8 @@
                 </div>
             </div>
             <div style="position:relative;border:1px solid var(--border);overflow:hidden">
-                <video autoplay muted loop playsinline style="width:100%;display:block;aspect-ratio:16/9;background:#000" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-                    <source src="/sample2.mp4" type="video/mp4">
+                <video autoplay muted loop playsinline style="width:100%;display:block;aspect-ratio:16/9;background:#000">
+                    <source src="/sample2.mp4" type="video/mp4" onerror="this.parentElement.style.display='none';this.parentElement.nextElementSibling.style.display='flex'">
                 </video>
                 <div style="display:none;aspect-ratio:16/9;background:#0d0d0d;align-items:center;justify-content:center;color:var(--muted);font-size:12px;letter-spacing:.5px">영상 준비 중</div>
                 <div style="padding:12px 14px;background:var(--card);border-top:1px solid var(--border)">
@@ -1516,7 +1523,7 @@
 <div id="upload-confirm-modal" class="confirm-modal">
     <div class="confirm-inner">
         <span class="section-label">최종 확인</span>
-        <h3>업로드를 완료하시겠습니까?</h3>
+        <h3>제작을 시작하시겠습니까?</h3>
         <p class="confirm-desc">
             총 <strong id="upload-confirm-count" style="color:var(--gold);font-weight:400"></strong>장의 사진이 업로드됩니다.
         </p>
@@ -1749,7 +1756,7 @@
     <p style="margin-top:8px;font-size:10px;color:var(--muted);opacity:.6">ⓒ <script>document.write(new Date().getFullYear())</script> 시간의 사진관</p>
 </footer>
 
-<a href="http://pf.kakao.com/_fUyqX/chat" target="_blank" class="kakao-float" id="kakao-float" title="카카오톡 문의">
+<a href="https://pf.kakao.com/_fUyqX/chat" target="_blank" class="kakao-float" id="kakao-float" title="카카오톡 문의">
     <svg viewBox="0 0 24 24" fill="#3C1E1E"><path d="M12 3C6.48 3 2 6.58 2 10.95c0 2.82 1.87 5.29 4.68 6.68-.15.56-.53 2.03-.61 2.35-.1.39.14.39.3.28.12-.08 1.94-1.31 2.73-1.85.59.09 1.2.13 1.81.13h.18c5.52 0 10-3.58 10-7.59S17.52 3 12 3z"/></svg>
 </a>
 
