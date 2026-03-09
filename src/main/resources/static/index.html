@@ -566,7 +566,47 @@
             max-height: 200px;
             padding: 0 4px 20px;
         }
-        .kakao-float {
+        .step-preview-scroll {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 0 4px 16px;
+  -webkit-overflow-scrolling: touch;
+}
+.step-preview-scroll::-webkit-scrollbar { height: 2px; }
+.step-preview-scroll::-webkit-scrollbar-track { background: var(--border); }
+.step-preview-scroll::-webkit-scrollbar-thumb { background: var(--gold); }
+.step-preview-item { flex-shrink: 0; text-align: center; }
+.step-preview-img {
+  width: 140px;
+  height: 250px;
+  border: 1px solid var(--border-mid);
+  overflow: hidden;
+  background: var(--card);
+  margin-bottom: 8px;
+}
+.step-preview-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+.step-preview-label {
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 1px;
+}
+.step-preview-arrow {
+  color: var(--gold);
+  font-size: 18px;
+  opacity: .4;
+  flex-shrink: 0;
+}
+@media (max-width: 600px) {
+  .step-preview-img { width: 120px; height: 210px; }
+}
+.kakao-float {
             position: fixed;
             bottom: 24px;
             right: 24px;
@@ -1221,8 +1261,22 @@
     <div class="cta-wrap">
         <button class="cta-btn" onclick="scrollToOrder()">지금 주문하기</button>
         <p class="price-hint"><span style="text-decoration:line-through;color:var(--muted);font-size:12px">49,900원</span> &rarr; <strong>29,900원</strong> · 8시간 내 제작 · HD 16:9</p>
-        <p style="font-size:11px;color:var(--gold);letter-spacing:1.5px;margin-top:8px">사전 예약 접수 중 — 오픈 기념 40% 할인</p>
+        <p style="font-size:11px;color:var(--gold);letter-spacing:1.5px;margin-top:8px">3월 31일까지 오픈 기념 40% 할인</p>
     </div>
+</section>
+
+<section id="instagram-section" style="padding: 80px 24px; display:flex; flex-direction:column; align-items:center; text-align:center; background:var(--surface); border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
+    <span class="section-label">Instagram</span>
+    <h2 style="font-family:var(--serif);font-size:clamp(20px,3vw,30px);font-weight:300;margin-bottom:8px;color:var(--text)">이런 영상, 보신 적 있으신가요?</h2>
+    <p style="font-size:13px;color:var(--muted);font-weight:300;margin-bottom:32px">인스타그램에서 화제가 된 사진 애니메이션 영상입니다</p>
+    <div class="sample-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:680px;width:100%">
+        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DRftS3lkVGk/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style="background:#FFF;border:0;border-radius:3px;box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15);margin:0;padding:0;width:100%;min-width:unset"></blockquote>
+        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DPbgSLTCHy3/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style="background:#FFF;border:0;border-radius:3px;box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15);margin:0;padding:0;width:100%;min-width:unset"></blockquote>
+    </div>
+    <script async src="//www.instagram.com/embed.js"></script>
+    <p style="font-size:13px;color:var(--muted-light);font-weight:300;margin-top:28px;line-height:1.8;max-width:480px">
+        시간의 사진관은 이 기술로 여러분의 소중한 사진을<br>감동적인 영상으로 만들어 드립니다.
+    </p>
 </section>
 
 <section id="preview-section" style="padding: 80px 24px 0; display:flex; flex-direction:column; align-items:center; text-align:center;">
@@ -1233,24 +1287,26 @@
     <div style="max-width:720px;width:100%">
         <div class="sample-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
             <div style="position:relative;border:1px solid var(--border);overflow:hidden">
-                <video autoplay muted loop playsinline style="width:100%;display:block">
+                <video autoplay muted loop playsinline style="width:100%;display:block;aspect-ratio:16/9;background:#000" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
                     <source src="/sample1.mp4" type="video/mp4">
                 </video>
+                <div style="display:none;aspect-ratio:16/9;background:#0d0d0d;align-items:center;justify-content:center;color:var(--muted);font-size:12px;letter-spacing:.5px">영상 준비 중</div>
                 <div style="padding:12px 14px;background:var(--card);border-top:1px solid var(--border)">
                     <p style="font-size:11px;color:var(--muted-light);text-align:left;line-height:1.6">부부 사진 · 결혼기념일</p>
                 </div>
             </div>
             <div style="position:relative;border:1px solid var(--border);overflow:hidden">
-                <video autoplay muted loop playsinline style="width:100%;display:block">
+                <video autoplay muted loop playsinline style="width:100%;display:block;aspect-ratio:16/9;background:#000" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
                     <source src="/sample2.mp4" type="video/mp4">
                 </video>
+                <div style="display:none;aspect-ratio:16/9;background:#0d0d0d;align-items:center;justify-content:center;color:var(--muted);font-size:12px;letter-spacing:.5px">영상 준비 중</div>
                 <div style="padding:12px 14px;background:var(--card);border-top:1px solid var(--border)">
                     <p style="font-size:11px;color:var(--muted-light);text-align:left;line-height:1.6">가족 단체 · 어머니 환갑</p>
                 </div>
             </div>
         </div>
         <p style="font-size:11px;color:var(--muted);margin-top:24px;line-height:1.6;max-width:480px;text-align:center">
-            모든 영상은 고객님 동의 하에 게재되었습니다
+            시간의 사진관에서 직접 제작한 샘플 영상입니다
         </p>
     </div>
 </section>
@@ -1317,24 +1373,41 @@
             </div>
         </div>
     </div>
-</section>
 
-<section id="instagram-section" style="padding: 80px 24px; display:flex; flex-direction:column; align-items:center; text-align:center;">
-    <span class="section-label">Instagram</span>
-    <h2 style="font-family:var(--serif);font-size:clamp(20px,3vw,30px);font-weight:300;margin-bottom:8px;color:var(--text)">이런 영상, 보신 적 있으신가요?</h2>
-    <p style="font-size:13px;color:var(--muted);font-weight:300;margin-bottom:32px">인스타그램에서 화제가 된 사진 애니메이션 영상입니다</p>
-    <div class="sample-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:680px;width:100%">
-        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DRftS3lkVGk/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style="background:#FFF;border:0;border-radius:3px;box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15);margin:0;padding:0;width:100%;min-width:unset"></blockquote>
-        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DPbgSLTCHy3/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style="background:#FFF;border:0;border-radius:3px;box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15);margin:0;padding:0;width:100%;min-width:unset"></blockquote>
+    <div style="margin-top:64px;text-align:center">
+      <p style="font-size:11px;color:var(--gold);letter-spacing:2px;margin-bottom:20px">Step by Step</p>
+      <h3 style="font-family:var(--serif);font-size:clamp(18px,2.5vw,24px);font-weight:300;margin-bottom:36px;color:var(--text)">실제 이렇게 진행됩니다</h3>
+      <div class="step-preview-scroll">
+        <div class="step-preview-item">
+          <div class="step-preview-img"><img src="/step-pay.png" alt="결제 화면" loading="lazy" onerror="this.style.display='none'"></div>
+          <span class="step-preview-label">01 결제</span>
+        </div>
+        <div class="step-preview-arrow">›</div>
+        <div class="step-preview-item">
+          <div class="step-preview-img"><img src="/step-upload.png" alt="사진 업로드" loading="lazy" onerror="this.style.display='none'"></div>
+          <span class="step-preview-label">02 사진 업로드</span>
+        </div>
+        <div class="step-preview-arrow">›</div>
+        <div class="step-preview-item">
+          <div class="step-preview-img"><img src="/step-title.png" alt="제목 입력" loading="lazy" onerror="this.style.display='none'"></div>
+          <span class="step-preview-label">03 제목 설정</span>
+        </div>
+        <div class="step-preview-arrow">›</div>
+        <div class="step-preview-item">
+          <div class="step-preview-img"><img src="/step-bgm.png" alt="BGM 선택" loading="lazy" onerror="this.style.display='none'"></div>
+          <span class="step-preview-label">04 음악 선택</span>
+        </div>
+        <div class="step-preview-arrow">›</div>
+        <div class="step-preview-item">
+          <div class="step-preview-img"><img src="/step-done.png" alt="완성" loading="lazy" onerror="this.style.display='none'"></div>
+          <span class="step-preview-label">05 영상 완성</span>
+        </div>
+      </div>
     </div>
-    <script async src="//www.instagram.com/embed.js"></script>
-    <p style="font-size:13px;color:var(--muted-light);font-weight:300;margin-top:28px;line-height:1.8;max-width:480px">
-        시간의 사진관은 이 기술로 여러분의 소중한 사진을<br>감동적인 영상으로 만들어 드립니다.
-    </p>
 </section>
 
 <section class="faq-section" id="faq-section">
-    <span class="section-label" style="text-align:center;display:block">FAQ</span>
+    
     <h2 style="font-family:var(--serif);font-size:clamp(22px,3vw,34px);font-weight:300;text-align:center;margin-bottom:48px;line-height:1.4">자주 묻는 질문</h2>
     <div class="faq-list">
         <div class="faq-item" onclick="this.classList.toggle('open')">
@@ -1434,7 +1507,7 @@
         <div class="confirm-summary" id="payment-confirm-summary"></div>
         <p class="confirm-warning">입력하신 정보가 맞는지 다시 한번 확인해 주세요.<br>결제 후에는 연락처 변경이 어렵습니다.</p>
         <div class="confirm-btns">
-            <button class="btn-confirm-yes" onclick="confirmPayment()">확인, 결제 진행</button>
+            <button class="btn-confirm-yes" onclick="confirmPayment()">결제 진행</button>
             <button class="btn-confirm-no" onclick="cancelPaymentConfirm()">다시 확인</button>
         </div>
     </div>
@@ -1448,11 +1521,11 @@
             총 <strong id="upload-confirm-count" style="color:var(--gold);font-weight:400"></strong>장의 사진이 업로드됩니다.
         </p>
         <p class="confirm-warning">
-            업로드 완료 후에는 사진을 변경하거나 추가할 수 없습니다.<br>
-            사진 순서가 올바른지 꼭 확인해 주세요.
+            사진이 맞는지 확인 후 제작을 시작해 주세요.<br>
+            제작 시작 후에는 사진 변경이 어렵습니다.
         </p>
         <div class="confirm-btns">
-            <button class="btn-confirm-yes" onclick="confirmUpload()">확인, 제작 시작</button>
+            <button class="btn-confirm-yes" onclick="confirmUpload()">제작 시작</button>
             <button class="btn-confirm-no" onclick="cancelUploadConfirm()">다시 확인</button>
         </div>
     </div>
@@ -1558,7 +1631,7 @@
         </button>
 
         <button onclick="submitAllPhotos()" id="submit-all-btn" class="btn-submit-all">
-            다음 단계 — 음악 선택
+            다음
         </button>
         <p id="progress-text" class="progress-label" style="display:none"></p>
     </div>
@@ -1573,25 +1646,25 @@
         <h2 class="serif" style="font-size:22px;font-weight:300;margin-bottom:24px">인트로 &middot; 아웃트로</h2>
 
         <div class="form-group">
-            <label>인트로 제목 <span style="font-size:10px;text-transform:none;font-weight:300;letter-spacing:.3px">영상 시작 화면에 표시</span></label>
-            <input type="text" id="introTitleInput" placeholder="예: 어머니 환갑, 부모님 결혼 30주년" maxlength="20">
+            <label>인트로 문구 <span style="font-size:10px;text-transform:none;font-weight:300;letter-spacing:.3px">영상 시작 화면에 표시</span></label>
+            <input type="text" id="introTitleInput" placeholder="예: 어머니 환갑, 부모님 결혼 30주년" maxlength="30">
             <div class="form-error" id="err-introTitle"></div>
         </div>
 
         <div class="form-group">
             <label>아웃트로 문구 <span style="font-size:10px;text-transform:none;font-weight:300;letter-spacing:.3px">영상 마지막 화면에 표시</span></label>
-            <input type="text" id="outroTitleInput" placeholder="예: 감사합니다, 사랑합니다" maxlength="20" value="감사합니다">
+            <input type="text" id="outroTitleInput" placeholder="예: 낳아주시고 길러주셔서 감사합니다" maxlength="30" value="감사합니다">
             <div class="form-error" id="err-outroTitle"></div>
         </div>
 
         <div style="font-size:11px;color:var(--muted);line-height:1.8;margin:16px 0 24px;letter-spacing:.3px">
-            인트로: 검정 화면에 큰 글씨로 표시됩니다<br>
-            아웃트로: 영상 마지막에 "시간의 사진관" 로고와 함께 표시됩니다
+            인트로: 영상 시작 시 제목이 부드럽게 나타납니다<br>
+            아웃트로: 영상 마지막에 문구와 함께 마무리됩니다
         </div>
 
         <div style="display:flex;gap:10px">
             <button onclick="backToUploadFromTitle()" style="flex:1;background:transparent;color:var(--muted-light);border:1px solid var(--border-mid);padding:14px;font-size:13px;font-family:var(--sans);cursor:pointer">뒤로</button>
-            <button onclick="goToBgmFromTitle()" style="flex:2;background:var(--gold);color:#080808;border:none;padding:14px;font-size:13px;font-weight:600;letter-spacing:1px;font-family:var(--sans);cursor:pointer">다음 — 음악 선택</button>
+            <button onclick="goToBgmFromTitle()" style="flex:2;background:var(--gold);color:#080808;border:none;padding:14px;font-size:13px;font-weight:600;letter-spacing:1px;font-family:var(--sans);cursor:pointer">다음</button>
         </div>
     </div>
 </section>
@@ -1600,7 +1673,6 @@
     <div class="upload-card">
         <div class="step-header">
             <div class="step-order-num">주문번호 <span id="bgm-order-num-display" style="color:var(--gold)"></span></div>
-            <div class="step-counter">FINAL STEP</div>
         </div>
 
         <span class="section-label">BGM 선택</span>
@@ -1612,8 +1684,8 @@
         </div>
 
         <div style="display:flex;gap:10px">
-            <button class="btn-prev" onclick="backToUpload()">← 사진 다시 확인</button>
-            <button class="btn-confirm-yes" style="flex:2" onclick="submitWithBgm()">확인, 제작 시작</button>
+            <button class="btn-prev" onclick="backToUpload()">뒤로</button>
+            <button class="btn-confirm-yes" style="flex:2" onclick="submitWithBgm()">제작 시작</button>
         </div>
     </div>
 </section>
@@ -1624,7 +1696,7 @@
     <h2 id="done-title">제작을 시작했습니다</h2>
     <div class="order-number" id="done-order-num"></div>
     <p id="done-desc">
-        사진을 AI로 분석하고 영상을 제작 중입니다.<br>
+        사진을 분석하고 영상을 정성껏 제작 중입니다.<br>
         완성되면 이 화면에서 바로 확인하실 수 있습니다.
     </p>
 
@@ -1674,7 +1746,7 @@
         상호: 시간의사진관 | 대표: 김재웅 | 사업자등록번호: 292-32-01725<br>
         주소: 인천광역시 서구 솔빛로 13, 542동 2003호(청라동)
     </p>
-    <p style="margin-top:8px;font-size:10px;color:var(--muted);opacity:.6">ⓒ 2026 시간의 사진관</p>
+    <p style="margin-top:8px;font-size:10px;color:var(--muted);opacity:.6">ⓒ <script>document.write(new Date().getFullYear())</script> 시간의 사진관</p>
 </footer>
 
 <a href="http://pf.kakao.com/_fUyqX/chat" target="_blank" class="kakao-float" id="kakao-float" title="카카오톡 문의">
@@ -2258,7 +2330,7 @@
 
     function goToBgmFromTitle() {
         const intro = document.getElementById('introTitleInput').value.trim();
-        if (!intro) { document.getElementById('err-introTitle').textContent = '인트로 제목을 입력해주세요'; document.getElementById('err-introTitle').style.display = 'block'; return; }
+        if (!intro) { document.getElementById('err-introTitle').textContent = '인트로 문구를 입력해주세요'; document.getElementById('err-introTitle').style.display = 'block'; return; }
         document.getElementById('err-introTitle').style.display = 'none';
         document.getElementById('title-section').style.display  = 'none';
         document.getElementById('bgm-section').style.display    = 'block';
@@ -2344,7 +2416,7 @@
                 isUploading = false;
                 renderPhotoGrid();
                 btn.disabled = false;
-                btn.textContent = '업로드 완료 — 영상 제작 시작';
+                btn.textContent = '다음';
                 return;
             }
         }
@@ -2376,7 +2448,7 @@
             console.error('upload-complete 오류:', e);
             alert('제작 시작 중 오류가 발생했습니다: ' + e.message + '\n잠시 후 다시 시도해주세요.');
             btn.disabled = false;
-            btn.textContent = '다음 단계 — 음악 선택';
+            btn.textContent = '다음';
             isUploading = false;
             return;
         }
