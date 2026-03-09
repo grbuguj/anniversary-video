@@ -1,3 +1,6 @@
 2026-03-06 10:14:32.252436+09:00 jdbc[173]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "DAILY_FUNNEL_METRICS" not found; SQL statement:
 INSERT INTO daily_funnel_metrics (metric_date, page_views, orders_created, payments_done, uploads_done,  gen_started, gen_completed, gen_failed, revenue) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE page_views=VALUES(page_views), orders_created=VALUES(orders_created), payments_done=VALUES(payments_done), uploads_done=VALUES(uploads_done), gen_started=VALUES(gen_started), gen_completed=VALUES(gen_completed), gen_failed=VALUES(gen_failed), revenue=VALUES(revenue) [42102-224]
+2026-03-08 16:00:04.015358+09:00 jdbc[23]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "DAILY_FUNNEL_METRICS" not found; SQL statement:
+INSERT INTO daily_funnel_metrics (metric_date, page_views, orders_created, payments_done, uploads_done,  gen_started, gen_completed, gen_failed, revenue) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE page_views=VALUES(page_views), orders_created=VALUES(orders_created), payments_done=VALUES(payments_done), uploads_done=VALUES(uploads_done), gen_started=VALUES(gen_started), gen_completed=VALUES(gen_completed), gen_failed=VALUES(gen_failed), revenue=VALUES(revenue) [42102-224]

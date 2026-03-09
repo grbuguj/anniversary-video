@@ -1,1719 +1,1754 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>시간의 사진관 — 사진이 살아 움직입니다</title>
-<meta name="description" content="소중한 가족 사진을 살아 움직이는 감동 영상으로. 환갑·칠순·결혼기념일 행사 상영용 프리미엄 인생 영상.">
-<meta property="og:title" content="시간의 사진관 — 사진이 살아 움직입니다">
-<meta property="og:description" content="소중한 가족 사진을 자연스럽게 살아 움직이는 감동 영상으로. 환갑·칠순·결혼기념일 행사 상영용 프리미엄 인생 영상. 단 29,900원.">
-<meta property="og:type" content="website">
-<meta property="og:locale" content="ko_KR">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="시간의 사진관 — 사진이 살아 움직입니다">
-<meta name="twitter:description" content="소중한 가족 사진을 자연스럽게 살아 움직이는 감동 영상으로. 환갑·칠순·결혼기념일 행사 상영용.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='15' fill='%23c9a96e'/><circle cx='16' cy='16' r='7' fill='%23080808'/><circle cx='16' cy='16' r='4' fill='%23282828'/></svg>">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600;700&family=Noto+Sans+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
-<style>
-:root {
-  --gold:        #c9a96e;
-  --gold-light:  #e8c98a;
-  --gold-dim:    #c9a96e22;
-  --bg:          #080808;
-  --surface:     #0d0d0d;
-  --card:        #111111;
-  --border:      #1e1e1e;
-  --border-mid:  #2a2a2a;
-  --text:        #f0ebe3;
-  --muted:       #7a7168;
-  --muted-light: #a09488;
-  --serif: 'Noto Serif KR', 'Georgia', serif;
-  --sans:  'Noto Sans KR', -apple-system, sans-serif;
-}
-
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  font-family: var(--sans);
-  background: var(--bg);
-  color: var(--text);
-  line-height: 1.7;
-  -webkit-font-smoothing: antialiased;
-}
-
-.serif { font-family: var(--serif); }
-.gold  { color: var(--gold); }
-
-.section-label {
-  font-family: var(--sans);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 20px;
-  display: block;
-}
-
-.divider {
-  width: 40px;
-  height: 1px;
-  background: var(--gold);
-  margin: 20px auto;
-}
-
-.hero {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 80px 24px;
-  position: relative;
-  overflow: hidden;
-}
-
-.hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 60% 50% at 50% 0%, #c9a96e08, transparent),
-    radial-gradient(ellipse 40% 30% at 80% 80%, #c9a96e05, transparent);
-  pointer-events: none;
-}
-
-.hero-eyebrow {
-  font-family: var(--sans);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 36px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.hero-eyebrow::before,
-.hero-eyebrow::after {
-  content: '';
-  width: 28px;
-  height: 1px;
-  background: var(--gold);
-  opacity: .6;
-}
-
-.hero h1 {
-  font-family: var(--serif);
-  font-size: clamp(32px, 6vw, 60px);
-  font-weight: 300;
-  line-height: 1.3;
-  letter-spacing: -0.5px;
-  margin-bottom: 28px;
-  color: var(--text);
-}
-.hero h1 em {
-  font-style: normal;
-  color: var(--gold);
-}
-
-.hero-sub {
-  font-size: 15px;
-  color: var(--muted-light);
-  max-width: 440px;
-  margin: 0 auto 52px;
-  line-height: 1.9;
-  font-weight: 300;
-}
-
-.cta-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-}
-
-.cta-btn {
-  background: var(--gold);
-  color: #080808;
-  border: none;
-  cursor: pointer;
-  padding: 16px 48px;
-  font-family: var(--sans);
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  transition: background .2s, transform .2s;
-}
-.cta-btn:hover {
-  background: var(--gold-light);
-  transform: translateY(-1px);
-}
-
-.price-hint {
-  font-size: 13px;
-  color: var(--muted);
-  letter-spacing: .3px;
-}
-.price-hint strong {
-  color: var(--gold);
-  font-weight: 500;
-}
-
-.features {
-  padding: 120px 24px;
-  max-width: 960px;
-  margin: 0 auto;
-  text-align: center;
-}
-
-.features-title {
-  font-family: var(--serif);
-  font-size: clamp(24px, 3.5vw, 38px);
-  font-weight: 300;
-  margin-bottom: 72px;
-  color: var(--text);
-  line-height: 1.4;
-}
-
-.feature-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 0;
-  border: 1px solid var(--border);
-}
-
-.feature-card {
-  padding: 40px 28px;
-  border-right: 1px solid var(--border);
-  text-align: left;
-  position: relative;
-  transition: background .2s;
-}
-.feature-card:last-child { border-right: none; }
-.feature-card:hover { background: #111111; }
-
-.feature-num {
-  font-family: var(--serif);
-  font-size: 11px;
-  color: var(--gold);
-  letter-spacing: 2px;
-  margin-bottom: 20px;
-  display: block;
-}
-
-.feature-card h3 {
-  font-family: var(--serif);
-  font-size: 16px;
-  font-weight: 400;
-  margin-bottom: 12px;
-  color: var(--text);
-}
-
-.feature-card p {
-  font-size: 13px;
-  color: var(--muted);
-  line-height: 1.8;
-  font-weight: 300;
-}
-
-.process {
-  padding: 120px 24px;
-  background: var(--surface);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-}
-
-.process-inner {
-  max-width: 640px;
-  margin: 0 auto;
-}
-
-.process-title {
-  font-family: var(--serif);
-  font-size: clamp(22px, 3vw, 34px);
-  font-weight: 300;
-  text-align: center;
-  margin-bottom: 64px;
-  line-height: 1.4;
-}
-
-.steps {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
-
-.step {
-  display: flex;
-  gap: 28px;
-  padding: 28px 0;
-  border-bottom: 1px solid var(--border);
-  align-items: flex-start;
-}
-.step:last-child { border-bottom: none; }
-
-.step-num {
-  font-family: var(--serif);
-  font-size: 11px;
-  color: var(--gold);
-  letter-spacing: 2px;
-  flex-shrink: 0;
-  padding-top: 3px;
-  width: 36px;
-}
-
-.step-content h4 {
-  font-family: var(--serif);
-  font-size: 16px;
-  font-weight: 400;
-  margin-bottom: 6px;
-  color: var(--text);
-}
-
-.step-content p {
-  font-size: 13px;
-  color: var(--muted);
-  line-height: 1.8;
-  font-weight: 300;
-}
-
-.order-section {
-  padding: 120px 24px;
-  max-width: 520px;
-  margin: 0 auto;
-}
-
-.order-card {
-  border: 1px solid var(--border);
-  padding: 48px 40px;
-  background: var(--card);
-}
-
-.order-card-title {
-  font-family: var(--serif);
-  font-size: 26px;
-  font-weight: 300;
-  margin-bottom: 6px;
-  color: var(--text);
-}
-
-.order-card-sub {
-  font-size: 13px;
-  color: var(--muted);
-  margin-bottom: 36px;
-  font-weight: 300;
-  line-height: 1.8;
-}
-
-.form-group { margin-bottom: 20px; }
-
-.form-group label {
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 8px;
-  display: block;
-}
-
-.form-group input,
-.form-group select {
-  width: 100%;
-  background: var(--bg);
-  border: 1px solid var(--border-mid);
-  color: var(--text);
-  padding: 13px 16px;
-  font-size: 14px;
-  font-family: var(--sans);
-  outline: none;
-  transition: border-color .2s;
-  border-radius: 0;
-  appearance: none;
-  -webkit-appearance: none;
-}
-
-.form-group input:focus,
-.form-group select:focus { border-color: var(--gold); }
-.form-group input::placeholder { color: #3a3530; }
-
-.form-error { font-size: 12px; color: #c97070; margin-top: 6px; display: none; letter-spacing: .3px; }
-
-.price-box {
-  border: 1px solid var(--border-mid);
-  padding: 20px 24px;
-  margin: 32px 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: var(--surface);
-}
-
-.price-box .label {
-  font-size: 13px;
-  color: var(--muted-light);
-}
-
-.price-box .label-sub {
-  font-size: 11px;
-  color: var(--muted);
-  margin-top: 3px;
-  letter-spacing: .3px;
-}
-
-.price-box .amount {
-  font-family: var(--serif);
-  font-size: 22px;
-  font-weight: 400;
-  color: var(--gold);
-}
-
-.submit-btn {
-  width: 100%;
-  background: var(--gold);
-  color: #080808;
-  border: none;
-  padding: 16px;
-  font-family: var(--sans);
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: background .2s;
-}
-.submit-btn:hover { background: var(--gold-light); }
-.submit-btn:disabled { opacity: .45; cursor: not-allowed; }
-
-.notice {
-  font-size: 11px;
-  color: var(--muted);
-  text-align: center;
-  margin-top: 16px;
-  line-height: 2;
-  letter-spacing: .3px;
-}
-
-.dev-btn {
-  width: 100%;
-  background: transparent;
-  color: #8a6f30;
-  border: 1px dashed #3a2f18;
-  padding: 11px;
-  font-size: 12px;
-  font-family: var(--sans);
-  cursor: pointer;
-  margin-top: 10px;
-  transition: background .2s;
-  letter-spacing: .5px;
-}
-.dev-btn:hover { background: #1a1508; }
-.dev-btn:disabled { opacity: .4; cursor: not-allowed; }
-
-.dev-banner {
-  background: #0f0c04;
-  border: 1px solid #3a2f18;
-  padding: 8px 14px;
-  font-size: 11px;
-  color: #8a6f30;
-  text-align: center;
-  margin-bottom: 24px;
-  letter-spacing: .5px;
-}
-
-.upload-section {
-  display: none;
-  padding: 80px 24px;
-  max-width: 520px;
-  margin: 0 auto;
-}
-
-.upload-card {
-  border: 1px solid var(--border);
-  padding: 40px;
-  background: var(--card);
-}
-
-.progress-bar {
-  height: 1px;
-  background: var(--border-mid);
-  margin: 16px 0;
-  overflow: hidden;
-}
-
-.progress-fill {
-  height: 100%;
-  background: var(--gold);
-  transition: width .4s;
-  width: 0%;
-}
-
-.upload-drop {
-  border: 1px dashed var(--border-mid);
-  padding: 48px 24px;
-  text-align: center;
-  cursor: pointer;
-  transition: border-color .2s, background .2s;
-  margin-bottom: 20px;
-}
-.upload-drop:hover,
-.upload-drop.drag-over {
-  border-color: var(--gold);
-  background: #c9a96e06;
-}
-
-#file-input { display: none; }
-
-.done-section {
-  display: none;
-  padding: 120px 24px;
-  max-width: 480px;
-  margin: 0 auto;
-  text-align: center;
-}
-
-.done-mark {
-  width: 56px;
-  height: 56px;
-  border: 1px solid var(--gold);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 32px;
-  color: var(--gold);
-  font-size: 20px;
-}
-
-.done-section h2 {
-  font-family: var(--serif);
-  font-size: 26px;
-  font-weight: 300;
-  margin-bottom: 16px;
-}
-
-.done-section p {
-  color: var(--muted-light);
-  font-size: 14px;
-  line-height: 1.9;
-  font-weight: 300;
-}
-
-.order-number {
-  border: 1px solid var(--border-mid);
-  padding: 14px 20px;
-  margin: 24px 0;
-  font-family: var(--serif);
-  font-size: 15px;
-  color: var(--gold);
-  letter-spacing: 1px;
-}
-
-.faq-section {
-  padding: 120px 24px;
-  max-width: 640px;
-  margin: 0 auto;
-}
-.faq-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
-.faq-item {
-  border-bottom: 1px solid var(--border);
-  cursor: pointer;
-  transition: background .2s;
-}
-.faq-item:first-child { border-top: 1px solid var(--border); }
-.faq-item:hover { background: #111111; }
-.faq-q {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 4px;
-  font-family: var(--serif);
-  font-size: 15px;
-  font-weight: 400;
-  color: var(--text);
-  line-height: 1.6;
-}
-.faq-arrow {
-  color: var(--gold);
-  font-size: 18px;
-  flex-shrink: 0;
-  margin-left: 16px;
-  transition: transform .2s;
-}
-.faq-item.open .faq-arrow { transform: rotate(45deg); }
-.faq-a {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height .3s ease, padding .3s ease;
-  font-size: 13px;
-  color: var(--muted-light);
-  line-height: 1.9;
-  font-weight: 300;
-  padding: 0 4px;
-}
-.faq-item.open .faq-a {
-  max-height: 200px;
-  padding: 0 4px 20px;
-}
-.kakao-float {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  z-index: 9990;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: #FEE500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 16px rgba(0,0,0,.3);
-  cursor: pointer;
-  transition: transform .2s, box-shadow .2s;
-  text-decoration: none;
-}
-.kakao-float:hover {
-  transform: scale(1.08);
-  box-shadow: 0 6px 24px rgba(0,0,0,.4);
-}
-.kakao-float svg { width: 28px; height: 28px; }
-footer {
-  border-top: 1px solid var(--border);
-  padding: 36px 24px;
-  text-align: center;
-  font-size: 12px;
-  color: var(--muted);
-  letter-spacing: .5px;
-  line-height: 2;
-}
-
-#resume-modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: #000000e0;
-  z-index: 9999;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-}
-
-.resume-inner {
-  background: var(--card);
-  border: 1px solid var(--border-mid);
-  padding: 48px 40px;
-  max-width: 400px;
-  width: 100%;
-  text-align: center;
-}
-
-.resume-inner h3 {
-  font-family: var(--serif);
-  font-size: 20px;
-  font-weight: 300;
-  margin-bottom: 12px;
-}
-
-.resume-inner p {
-  font-size: 13px;
-  color: var(--muted-light);
-  line-height: 1.9;
-  margin-bottom: 32px;
-  font-weight: 300;
-}
-
-.resume-btns {
-  display: flex;
-  gap: 10px;
-}
-
-.btn-resume-yes {
-  flex: 2;
-  background: var(--gold);
-  color: #080808;
-  border: none;
-  padding: 14px;
-  font-family: var(--sans);
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  cursor: pointer;
-  transition: background .2s;
-}
-.btn-resume-yes:hover { background: var(--gold-light); }
-
-.btn-resume-no {
-  flex: 1;
-  background: transparent;
-  color: var(--muted);
-  border: 1px solid var(--border-mid);
-  padding: 14px;
-  font-family: var(--sans);
-  font-size: 12px;
-  letter-spacing: .5px;
-  cursor: pointer;
-  transition: border-color .2s, color .2s;
-}
-.btn-resume-no:hover { border-color: var(--muted); color: var(--text); }
-
-.confirm-modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: #000000e0;
-  z-index: 9999;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-}
-
-.confirm-inner {
-  background: var(--card);
-  border: 1px solid var(--border-mid);
-  padding: 48px 40px;
-  max-width: 420px;
-  width: 100%;
-  text-align: center;
-}
-
-.confirm-inner h3 {
-  font-family: var(--serif);
-  font-size: 20px;
-  font-weight: 300;
-  margin-bottom: 16px;
-}
-
-.confirm-inner .confirm-desc {
-  font-size: 13px;
-  color: var(--muted-light);
-  line-height: 1.9;
-  margin-bottom: 12px;
-  font-weight: 300;
-}
-
-.confirm-summary {
-  border: 1px solid var(--border);
-  padding: 16px 20px;
-  margin-bottom: 24px;
-  text-align: left;
-  background: var(--surface);
-}
-
-.confirm-summary-row {
-  display: flex;
-  justify-content: space-between;
-  font-size: 13px;
-  padding: 5px 0;
-  border-bottom: 1px solid var(--border);
-}
-.confirm-summary-row:last-child { border-bottom: none; }
-
-.confirm-summary-row .label { color: var(--muted); }
-.confirm-summary-row .value { color: var(--text); font-weight: 400; }
-
-.confirm-warning {
-  font-size: 12px;
-  color: #c9a070;
-  margin-bottom: 24px;
-  line-height: 1.8;
-  letter-spacing: .3px;
-}
-
-.confirm-btns {
-  display: flex;
-  gap: 10px;
-}
-
-.btn-confirm-yes {
-  flex: 2;
-  background: var(--gold);
-  color: #080808;
-  border: none;
-  padding: 14px;
-  font-family: var(--sans);
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  cursor: pointer;
-  transition: background .2s;
-}
-.btn-confirm-yes:hover { background: var(--gold-light); }
-
-.btn-confirm-no {
-  flex: 1;
-  background: transparent;
-  color: var(--muted);
-  border: 1px solid var(--border-mid);
-  padding: 14px;
-  font-family: var(--sans);
-  font-size: 12px;
-  letter-spacing: .5px;
-  cursor: pointer;
-  transition: border-color .2s, color .2s;
-}
-.btn-confirm-no:hover { border-color: var(--muted); color: var(--text); }
-
-@media (max-width: 600px) {
-  .confirm-inner { padding: 36px 24px; }
-}
-
-.guide-sequence {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0;
-  margin: 32px 0;
-  flex-wrap: wrap;
-}
-
-.guide-seq-item {
-  text-align: center;
-  padding: 0 16px;
-}
-
-.guide-seq-item .era {
-  font-family: var(--serif);
-  font-size: 13px;
-  color: var(--text);
-  display: block;
-  margin-bottom: 4px;
-}
-
-.guide-seq-item .period {
-  font-size: 11px;
-  color: var(--muted);
-  letter-spacing: .5px;
-}
-
-.guide-seq-arrow {
-  color: var(--gold);
-  font-size: 14px;
-  opacity: .5;
-}
-
-.guide-tip {
-  border-left: 2px solid var(--gold);
-  padding: 16px 20px;
-  margin: 28px 0;
-  background: #c9a96e05;
-}
-
-.guide-tip p {
-  font-size: 13px;
-  color: var(--muted-light);
-  line-height: 1.9;
-  font-weight: 300;
-}
-
-.step-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 24px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid var(--border);
-}
-
-.step-order-num {
-  font-size: 12px;
-  color: var(--muted);
-  letter-spacing: .5px;
-}
-
-.step-counter {
-  font-family: var(--serif);
-  font-size: 13px;
-  color: var(--gold);
-  letter-spacing: 2px;
-}
-
-.step-title-text {
-  font-family: var(--serif);
-  font-size: 20px;
-  font-weight: 300;
-  margin-bottom: 4px;
-  color: var(--text);
-}
-
-.step-subtitle {
-  font-size: 12px;
-  color: var(--muted);
-  margin-bottom: 20px;
-  font-weight: 300;
-  letter-spacing: .3px;
-}
-
-.drop-icon {
-  width: 40px;
-  height: 40px;
-  border: 1px solid var(--border-mid);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 16px;
-  color: var(--gold);
-  font-size: 16px;
-}
-
-.drop-main-text {
-  font-size: 13px;
-  color: var(--muted-light);
-  margin-bottom: 4px;
-}
-
-.drop-sub-text {
-  font-size: 11px;
-  color: var(--muted);
-  letter-spacing: .3px;
-}
-
-.step-nav {
-  display: flex;
-  gap: 10px;
-  margin-top: 24px;
-}
-
-.btn-prev {
-  flex: 1;
-  background: transparent;
-  color: var(--muted);
-  border: 1px solid var(--border-mid);
-  padding: 13px;
-  font-family: var(--sans);
-  font-size: 12px;
-  letter-spacing: 1px;
-  cursor: pointer;
-  transition: border-color .2s, color .2s;
-}
-.btn-prev:hover { border-color: var(--muted); color: var(--text); }
-
-.btn-next {
-  flex: 2;
-  background: var(--gold);
-  color: #080808;
-  border: none;
-  padding: 13px;
-  font-family: var(--sans);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: background .2s;
-}
-.btn-next:disabled { opacity: .35; cursor: not-allowed; }
-.btn-next:not(:disabled):hover { background: var(--gold-light); }
-
-.btn-submit-all {
-  display: block;
-  width: 100%;
-  margin-top: 12px;
-  background: var(--gold);
-  color: #080808;
-  border: none;
-  padding: 15px;
-  font-family: var(--sans);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: background .2s;
-}
-.btn-submit-all:hover { background: var(--gold-light); }
-
-.photo-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin: 20px 0;
-}
-
-.photo-item {
-  position: relative;
-  aspect-ratio: 1;
-  border: 1px solid var(--border-mid);
-  overflow: hidden;
-  cursor: grab;
-  transition: transform .15s, box-shadow .15s;
-  user-select: none;
-}
-.photo-item:active { cursor: grabbing; }
-.photo-item.dragging {
-  opacity: .4;
-  border-color: var(--gold);
-}
-.photo-item.drag-over {
-  transform: scale(1.03);
-  box-shadow: 0 0 0 2px var(--gold);
-}
-
-.photo-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  pointer-events: none;
-}
-
-.photo-item .photo-num {
-  position: absolute;
-  top: 6px;
-  left: 6px;
-  width: 22px;
-  height: 22px;
-  background: #000000cc;
-  border: 1px solid var(--gold);
-  color: var(--gold);
-  font-size: 11px;
-  font-family: var(--serif);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-}
-
-.photo-item .remove-btn {
-  position: absolute;
-  top: 6px;
-  right: 6px;
-  width: 22px;
-  height: 22px;
-  background: #000000cc;
-  border: 1px solid #555;
-  color: #aaa;
-  font-size: 13px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: color .15s, border-color .15s;
-  line-height: 1;
-}
-.photo-item .remove-btn:hover {
-  color: #ff6b6b;
-  border-color: #ff6b6b;
-}
-
-.photo-count-info {
-  text-align: center;
-  font-size: 13px;
-  color: var(--muted-light);
-  margin: 12px 0;
-  letter-spacing: .3px;
-}
-
-.add-more-btn {
-  width: 100%;
-  background: transparent;
-  color: var(--muted-light);
-  border: 1px dashed var(--border-mid);
-  padding: 12px;
-  font-family: var(--sans);
-  font-size: 12px;
-  letter-spacing: .5px;
-  cursor: pointer;
-  transition: border-color .2s, color .2s;
-  margin-bottom: 12px;
-}
-.add-more-btn:hover {
-  border-color: var(--gold);
-  color: var(--gold);
-}
-
-.progress-label {
-  font-size: 11px;
-  color: var(--muted);
-  text-align: center;
-  letter-spacing: .5px;
-  margin-bottom: 24px;
-}
-
-.bgm-option {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 14px;
-  border: 1px solid var(--border-mid);
-  background: var(--bg);
-  cursor: pointer;
-  transition: border-color .2s, background .2s;
-}
-.bgm-option:hover { border-color: var(--gold); background: #c9a96e06; }
-.bgm-option.selected {
-  border-color: var(--gold);
-  background: #c9a96e0a;
-}
-
-.bgm-play-btn {
-  width: 32px;
-  height: 32px;
-  border: 1px solid var(--border-mid);
-  background: transparent;
-  color: var(--gold);
-  font-size: 12px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  transition: border-color .2s, background .2s;
-}
-.bgm-play-btn:hover { border-color: var(--gold); background: #c9a96e15; }
-.bgm-play-btn.playing { background: var(--gold); color: #080808; }
-
-.bgm-info { flex: 1; }
-.bgm-name { font-size: 13px; color: var(--text); font-weight: 400; }
-.bgm-desc { font-size: 11px; color: var(--muted); margin-top: 2px; letter-spacing: .3px; }
-
-.bgm-check {
-  width: 16px;
-  height: 16px;
-  border: 1px solid var(--border-mid);
-  border-radius: 50%;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 9px;
-  color: transparent;
-  transition: border-color .2s, background .2s, color .2s;
-}
-.bgm-option.selected .bgm-check {
-  border-color: var(--gold);
-  background: var(--gold);
-  color: #080808;
-}
-
-#flow-stepper {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  background: #0a0a0a;
-  border-bottom: 1px solid var(--border);
-  padding: 0 24px;
-  height: 52px;
-  align-items: center;
-  justify-content: center;
-}
-
-#flow-stepper.visible { display: flex; }
-
-.stepper-inner {
-  display: flex;
-  align-items: center;
-  gap: 0;
-  max-width: 320px;
-  width: 100%;
-}
-
-.stepper-step {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex: 1;
-  min-width: 0;
-}
-
-.stepper-dot {
-  width: 22px;
-  height: 22px;
-  border: 1px solid var(--border-mid);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 10px;
-  font-family: var(--serif);
-  color: var(--muted);
-  flex-shrink: 0;
-  transition: border-color .3s, background .3s, color .3s;
-}
-
-.stepper-step.active .stepper-dot {
-  border-color: var(--gold);
-  background: var(--gold);
-  color: #080808;
-  font-weight: 600;
-}
-
-.stepper-step.done .stepper-dot {
-  border-color: var(--gold);
-  color: var(--gold);
-  background: transparent;
-}
-
-.stepper-label {
-  font-size: 11px;
-  color: var(--muted);
-  letter-spacing: .8px;
-  white-space: nowrap;
-  transition: color .3s;
-}
-
-.stepper-step.active .stepper-label { color: var(--text); font-weight: 500; }
-.stepper-step.done  .stepper-label  { color: var(--gold); }
-
-.stepper-line {
-  flex: 1;
-  height: 1px;
-  background: var(--border-mid);
-  margin: 0 10px;
-  position: relative;
-  overflow: hidden;
-}
-
-.stepper-line-fill {
-  position: absolute;
-  left: 0; top: 0; bottom: 0;
-  background: var(--gold);
-  width: 0%;
-  transition: width .5s ease;
-}
-
-body.flow-active .upload-section,
-body.flow-active .done-section {
-  padding-top: 108px;
-}
-
-@media (max-width: 600px) {
-  .feature-grid { grid-template-columns: 1fr 1fr; }
-  .feature-card { border-bottom: 1px solid var(--border); }
-  .feature-card:nth-child(odd) { border-right: 1px solid var(--border); }
-  .feature-card:nth-child(even) { border-right: none; }
-  .order-card, .upload-card { padding: 28px 20px; }
-  .resume-inner { padding: 36px 24px; }
-  .guide-sequence { gap: 0; }
-  .guide-seq-item { padding: 0 8px; }
-  .photo-grid { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (max-width: 400px) {
-  .feature-grid { grid-template-columns: 1fr; }
-  .feature-card { border-right: none; }
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>시간의 사진관 — 사진이 살아 움직입니다</title>
+    <meta name="description" content="소중한 가족 사진을 살아 움직이는 감동 영상으로. 환갑·칠순·결혼기념일 행사 상영용 프리미엄 인생 영상.">
+    <meta property="og:title" content="시간의 사진관 — 사진이 살아 움직입니다">
+    <meta property="og:description" content="소중한 가족 사진을 자연스럽게 살아 움직이는 감동 영상으로. 환갑·칠순·결혼기념일 행사 상영용 프리미엄 인생 영상. 단 29,900원.">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="ko_KR">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="시간의 사진관 — 사진이 살아 움직입니다">
+    <meta name="twitter:description" content="소중한 가족 사진을 자연스럽게 살아 움직이는 감동 영상으로. 환갑·칠순·결혼기념일 행사 상영용.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='15' fill='%23c9a96e'/><circle cx='16' cy='16' r='7' fill='%23080808'/><circle cx='16' cy='16' r='4' fill='%23282828'/></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600;700&family=Noto+Sans+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
+    <style>
+        :root {
+            --gold:        #c9a96e;
+            --gold-light:  #e8c98a;
+            --gold-dim:    #c9a96e22;
+            --bg:          #080808;
+            --surface:     #0d0d0d;
+            --card:        #111111;
+            --border:      #1e1e1e;
+            --border-mid:  #2a2a2a;
+            --text:        #f0ebe3;
+            --muted:       #7a7168;
+            --muted-light: #a09488;
+            --serif: 'Noto Serif KR', 'Georgia', serif;
+            --sans:  'Noto Sans KR', -apple-system, sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--sans);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .serif { font-family: var(--serif); }
+        .gold  { color: var(--gold); }
+
+        .section-label {
+            font-family: var(--sans);
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .divider {
+            width: 40px;
+            height: 1px;
+            background: var(--gold);
+            margin: 20px auto;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 80px 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                    radial-gradient(ellipse 60% 50% at 50% 0%, #c9a96e08, transparent),
+                    radial-gradient(ellipse 40% 30% at 80% 80%, #c9a96e05, transparent);
+            pointer-events: none;
+        }
+
+        .hero-eyebrow {
+            font-family: var(--sans);
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 36px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .hero-eyebrow::before,
+        .hero-eyebrow::after {
+            content: '';
+            width: 28px;
+            height: 1px;
+            background: var(--gold);
+            opacity: .6;
+        }
+
+        .hero h1 {
+            font-family: var(--serif);
+            font-size: clamp(32px, 6vw, 60px);
+            font-weight: 300;
+            line-height: 1.3;
+            letter-spacing: -0.5px;
+            margin-bottom: 28px;
+            color: var(--text);
+        }
+        .hero h1 em {
+            font-style: normal;
+            color: var(--gold);
+        }
+
+        .hero-sub {
+            font-size: 15px;
+            color: var(--muted-light);
+            max-width: 440px;
+            margin: 0 auto 52px;
+            line-height: 1.9;
+            font-weight: 300;
+        }
+
+        .cta-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .cta-btn {
+            background: var(--gold);
+            color: #080808;
+            border: none;
+            cursor: pointer;
+            padding: 16px 48px;
+            font-family: var(--sans);
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            transition: background .2s, transform .2s;
+        }
+        .cta-btn:hover {
+            background: var(--gold-light);
+            transform: translateY(-1px);
+        }
+
+        .price-hint {
+            font-size: 13px;
+            color: var(--muted);
+            letter-spacing: .3px;
+        }
+        .price-hint strong {
+            color: var(--gold);
+            font-weight: 500;
+        }
+
+        .features {
+            padding: 120px 24px;
+            max-width: 960px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .features-title {
+            font-family: var(--serif);
+            font-size: clamp(24px, 3.5vw, 38px);
+            font-weight: 300;
+            margin-bottom: 72px;
+            color: var(--text);
+            line-height: 1.4;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0;
+            border: 1px solid var(--border);
+        }
+
+        .feature-card {
+            padding: 40px 28px;
+            border-right: 1px solid var(--border);
+            text-align: left;
+            position: relative;
+            transition: background .2s;
+        }
+        .feature-card:last-child { border-right: none; }
+        .feature-card:hover { background: #111111; }
+
+        .feature-num {
+            font-family: var(--serif);
+            font-size: 11px;
+            color: var(--gold);
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .feature-card h3 {
+            font-family: var(--serif);
+            font-size: 16px;
+            font-weight: 400;
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        .feature-card p {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.8;
+            font-weight: 300;
+        }
+
+        .process {
+            padding: 120px 24px;
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .process-inner {
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        .process-title {
+            font-family: var(--serif);
+            font-size: clamp(22px, 3vw, 34px);
+            font-weight: 300;
+            text-align: center;
+            margin-bottom: 64px;
+            line-height: 1.4;
+        }
+
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .step {
+            display: flex;
+            gap: 28px;
+            padding: 28px 0;
+            border-bottom: 1px solid var(--border);
+            align-items: flex-start;
+        }
+        .step:last-child { border-bottom: none; }
+
+        .step-num {
+            font-family: var(--serif);
+            font-size: 11px;
+            color: var(--gold);
+            letter-spacing: 2px;
+            flex-shrink: 0;
+            padding-top: 3px;
+            width: 36px;
+        }
+
+        .step-content h4 {
+            font-family: var(--serif);
+            font-size: 16px;
+            font-weight: 400;
+            margin-bottom: 6px;
+            color: var(--text);
+        }
+
+        .step-content p {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.8;
+            font-weight: 300;
+        }
+
+        .order-section {
+            padding: 120px 24px;
+            max-width: 520px;
+            margin: 0 auto;
+        }
+
+        .order-card {
+            border: 1px solid var(--border);
+            padding: 48px 40px;
+            background: var(--card);
+        }
+
+        .order-card-title {
+            font-family: var(--serif);
+            font-size: 26px;
+            font-weight: 300;
+            margin-bottom: 6px;
+            color: var(--text);
+        }
+
+        .order-card-sub {
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 36px;
+            font-weight: 300;
+            line-height: 1.8;
+        }
+
+        .form-group { margin-bottom: 20px; }
+
+        .form-group label {
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            background: var(--bg);
+            border: 1px solid var(--border-mid);
+            color: var(--text);
+            padding: 13px 16px;
+            font-size: 14px;
+            font-family: var(--sans);
+            outline: none;
+            transition: border-color .2s;
+            border-radius: 0;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus { border-color: var(--gold); }
+        .form-group input::placeholder { color: #3a3530; }
+
+        .form-error { font-size: 12px; color: #c97070; margin-top: 6px; display: none; letter-spacing: .3px; }
+
+        .price-box {
+            border: 1px solid var(--border-mid);
+            padding: 20px 24px;
+            margin: 32px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--surface);
+        }
+
+        .price-box .label {
+            font-size: 13px;
+            color: var(--muted-light);
+        }
+
+        .price-box .label-sub {
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 3px;
+            letter-spacing: .3px;
+        }
+
+        .price-box .amount {
+            font-family: var(--serif);
+            font-size: 22px;
+            font-weight: 400;
+            color: var(--gold);
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: var(--gold);
+            color: #080808;
+            border: none;
+            padding: 16px;
+            font-family: var(--sans);
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background .2s;
+        }
+        .submit-btn:hover { background: var(--gold-light); }
+        .submit-btn:disabled { opacity: .45; cursor: not-allowed; }
+
+        .notice {
+            font-size: 11px;
+            color: var(--muted);
+            text-align: center;
+            margin-top: 16px;
+            line-height: 2;
+            letter-spacing: .3px;
+        }
+
+        .dev-btn {
+            width: 100%;
+            background: transparent;
+            color: #8a6f30;
+            border: 1px dashed #3a2f18;
+            padding: 11px;
+            font-size: 12px;
+            font-family: var(--sans);
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background .2s;
+            letter-spacing: .5px;
+        }
+        .dev-btn:hover { background: #1a1508; }
+        .dev-btn:disabled { opacity: .4; cursor: not-allowed; }
+
+        .dev-banner {
+            background: #0f0c04;
+            border: 1px solid #3a2f18;
+            padding: 8px 14px;
+            font-size: 11px;
+            color: #8a6f30;
+            text-align: center;
+            margin-bottom: 24px;
+            letter-spacing: .5px;
+        }
+
+        .upload-section {
+            display: none;
+            padding: 80px 24px;
+            max-width: 520px;
+            margin: 0 auto;
+        }
+
+        .upload-card {
+            border: 1px solid var(--border);
+            padding: 40px;
+            background: var(--card);
+        }
+
+        .progress-bar {
+            height: 1px;
+            background: var(--border-mid);
+            margin: 16px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gold);
+            transition: width .4s;
+            width: 0%;
+        }
+
+        .upload-drop {
+            border: 1px dashed var(--border-mid);
+            padding: 48px 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color .2s, background .2s;
+            margin-bottom: 20px;
+        }
+        .upload-drop:hover,
+        .upload-drop.drag-over {
+            border-color: var(--gold);
+            background: #c9a96e06;
+        }
+
+        #file-input { display: none; }
+
+        .done-section {
+            display: none;
+            padding: 120px 24px;
+            max-width: 480px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .done-mark {
+            width: 56px;
+            height: 56px;
+            border: 1px solid var(--gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 32px;
+            color: var(--gold);
+            font-size: 20px;
+        }
+
+        .done-section h2 {
+            font-family: var(--serif);
+            font-size: 26px;
+            font-weight: 300;
+            margin-bottom: 16px;
+        }
+
+        .done-section p {
+            color: var(--muted-light);
+            font-size: 14px;
+            line-height: 1.9;
+            font-weight: 300;
+        }
+
+        .order-number {
+            border: 1px solid var(--border-mid);
+            padding: 14px 20px;
+            margin: 24px 0;
+            font-family: var(--serif);
+            font-size: 15px;
+            color: var(--gold);
+            letter-spacing: 1px;
+        }
+
+        .faq-section {
+            padding: 120px 24px;
+            max-width: 640px;
+            margin: 0 auto;
+        }
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+        .faq-item {
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: background .2s;
+        }
+        .faq-item:first-child { border-top: 1px solid var(--border); }
+        .faq-item:hover { background: #111111; }
+        .faq-q {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 4px;
+            font-family: var(--serif);
+            font-size: 15px;
+            font-weight: 400;
+            color: var(--text);
+            line-height: 1.6;
+        }
+        .faq-arrow {
+            color: var(--gold);
+            font-size: 18px;
+            flex-shrink: 0;
+            margin-left: 16px;
+            transition: transform .2s;
+        }
+        .faq-item.open .faq-arrow { transform: rotate(45deg); }
+        .faq-a {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height .3s ease, padding .3s ease;
+            font-size: 13px;
+            color: var(--muted-light);
+            line-height: 1.9;
+            font-weight: 300;
+            padding: 0 4px;
+        }
+        .faq-item.open .faq-a {
+            max-height: 200px;
+            padding: 0 4px 20px;
+        }
+        .kakao-float {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9990;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: #FEE500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 16px rgba(0,0,0,.3);
+            cursor: pointer;
+            transition: transform .2s, box-shadow .2s;
+            text-decoration: none;
+        }
+        .kakao-float:hover {
+            transform: scale(1.08);
+            box-shadow: 0 6px 24px rgba(0,0,0,.4);
+        }
+        .kakao-float svg { width: 28px; height: 28px; }
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 36px 24px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--muted);
+            letter-spacing: .5px;
+            line-height: 2;
+        }
+
+        #resume-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: #000000e0;
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .resume-inner {
+            background: var(--card);
+            border: 1px solid var(--border-mid);
+            padding: 48px 40px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .resume-inner h3 {
+            font-family: var(--serif);
+            font-size: 20px;
+            font-weight: 300;
+            margin-bottom: 12px;
+        }
+
+        .resume-inner p {
+            font-size: 13px;
+            color: var(--muted-light);
+            line-height: 1.9;
+            margin-bottom: 32px;
+            font-weight: 300;
+        }
+
+        .resume-btns {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-resume-yes {
+            flex: 2;
+            background: var(--gold);
+            color: #080808;
+            border: none;
+            padding: 14px;
+            font-family: var(--sans);
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: background .2s;
+        }
+        .btn-resume-yes:hover { background: var(--gold-light); }
+
+        .btn-resume-no {
+            flex: 1;
+            background: transparent;
+            color: var(--muted);
+            border: 1px solid var(--border-mid);
+            padding: 14px;
+            font-family: var(--sans);
+            font-size: 12px;
+            letter-spacing: .5px;
+            cursor: pointer;
+            transition: border-color .2s, color .2s;
+        }
+        .btn-resume-no:hover { border-color: var(--muted); color: var(--text); }
+
+        .confirm-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: #000000e0;
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .confirm-inner {
+            background: var(--card);
+            border: 1px solid var(--border-mid);
+            padding: 48px 40px;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .confirm-inner h3 {
+            font-family: var(--serif);
+            font-size: 20px;
+            font-weight: 300;
+            margin-bottom: 16px;
+        }
+
+        .confirm-inner .confirm-desc {
+            font-size: 13px;
+            color: var(--muted-light);
+            line-height: 1.9;
+            margin-bottom: 12px;
+            font-weight: 300;
+        }
+
+        .confirm-summary {
+            border: 1px solid var(--border);
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            text-align: left;
+            background: var(--surface);
+        }
+
+        .confirm-summary-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            padding: 5px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .confirm-summary-row:last-child { border-bottom: none; }
+
+        .confirm-summary-row .label { color: var(--muted); }
+        .confirm-summary-row .value { color: var(--text); font-weight: 400; }
+
+        .confirm-warning {
+            font-size: 12px;
+            color: #c9a070;
+            margin-bottom: 24px;
+            line-height: 1.8;
+            letter-spacing: .3px;
+        }
+
+        .confirm-btns {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-confirm-yes {
+            flex: 2;
+            background: var(--gold);
+            color: #080808;
+            border: none;
+            padding: 14px;
+            font-family: var(--sans);
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: background .2s;
+        }
+        .btn-confirm-yes:hover { background: var(--gold-light); }
+
+        .btn-confirm-no {
+            flex: 1;
+            background: transparent;
+            color: var(--muted);
+            border: 1px solid var(--border-mid);
+            padding: 14px;
+            font-family: var(--sans);
+            font-size: 12px;
+            letter-spacing: .5px;
+            cursor: pointer;
+            transition: border-color .2s, color .2s;
+        }
+        .btn-confirm-no:hover { border-color: var(--muted); color: var(--text); }
+
+        @media (max-width: 600px) {
+            .confirm-inner { padding: 36px 24px; }
+        }
+
+        .guide-sequence {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            margin: 32px 0;
+            flex-wrap: wrap;
+        }
+
+        .guide-seq-item {
+            text-align: center;
+            padding: 0 16px;
+        }
+
+        .guide-seq-item .era {
+            font-family: var(--serif);
+            font-size: 13px;
+            color: var(--text);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .guide-seq-item .period {
+            font-size: 11px;
+            color: var(--muted);
+            letter-spacing: .5px;
+        }
+
+        .guide-seq-arrow {
+            color: var(--gold);
+            font-size: 14px;
+            opacity: .5;
+        }
+
+        .guide-tip {
+            border-left: 2px solid var(--gold);
+            padding: 16px 20px;
+            margin: 28px 0;
+            background: #c9a96e05;
+        }
+
+        .guide-tip p {
+            font-size: 13px;
+            color: var(--muted-light);
+            line-height: 1.9;
+            font-weight: 300;
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .step-order-num {
+            font-size: 12px;
+            color: var(--muted);
+            letter-spacing: .5px;
+        }
+
+        .step-counter {
+            font-family: var(--serif);
+            font-size: 13px;
+            color: var(--gold);
+            letter-spacing: 2px;
+        }
+
+        .step-title-text {
+            font-family: var(--serif);
+            font-size: 20px;
+            font-weight: 300;
+            margin-bottom: 4px;
+            color: var(--text);
+        }
+
+        .step-subtitle {
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 20px;
+            font-weight: 300;
+            letter-spacing: .3px;
+        }
+
+        .drop-icon {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--border-mid);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            color: var(--gold);
+            font-size: 16px;
+        }
+
+        .drop-main-text {
+            font-size: 13px;
+            color: var(--muted-light);
+            margin-bottom: 4px;
+        }
+
+        .drop-sub-text {
+            font-size: 11px;
+            color: var(--muted);
+            letter-spacing: .3px;
+        }
+
+        .step-nav {
+            display: flex;
+            gap: 10px;
+            margin-top: 24px;
+        }
+
+        .btn-prev {
+            flex: 1;
+            background: transparent;
+            color: var(--muted);
+            border: 1px solid var(--border-mid);
+            padding: 13px;
+            font-family: var(--sans);
+            font-size: 12px;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: border-color .2s, color .2s;
+        }
+        .btn-prev:hover { border-color: var(--muted); color: var(--text); }
+
+        .btn-next {
+            flex: 2;
+            background: var(--gold);
+            color: #080808;
+            border: none;
+            padding: 13px;
+            font-family: var(--sans);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background .2s;
+        }
+        .btn-next:disabled { opacity: .35; cursor: not-allowed; }
+        .btn-next:not(:disabled):hover { background: var(--gold-light); }
+
+        .btn-submit-all {
+            display: block;
+            width: 100%;
+            margin-top: 12px;
+            background: var(--gold);
+            color: #080808;
+            border: none;
+            padding: 15px;
+            font-family: var(--sans);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background .2s;
+        }
+        .btn-submit-all:hover { background: var(--gold-light); }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .photo-item {
+            position: relative;
+            aspect-ratio: 1;
+            border: 1px solid var(--border-mid);
+            overflow: hidden;
+            cursor: grab;
+            transition: transform .15s, box-shadow .15s;
+            user-select: none;
+        }
+        .photo-item:active { cursor: grabbing; }
+        .photo-item.dragging {
+            opacity: .4;
+            border-color: var(--gold);
+        }
+        .photo-item.drag-over {
+            transform: scale(1.03);
+            box-shadow: 0 0 0 2px var(--gold);
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            pointer-events: none;
+        }
+
+        .photo-item .photo-num {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            width: 22px;
+            height: 22px;
+            background: #000000cc;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            font-size: 11px;
+            font-family: var(--serif);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+
+        .photo-item .remove-btn {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 22px;
+            height: 22px;
+            background: #000000cc;
+            border: 1px solid #555;
+            color: #aaa;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: color .15s, border-color .15s;
+            line-height: 1;
+        }
+        .photo-item .remove-btn:hover {
+            color: #ff6b6b;
+            border-color: #ff6b6b;
+        }
+
+        .photo-count-info {
+            text-align: center;
+            font-size: 13px;
+            color: var(--muted-light);
+            margin: 12px 0;
+            letter-spacing: .3px;
+        }
+
+        .add-more-btn {
+            width: 100%;
+            background: transparent;
+            color: var(--muted-light);
+            border: 1px dashed var(--border-mid);
+            padding: 12px;
+            font-family: var(--sans);
+            font-size: 12px;
+            letter-spacing: .5px;
+            cursor: pointer;
+            transition: border-color .2s, color .2s;
+            margin-bottom: 12px;
+        }
+        .add-more-btn:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        .progress-label {
+            font-size: 11px;
+            color: var(--muted);
+            text-align: center;
+            letter-spacing: .5px;
+            margin-bottom: 24px;
+        }
+
+        .bgm-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            border: 1px solid var(--border-mid);
+            background: var(--bg);
+            cursor: pointer;
+            transition: border-color .2s, background .2s;
+        }
+        .bgm-option:hover { border-color: var(--gold); background: #c9a96e06; }
+        .bgm-option.selected {
+            border-color: var(--gold);
+            background: #c9a96e0a;
+        }
+
+        .bgm-play-btn {
+            width: 32px;
+            height: 32px;
+            border: 1px solid var(--border-mid);
+            background: transparent;
+            color: var(--gold);
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: border-color .2s, background .2s;
+        }
+        .bgm-play-btn:hover { border-color: var(--gold); background: #c9a96e15; }
+        .bgm-play-btn.playing { background: var(--gold); color: #080808; }
+
+        .bgm-info { flex: 1; }
+        .bgm-name { font-size: 13px; color: var(--text); font-weight: 400; }
+        .bgm-desc { font-size: 11px; color: var(--muted); margin-top: 2px; letter-spacing: .3px; }
+
+        .bgm-check {
+            width: 16px;
+            height: 16px;
+            border: 1px solid var(--border-mid);
+            border-radius: 50%;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            color: transparent;
+            transition: border-color .2s, background .2s, color .2s;
+        }
+        .bgm-option.selected .bgm-check {
+            border-color: var(--gold);
+            background: var(--gold);
+            color: #080808;
+        }
+
+        #flow-stepper {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: #0a0a0a;
+            border-bottom: 1px solid var(--border);
+            padding: 0 24px;
+            height: 52px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #flow-stepper.visible { display: flex; }
+
+        .stepper-inner {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            max-width: 320px;
+            width: 100%;
+        }
+
+        .stepper-step {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .stepper-dot {
+            width: 22px;
+            height: 22px;
+            border: 1px solid var(--border-mid);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-family: var(--serif);
+            color: var(--muted);
+            flex-shrink: 0;
+            transition: border-color .3s, background .3s, color .3s;
+        }
+
+        .stepper-step.active .stepper-dot {
+            border-color: var(--gold);
+            background: var(--gold);
+            color: #080808;
+            font-weight: 600;
+        }
+
+        .stepper-step.done .stepper-dot {
+            border-color: var(--gold);
+            color: var(--gold);
+            background: transparent;
+        }
+
+        .stepper-label {
+            font-size: 11px;
+            color: var(--muted);
+            letter-spacing: .8px;
+            white-space: nowrap;
+            transition: color .3s;
+        }
+
+        .stepper-step.active .stepper-label { color: var(--text); font-weight: 500; }
+        .stepper-step.done  .stepper-label  { color: var(--gold); }
+
+        .stepper-line {
+            flex: 1;
+            height: 1px;
+            background: var(--border-mid);
+            margin: 0 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stepper-line-fill {
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            background: var(--gold);
+            width: 0%;
+            transition: width .5s ease;
+        }
+
+        body.flow-active .upload-section,
+        body.flow-active .done-section {
+            padding-top: 108px;
+        }
+
+        @media (max-width: 600px) {
+            #preview-section .sample-grid { grid-template-columns: 1fr !important; }
+            .feature-grid { grid-template-columns: 1fr 1fr; }
+            .feature-card { border-bottom: 1px solid var(--border); }
+            .feature-card:nth-child(odd) { border-right: 1px solid var(--border); }
+            .feature-card:nth-child(even) { border-right: none; }
+            .order-card, .upload-card { padding: 28px 20px; }
+            .resume-inner { padding: 36px 24px; }
+            .guide-sequence { gap: 0; }
+            .guide-seq-item { padding: 0 8px; }
+            .photo-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 400px) {
+            .feature-grid { grid-template-columns: 1fr; }
+            .feature-card { border-right: none; }
+        }
+    </style>
 </head>
 <body>
 
 <section class="hero">
-  <div class="hero-eyebrow">시간의 사진관</div>
-  <h1>부모님의 세월이<br><em>살아 움직입니다</em></h1>
-  <p class="hero-sub">
-    소중한 가족 사진을 살아 숨 쉬는 감동 영상으로.<br>
-    환갑·칠순·결혼기념일 행사에서 바로 상영하세요.
-  </p>
-  <div class="cta-wrap">
-    <button class="cta-btn" onclick="scrollToOrder()">지금 주문하기</button>
-    <p class="price-hint">단 <strong>29,900원</strong> · 8시간 내 제작 · HD 16:9</p>
-  </div>
+    <div class="hero-eyebrow">시간의 사진관</div>
+    <h1>부모님의 세월이<br><em>살아 움직입니다</em></h1>
+    <p class="hero-sub">
+        소중한 가족 사진을 살아 숨 쉬는 감동 영상으로.<br>
+        환갑·칠순·결혼기념일 행사에서 바로 상영하세요.
+    </p>
+    <div class="cta-wrap">
+        <button class="cta-btn" onclick="scrollToOrder()">지금 주문하기</button>
+        <p class="price-hint"><span style="text-decoration:line-through;color:var(--muted);font-size:12px">49,900원</span> &rarr; <strong>29,900원</strong> · 8시간 내 제작 · HD 16:9</p>
+        <p style="font-size:11px;color:var(--gold);letter-spacing:1.5px;margin-top:8px">사전 예약 접수 중 — 오픈 기념 40% 할인</p>
+    </div>
 </section>
 
 <section id="preview-section" style="padding: 80px 24px 0; display:flex; flex-direction:column; align-items:center; text-align:center;">
-  <span class="section-label">Preview</span>
-  <h2 style="font-family:var(--serif);font-size:clamp(20px,3vw,30px);font-weight:300;margin-bottom:8px;color:var(--text)">이런 영상이 가능합니다</h2>
-  <p style="font-size:13px;color:var(--muted);font-weight:300;margin-bottom:36px">부모님께 평생 잊지 못할 감동을 드리세요</p>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:680px;width:100%">
-    <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DRftS3lkVGk/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style="background:#FFF;border:0;border-radius:3px;box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15);margin:0;padding:0;width:100%;min-width:unset"></blockquote>
-    <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DPbgSLTCHy3/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style="background:#FFF;border:0;border-radius:3px;box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15);margin:0;padding:0;width:100%;min-width:unset"></blockquote>
-  </div>
-  <script async src="//www.instagram.com/embed.js"></script>
-  <p style="font-size:11px;color:var(--muted);margin-top:16px;line-height:1.6;max-width:480px;text-align:center">
-    * 상기 영상은 해외 계정의 참고 영상이며, 실제 완성 영상과 차이가 있을 수 있습니다.
-  </p>
+    <span class="section-label">Preview</span>
+    <h2 style="font-family:var(--serif);font-size:clamp(20px,3vw,30px);font-weight:300;margin-bottom:8px;color:var(--text)">실제 완성 영상</h2>
+    <p style="font-size:13px;color:var(--muted);font-weight:300;margin-bottom:32px">사진 한 장이 이렇게 살아 움직입니다</p>
+
+    <div style="max-width:720px;width:100%">
+        <div class="sample-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+            <div style="position:relative;border:1px solid var(--border);overflow:hidden">
+                <video autoplay muted loop playsinline style="width:100%;display:block">
+                    <source src="/sample1.mp4" type="video/mp4">
+                </video>
+                <div style="padding:12px 14px;background:var(--card);border-top:1px solid var(--border)">
+                    <p style="font-size:11px;color:var(--muted-light);text-align:left;line-height:1.6">부부 사진 · 결혼기념일</p>
+                </div>
+            </div>
+            <div style="position:relative;border:1px solid var(--border);overflow:hidden">
+                <video autoplay muted loop playsinline style="width:100%;display:block">
+                    <source src="/sample2.mp4" type="video/mp4">
+                </video>
+                <div style="padding:12px 14px;background:var(--card);border-top:1px solid var(--border)">
+                    <p style="font-size:11px;color:var(--muted-light);text-align:left;line-height:1.6">가족 단체 · 어머니 환갑</p>
+                </div>
+            </div>
+        </div>
+        <p style="font-size:11px;color:var(--muted);margin-top:24px;line-height:1.6;max-width:480px;text-align:center">
+            모든 영상은 고객님 동의 하에 게재되었습니다
+        </p>
+    </div>
 </section>
 
 <section class="features">
-  <span class="section-label">Why Different</span>
-  <h2 class="features-title">단순한 슬라이드쇼가 아닙니다</h2>
-  <div class="feature-grid">
-    <div class="feature-card">
-      <span class="feature-num">01</span>
-      <h3>살아 숨 쉬는 사진</h3>
-      <p>AI가 사진 속 인물의 표정과 배경을 분석해 자연스러운 움직임을 만들어냅니다.</p>
+    <span class="section-label">Why Different</span>
+    <h2 class="features-title">단순한 슬라이드쇼가 아닙니다</h2>
+    <div class="feature-grid">
+        <div class="feature-card">
+            <span class="feature-num">01</span>
+            <h3>살아 숨 쉬는 사진</h3>
+            <p>머리카락이 바람에 나부끼고, 배경이 부드럽게 흘릅니다. 영화 같은 시네마그래프 기술로 사진이 살아 움직입니다.</p>
+        </div>
+        <div class="feature-card">
+            <span class="feature-num">02</span>
+            <h3>감성 배경 음악</h3>
+            <p>3곡의 감성 BGM 중 원하는 분위기를 선택하세요. 음악과 함께 영상의 감동이 배가 됩니다.</p>
+        </div>
+        <div class="feature-card">
+            <span class="feature-num">03</span>
+            <h3>행사 상영 최적화</h3>
+            <p>HD 가로형(16:9) 제작. 빔프로젝터·TV·스마트폰 어디서든 바로 상영할 수 있습니다.</p>
+        </div>
+        <div class="feature-card">
+            <span class="feature-num">04</span>
+            <h3>8시간 내 완성</h3>
+            <p>사진 업로드 후 8시간 이내에 영상 완성. 문자로 다운로드 링크를 보내드립니다.</p>
+        </div>
     </div>
-    <div class="feature-card">
-      <span class="feature-num">02</span>
-      <h3>감성 배경 음악</h3>
-      <p>영상 분위기에 맞는 감성적인 음악이 함께 흘러 감동을 더해줍니다.</p>
-    </div>
-    <div class="feature-card">
-      <span class="feature-num">03</span>
-      <h3>행사 상영 최적화</h3>
-      <p>HD 가로형(16:9) 제작. 빔프로젝터·TV 어디서든 바로 상영 가능합니다.</p>
-    </div>
-    <div class="feature-card">
-      <span class="feature-num">04</span>
-      <h3>8시간 내 완성</h3>
-      <p>주문 후 8시간 이내에 완성 영상 다운로드 링크를 문자로 보내드립니다.</p>
-    </div>
-  </div>
 </section>
 
 <section class="process">
-  <div class="process-inner">
-    <span class="section-label" style="text-align:center;display:block">How It Works</span>
-    <h2 class="process-title">사진관처럼 맡기세요</h2>
-    <div class="steps">
-      <div class="step">
-        <span class="step-num">01</span>
-        <div class="step-content">
-          <h4>주문 &amp; 결제 — 1분</h4>
-          <p>이름, 연락처 입력 후 29,900원 결제. 안전한 보안 결제로 처리됩니다.</p>
+    <div class="process-inner">
+        <span class="section-label" style="text-align:center;display:block">How It Works</span>
+        <h2 class="process-title">사진관처럼 맡기세요</h2>
+        <div class="steps">
+            <div class="step">
+                <span class="step-num">01</span>
+                <div class="step-content">
+                    <h4>주문 &amp; 결제 — 1분</h4>
+                    <p>이름, 연락처 입력 후 29,900원 결제. 안전한 보안 결제로 처리됩니다.</p>
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">02</span>
+                <div class="step-content">
+                    <h4>사진 업로드 — 5분</h4>
+                    <p>사진 10장을 시간 순서대로 업로드합니다. 옛날 사진은 스마트폰으로 찍어서 올려도 됩니다.</p>
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">03</span>
+                <div class="step-content">
+                    <h4>영상 제작 — 8시간 이내</h4>
+                    <p>각 사진에 자연스러운 움직임을 만들고, 인트로·아웃트로·음악과 함께 편집합니다.</p>
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">04</span>
+                <div class="step-content">
+                    <h4>문자로 전달</h4>
+                    <p>완성되면 등록하신 번호로 다운로드 링크를 문자 발송합니다. 72시간 내 다운로드 가능합니다.</p>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="step">
-        <span class="step-num">02</span>
-        <div class="step-content">
-          <h4>사진 업로드 — 5분</h4>
-          <p>사진 10장을 나이 순서대로 업로드합니다. 어린 시절부터 현재까지 시간 순으로 준비해 주세요.</p>
-        </div>
-      </div>
-      <div class="step">
-        <span class="step-num">03</span>
-        <div class="step-content">
-          <h4>AI 제작 — 8시간 이내</h4>
-          <p>AI가 각 사진에 자연스러운 움직임을 만들고 음악과 함께 편집합니다.</p>
-        </div>
-      </div>
-      <div class="step">
-        <span class="step-num">04</span>
-        <div class="step-content">
-          <h4>문자로 전달</h4>
-          <p>완성되면 등록하신 번호로 다운로드 링크를 문자 발송합니다. 72시간 내 다운로드 가능합니다.</p>
-        </div>
-      </div>
     </div>
-  </div>
+</section>
+
+<section id="instagram-section" style="padding: 80px 24px; display:flex; flex-direction:column; align-items:center; text-align:center;">
+    <span class="section-label">Instagram</span>
+    <h2 style="font-family:var(--serif);font-size:clamp(20px,3vw,30px);font-weight:300;margin-bottom:8px;color:var(--text)">이런 영상, 보신 적 있으신가요?</h2>
+    <p style="font-size:13px;color:var(--muted);font-weight:300;margin-bottom:32px">인스타그램에서 화제가 된 사진 애니메이션 영상입니다</p>
+    <div class="sample-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:680px;width:100%">
+        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DRftS3lkVGk/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style="background:#FFF;border:0;border-radius:3px;box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15);margin:0;padding:0;width:100%;min-width:unset"></blockquote>
+        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DPbgSLTCHy3/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style="background:#FFF;border:0;border-radius:3px;box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15);margin:0;padding:0;width:100%;min-width:unset"></blockquote>
+    </div>
+    <script async src="//www.instagram.com/embed.js"></script>
+    <p style="font-size:13px;color:var(--muted-light);font-weight:300;margin-top:28px;line-height:1.8;max-width:480px">
+        시간의 사진관은 이 기술로 여러분의 소중한 사진을<br>감동적인 영상으로 만들어 드립니다.
+    </p>
 </section>
 
 <section class="faq-section" id="faq-section">
-  <span class="section-label" style="text-align:center;display:block">FAQ</span>
-  <h2 style="font-family:var(--serif);font-size:clamp(22px,3vw,34px);font-weight:300;text-align:center;margin-bottom:48px;line-height:1.4">자주 묻는 질문</h2>
-  <div class="faq-list">
-    <div class="faq-item" onclick="this.classList.toggle('open')">
-      <div class="faq-q"><span>어떤 사진을 준비해야 하나요?</span><span class="faq-arrow">＋</span></div>
-      <div class="faq-a">인물이 잘 보이는 사진이면 됩니다. 어린 시절부터 현재까지 시간 순서대로 10장을 준비해 주세요. 가족 단체 사진, 부부 사진, 1인 사진 모두 가능합니다. 해상도가 높을수록 영상 품질이 좋아집니다.</div>
+    <span class="section-label" style="text-align:center;display:block">FAQ</span>
+    <h2 style="font-family:var(--serif);font-size:clamp(22px,3vw,34px);font-weight:300;text-align:center;margin-bottom:48px;line-height:1.4">자주 묻는 질문</h2>
+    <div class="faq-list">
+        <div class="faq-item" onclick="this.classList.toggle('open')">
+            <div class="faq-q"><span>어떤 사진을 준비해야 하나요?</span><span class="faq-arrow">＋</span></div>
+            <div class="faq-a">인물이 잘 보이는 사진이면 됩니다. 어린 시절부터 현재까지 시간 순서대로 10장을 준비해 주세요. 가족 단체 사진, 부부 사진, 1인 사진 모두 가능합니다. 해상도가 높을수록 영상 품질이 좋아집니다.</div>
+        </div>
+        <div class="faq-item" onclick="this.classList.toggle('open')">
+            <div class="faq-q"><span>옛날 사진을 스마트폰으로 찍어도 되나요?</span><span class="faq-arrow">＋</span></div>
+            <div class="faq-a">네, 가능합니다. 인화된 사진을 스마트폰 카메라로 촬영해서 올려주셔도 됩니다. 빛 반사가 없도록 밝은 곳에서 정면으로 촬영하시면 더 좋은 결과를 얻을 수 있습니다.</div>
+        </div>
+        <div class="faq-item" onclick="this.classList.toggle('open')">
+            <div class="faq-q"><span>영상은 어떤 형태로 받나요?</span><span class="faq-arrow">＋</span></div>
+            <div class="faq-a">HD 가로형(16:9) MP4 파일로 제작됩니다. 완성되면 등록하신 연락처로 다운로드 링크를 문자 발송합니다. 72시간 내 다운로드 가능하며, 빔프로젝터·TV·스마트폰 어디서든 바로 재생할 수 있습니다.</div>
+        </div>
+        <div class="faq-item" onclick="this.classList.toggle('open')">
+            <div class="faq-q"><span>완성까지 얼마나 걸리나요?</span><span class="faq-arrow">＋</span></div>
+            <div class="faq-a">사진 업로드 완료 후 8시간 이내에 완성 영상을 보내드립니다. 대부분 2~4시간 내에 완성됩니다. 완성 즉시 문자로 안내드리니 편하게 기다려 주세요.</div>
+        </div>
+        <div class="faq-item" onclick="this.classList.toggle('open')">
+            <div class="faq-q"><span>환불/취소가 가능한가요?</span><span class="faq-arrow">＋</span></div>
+            <div class="faq-a">영상 제작이 시작되기 전이라면 100% 환불이 가능합니다. 카카오톡 채널 @시간의사진관 또는 전화(010-4622-2849)로 요청해 주세요.</div>
+        </div>
+        <div class="faq-item" onclick="this.classList.toggle('open')">
+            <div class="faq-q"><span>영상이 마음에 안 들면 어떡하나요?</span><span class="faq-arrow">＋</span></div>
+            <div class="faq-a">완성 영상이 만족스럽지 않으시면 무료 재제작 1회를 제공합니다. 재제작 시 사진 교체나 BGM 변경도 가능합니다. 재제작 후에도 불만족 시 50% 환불해 드립니다.</div>
+        </div>
+        <div class="faq-item" onclick="this.classList.toggle('open')">
+            <div class="faq-q"><span>행사장에서 바로 틀 수 있나요?</span><span class="faq-arrow">＋</span></div>
+            <div class="faq-a">네. MP4 파일을 USB에 담아서 빔프로젝터에 연결하거나, 스마트폰에서 바로 TV로 미러링할 수 있습니다. HD 16:9 비율이라 대형 화면에서도 선명하게 재생됩니다.</div>
+        </div>
     </div>
-    <div class="faq-item" onclick="this.classList.toggle('open')">
-      <div class="faq-q"><span>옛날 사진을 스마트폰으로 찍어도 되나요?</span><span class="faq-arrow">＋</span></div>
-      <div class="faq-a">네, 가능합니다. 인화된 사진을 스마트폰 카메라로 촬영해서 올려주셔도 됩니다. 빛 반사가 없도록 밝은 곳에서 정면으로 촬영하시면 더 좋은 결과를 얻을 수 있습니다.</div>
-    </div>
-    <div class="faq-item" onclick="this.classList.toggle('open')">
-      <div class="faq-q"><span>영상은 어떤 형태로 받나요?</span><span class="faq-arrow">＋</span></div>
-      <div class="faq-a">HD 가로형(16:9) MP4 파일로 제작됩니다. 완성되면 등록하신 연락처로 다운로드 링크를 문자 발송합니다. 72시간 내 다운로드 가능하며, 빔프로젝터·TV·스마트폰 어디서든 바로 재생할 수 있습니다.</div>
-    </div>
-    <div class="faq-item" onclick="this.classList.toggle('open')">
-      <div class="faq-q"><span>완성까지 얼마나 걸리나요?</span><span class="faq-arrow">＋</span></div>
-      <div class="faq-a">사진 업로드 완료 후 8시간 이내에 완성 영상을 보내드립니다. 대부분 2~4시간 내에 완성됩니다. 완성 즉시 문자로 안내드리니 편하게 기다려 주세요.</div>
-    </div>
-    <div class="faq-item" onclick="this.classList.toggle('open')">
-      <div class="faq-q"><span>환불/취소가 가능한가요?</span><span class="faq-arrow">＋</span></div>
-      <div class="faq-a">영상 제작이 시작되기 전이라면 100% 환불이 가능합니다. 카카오톡 채널 @시간의사진관 또는 전화(010-4622-2849)로 요청해 주세요.</div>
-    </div>
-    <div class="faq-item" onclick="this.classList.toggle('open')">
-      <div class="faq-q"><span>영상이 마음에 안 들면 어떡하나요?</span><span class="faq-arrow">＋</span></div>
-      <div class="faq-a">완성 영상이 만족스럽지 않으시면 무료 재제작 1회를 제공합니다. 재제작 시 사진 교체나 BGM 변경도 가능합니다. 재제작 후에도 불만족 시 50% 환불해 드립니다.</div>
-    </div>
-    <div class="faq-item" onclick="this.classList.toggle('open')">
-      <div class="faq-q"><span>행사장에서 바로 틀 수 있나요?</span><span class="faq-arrow">＋</span></div>
-      <div class="faq-a">네. MP4 파일을 USB에 담아서 빔프로젝터에 연결하거나, 스마트폰에서 바로 TV로 미러링할 수 있습니다. HD 16:9 비율이라 대형 화면에서도 선명하게 재생됩니다.</div>
-    </div>
-  </div>
 </section>
 
 <section class="order-section" id="order-section">
-  <span class="section-label" style="text-align:center;display:block">Order</span>
-  <div class="order-card">
-    <h2 class="order-card-title">사진 맡기기</h2>
-    <p class="order-card-sub">결제 후 사진을 업로드하시면<br>8시간 내 완성 영상을 보내드립니다.</p>
+    <span class="section-label" style="text-align:center;display:block">Order</span>
+    <div class="order-card">
+        <h2 class="order-card-title">사진 맡기기</h2>
+        <p class="order-card-sub">결제 후 사진을 업로드하시면<br>8시간 내 완성 영상을 보내드립니다.</p>
 
-    <div class="form-group">
-      <label>이름</label>
-      <input type="text" id="customerName" placeholder="홍길동" maxlength="20">
-      <div class="form-error" id="err-name"></div>
+        <div class="form-group">
+            <label>이름</label>
+            <input type="text" id="customerName" placeholder="홍길동" maxlength="20">
+            <div class="form-error" id="err-name"></div>
+        </div>
+        <div class="form-group">
+            <label>연락처 <span style="font-size:10px;letter-spacing:.3px;text-transform:none;font-weight:300">완성 알림 수신</span></label>
+            <input type="tel" id="customerPhone" placeholder="01012345678" maxlength="11">
+            <div class="form-error" id="err-phone"></div>
+        </div>
+
+        <div class="form-group">
+            <label>이메일 <span style="font-size:10px;letter-spacing:.3px;text-transform:none;font-weight:300">결제 영수증 발송</span></label>
+            <input type="email" id="customerEmail" placeholder="example@email.com" maxlength="100">
+            <div class="form-error" id="err-email"></div>
+        </div>
+
+        <input type="hidden" id="photoCount" value="10">
+
+        <div class="price-box">
+            <div>
+                <div class="label">프리미엄 인생 영상 1편</div>
+                <div class="label-sub">HD 16:9 · 약 50~60초 · 8시간 내 제작</div>
+            </div>
+            <div style="text-align:right">
+                <div style="font-size:12px;text-decoration:line-through;color:var(--muted)">49,900원</div>
+                <div class="amount">29,900원</div>
+            </div>
+        </div>
+
+        <button class="submit-btn" id="pay-btn" onclick="startPayment()">
+            결제하고 사진 업로드하기
+        </button>
+
+        <button class="dev-btn" id="dev-skip-pay-btn" onclick="devSkipPayment()" style="display:none">
+            [DEV] 결제 스킵
+        </button>
+
+        <div style="margin-top:20px;padding:20px 24px;border:1px solid var(--border-mid);background:var(--surface)">
+            <p style="font-size:13px;color:var(--text);font-weight:400;margin-bottom:12px;font-family:var(--serif)">100% 만족 보장</p>
+            <div style="font-size:11px;color:var(--muted-light);line-height:2.2;letter-spacing:.3px">
+                <div style="display:flex;gap:10px;align-items:baseline"><span style="color:var(--gold);flex-shrink:0">—</span> 제작 시작 전: 전액 환불</div>
+                <div style="display:flex;gap:10px;align-items:baseline"><span style="color:var(--gold);flex-shrink:0">—</span> 영상 불만족: 무료 재제작 1회 (사진·BGM 변경 가능)</div>
+                <div style="display:flex;gap:10px;align-items:baseline"><span style="color:var(--gold);flex-shrink:0">—</span> 재제작 후 불만족: 50% 환불</div>
+            </div>
+        </div>
+        <p class="notice" style="margin-top:12px">
+            보안 안전결제 · 개인정보는 영상 제작에만 사용됩니다
+        </p>
     </div>
-    <div class="form-group">
-      <label>연락처 <span style="font-size:10px;letter-spacing:.3px;text-transform:none;font-weight:300">완성 알림 수신</span></label>
-      <input type="tel" id="customerPhone" placeholder="01012345678" maxlength="11">
-      <div class="form-error" id="err-phone"></div>
-    </div>
-
-    <div class="form-group">
-      <label>이메일 <span style="font-size:10px;letter-spacing:.3px;text-transform:none;font-weight:300">결제 영수증 발송</span></label>
-      <input type="email" id="customerEmail" placeholder="example@email.com" maxlength="100">
-      <div class="form-error" id="err-email"></div>
-    </div>
-
-    <input type="hidden" id="photoCount" value="10">
-
-    <div class="price-box">
-      <div>
-        <div class="label">프리미엄 인생 영상 1편</div>
-        <div class="label-sub">HD 16:9 · 약 1분 · 8시간 내 제작</div>
-      </div>
-      <div class="amount">29,900원</div>
-    </div>
-
-    <button class="submit-btn" id="pay-btn" onclick="startPayment()">
-      결제하고 사진 업로드하기
-    </button>
-
-    <button class="dev-btn" id="dev-skip-pay-btn" onclick="devSkipPayment()" style="display:none">
-      [DEV] 결제 스킵
-    </button>
-
-    <div style="margin-top:20px;padding:20px 24px;border:1px solid var(--border-mid);background:var(--surface)">
-      <p style="font-size:13px;color:var(--text);font-weight:400;margin-bottom:12px;font-family:var(--serif)">100% 만족 보장</p>
-      <div style="font-size:11px;color:var(--muted-light);line-height:2.2;letter-spacing:.3px">
-        <div style="display:flex;gap:10px;align-items:baseline"><span style="color:var(--gold);flex-shrink:0">—</span> 제작 시작 전: 전액 환불</div>
-        <div style="display:flex;gap:10px;align-items:baseline"><span style="color:var(--gold);flex-shrink:0">—</span> 영상 불만족: 무료 재제작 1회 (사진·BGM 변경 가능)</div>
-        <div style="display:flex;gap:10px;align-items:baseline"><span style="color:var(--gold);flex-shrink:0">—</span> 재제작 후 불만족: 50% 환불</div>
-      </div>
-    </div>
-    <p class="notice" style="margin-top:12px">
-      보안 안전결제 · 개인정보는 영상 제작에만 사용됩니다
-    </p>
-  </div>
 </section>
 
 <div id="payment-confirm-modal" class="confirm-modal">
-  <div class="confirm-inner">
-    <span class="section-label">주문 확인</span>
-    <h3>주문 정보를 확인해 주세요</h3>
-    <p class="confirm-desc">결제 후에는 아래 정보로 진행됩니다.</p>
-    <div class="confirm-summary" id="payment-confirm-summary"></div>
-    <p class="confirm-warning">입력하신 정보가 맞는지 다시 한번 확인해 주세요.<br>결제 후에는 연락처 변경이 어렵습니다.</p>
-    <div class="confirm-btns">
-      <button class="btn-confirm-yes" onclick="confirmPayment()">확인, 결제 진행</button>
-      <button class="btn-confirm-no" onclick="cancelPaymentConfirm()">다시 확인</button>
+    <div class="confirm-inner">
+        <span class="section-label">주문 확인</span>
+        <h3>주문 정보를 확인해 주세요</h3>
+        <p class="confirm-desc">결제 후에는 아래 정보로 진행됩니다.</p>
+        <div class="confirm-summary" id="payment-confirm-summary"></div>
+        <p class="confirm-warning">입력하신 정보가 맞는지 다시 한번 확인해 주세요.<br>결제 후에는 연락처 변경이 어렵습니다.</p>
+        <div class="confirm-btns">
+            <button class="btn-confirm-yes" onclick="confirmPayment()">확인, 결제 진행</button>
+            <button class="btn-confirm-no" onclick="cancelPaymentConfirm()">다시 확인</button>
+        </div>
     </div>
-  </div>
 </div>
 
 <div id="upload-confirm-modal" class="confirm-modal">
-  <div class="confirm-inner">
-    <span class="section-label">최종 확인</span>
-    <h3>업로드를 완료하시겠습니까?</h3>
-    <p class="confirm-desc">
-      총 <strong id="upload-confirm-count" style="color:var(--gold);font-weight:400"></strong>장의 사진이 업로드됩니다.
-    </p>
-    <p class="confirm-warning">
-      업로드 완료 후에는 사진을 변경하거나 추가할 수 없습니다.<br>
-      사진 순서가 올바른지 꼭 확인해 주세요.
-    </p>
-    <div class="confirm-btns">
-      <button class="btn-confirm-yes" onclick="confirmUpload()">확인, 제작 시작</button>
-      <button class="btn-confirm-no" onclick="cancelUploadConfirm()">다시 확인</button>
+    <div class="confirm-inner">
+        <span class="section-label">최종 확인</span>
+        <h3>업로드를 완료하시겠습니까?</h3>
+        <p class="confirm-desc">
+            총 <strong id="upload-confirm-count" style="color:var(--gold);font-weight:400"></strong>장의 사진이 업로드됩니다.
+        </p>
+        <p class="confirm-warning">
+            업로드 완료 후에는 사진을 변경하거나 추가할 수 없습니다.<br>
+            사진 순서가 올바른지 꼭 확인해 주세요.
+        </p>
+        <div class="confirm-btns">
+            <button class="btn-confirm-yes" onclick="confirmUpload()">확인, 제작 시작</button>
+            <button class="btn-confirm-no" onclick="cancelUploadConfirm()">다시 확인</button>
+        </div>
     </div>
-  </div>
 </div>
 
 <div id="resume-modal">
-  <div class="resume-inner">
-    <span class="section-label">미완료 주문</span>
-    <h3>이전 주문이 있습니다</h3>
-    <p>
-      <strong id="resume-name" style="color:var(--gold);font-weight:400"></strong>님의 주문
-      <strong id="resume-order-id" style="color:var(--gold);font-weight:400"></strong>이<br>
-      사진 업로드를 기다리고 있습니다.<br>이어서 진행하시겠습니까?
-    </p>
-    <div class="resume-btns">
-      <button class="btn-resume-yes" onclick="resumeExistingOrder()">이어서 업로드</button>
-      <button class="btn-resume-no" onclick="closeResumeModal()">새로 주문</button>
+    <div class="resume-inner">
+        <span class="section-label">미완료 주문</span>
+        <h3>이전 주문이 있습니다</h3>
+        <p>
+            <strong id="resume-name" style="color:var(--gold);font-weight:400"></strong>님의 주문
+            <strong id="resume-order-id" style="color:var(--gold);font-weight:400"></strong>이<br>
+            사진 업로드를 기다리고 있습니다.<br>이어서 진행하시겠습니까?
+        </p>
+        <div class="resume-btns">
+            <button class="btn-resume-yes" onclick="resumeExistingOrder()">이어서 업로드</button>
+            <button class="btn-resume-no" onclick="closeResumeModal()">새로 주문</button>
+        </div>
     </div>
-  </div>
 </div>
 
 <section class="upload-section" id="guide-section">
-  <div class="upload-card">
-    <div class="dev-banner" id="dev-upload-banner" style="display:none">[DEV] 실제 S3 업로드 모드</div>
+    <div class="upload-card">
+        <div class="dev-banner" id="dev-upload-banner" style="display:none">[DEV] 실제 S3 업로드 모드</div>
 
-    <span class="section-label">Upload Guide</span>
-    <h2 style="font-family:var(--serif);font-size:22px;font-weight:300;margin-bottom:8px">사진 업로드 안내</h2>
-    <p style="font-size:13px;color:var(--muted-light);font-weight:300;line-height:1.9;margin-bottom:4px">
-      사진은 <strong style="color:var(--gold);font-weight:400">어린 시절부터 현재 순서</strong>로 업로드해 주세요.<br>
-      시간의 흐름이 담길수록 더 감동적인 영상이 완성됩니다.
-    </p>
+        <span class="section-label">Upload Guide</span>
+        <h2 style="font-family:var(--serif);font-size:22px;font-weight:300;margin-bottom:8px">사진 업로드 안내</h2>
+        <p style="font-size:13px;color:var(--muted-light);font-weight:300;line-height:1.9;margin-bottom:4px">
+            사진은 <strong style="color:var(--gold);font-weight:400">어린 시절부터 현재 순서</strong>로 업로드해 주세요.<br>
+            시간의 흐름이 담길수록 더 감동적인 영상이 완성됩니다.
+        </p>
 
-    <div class="divider" style="margin:28px 0"></div>
+        <div class="divider" style="margin:28px 0"></div>
 
-    <div class="guide-sequence">
-      <div class="guide-seq-item">
-        <span class="era">유년기</span>
-        <span class="period">돌·유치원</span>
-      </div>
-      <span class="guide-seq-arrow">›</span>
-      <div class="guide-seq-item">
-        <span class="era">학창 시절</span>
-        <span class="period">초·중·고</span>
-      </div>
-      <span class="guide-seq-arrow">›</span>
-      <div class="guide-seq-item">
-        <span class="era">청년기</span>
-        <span class="period">졸업·취업</span>
-      </div>
-      <span class="guide-seq-arrow">›</span>
-      <div class="guide-seq-item">
-        <span class="era">현재</span>
-        <span class="period">가족·일상</span>
-      </div>
+        <div class="guide-sequence">
+            <div class="guide-seq-item">
+                <span class="era">유년기</span>
+                <span class="period">돌·유치원</span>
+            </div>
+            <span class="guide-seq-arrow">›</span>
+            <div class="guide-seq-item">
+                <span class="era">학창 시절</span>
+                <span class="period">초·중·고</span>
+            </div>
+            <span class="guide-seq-arrow">›</span>
+            <div class="guide-seq-item">
+                <span class="era">청년기</span>
+                <span class="period">졸업·취업</span>
+            </div>
+            <span class="guide-seq-arrow">›</span>
+            <div class="guide-seq-item">
+                <span class="era">현재</span>
+                <span class="period">가족·일상</span>
+            </div>
+        </div>
+
+        <div class="guide-tip">
+            <p>
+                얼굴이 선명하게 보이는 사진일수록 결과물이 좋습니다.<br>
+                총 <span id="guide-total" style="color:var(--gold)"></span>장을 한번에 선택해 주세요.<br>
+                업로드 후 드래그로 순서를 변경할 수 있습니다.
+            </p>
+        </div>
+
+        <button class="submit-btn" onclick="startBulkUpload()" style="margin-bottom:10px">
+            사진 선택하기
+        </button>
+        <button class="dev-btn" id="dev-skip-upload-btn" onclick="devSkipUpload()" style="display:none">
+            [DEV] 업로드 스킵
+        </button>
     </div>
-
-    <div class="guide-tip">
-      <p>
-        얼굴이 선명하게 보이는 사진일수록 결과물이 좋습니다.<br>
-        총 <span id="guide-total" style="color:var(--gold)"></span>장을 한번에 선택해 주세요.<br>
-        업로드 후 드래그로 순서를 변경할 수 있습니다.
-      </p>
-    </div>
-
-    <button class="submit-btn" onclick="startBulkUpload()" style="margin-bottom:10px">
-      사진 선택하기
-    </button>
-    <button class="dev-btn" id="dev-skip-upload-btn" onclick="devSkipUpload()" style="display:none">
-      [DEV] 업로드 스킵
-    </button>
-  </div>
 </section>
 
 <section class="upload-section" id="upload-section">
-  <div class="upload-card">
-    <div class="dev-banner" id="dev-step-banner" style="display:none">[DEV] 실제 S3 업로드 모드</div>
+    <div class="upload-card">
+        <div class="dev-banner" id="dev-step-banner" style="display:none">[DEV] 실제 S3 업로드 모드</div>
 
-    <div class="step-header">
-      <div class="step-order-num">주문번호 <span id="order-num-display" style="color:var(--gold)"></span></div>
-      <div class="step-counter" id="step-label">0 / 10</div>
+        <div class="step-header">
+            <div class="step-order-num">주문번호 <span id="order-num-display" style="color:var(--gold)"></span></div>
+            <div class="step-counter" id="step-label">0 / 10</div>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="upload-progress"></div>
+        </div>
+
+        <h2 class="step-title-text">사진 업로드</h2>
+        <p class="step-subtitle">어린 시절부터 현재 순서로 선택해 주세요 · 드래그로 순서 변경 가능</p>
+
+        <div class="upload-drop" id="drop-zone" onclick="document.getElementById('file-input').click(); return false;">
+            <div class="drop-icon">+</div>
+            <p class="drop-main-text">클릭하거나 사진을 드래그하세요</p>
+            <p class="drop-sub-text">JPG, PNG, HEIC · 20MB 이하 · 여러 장 선택 가능</p>
+        </div>
+        <input type="file" id="file-input" accept="image/jpeg,image/png,image/jpg,image/heic,image/heif" multiple>
+
+        <div class="photo-count-info" id="photo-count-info" style="display:none"></div>
+
+        <div class="photo-grid" id="photo-grid"></div>
+
+        <button onclick="document.getElementById('file-input').click()" id="add-more-btn" class="add-more-btn" style="display:none">
+            + 사진 추가하기
+        </button>
+
+        <button onclick="submitAllPhotos()" id="submit-all-btn" class="btn-submit-all">
+            다음 단계 — 음악 선택
+        </button>
+        <p id="progress-text" class="progress-label" style="display:none"></p>
     </div>
-
-    <div class="progress-bar">
-      <div class="progress-fill" id="upload-progress"></div>
-    </div>
-
-    <h2 class="step-title-text">사진 업로드</h2>
-    <p class="step-subtitle">어린 시절부터 현재 순서로 선택해 주세요 · 드래그로 순서 변경 가능</p>
-
-    <div class="upload-drop" id="drop-zone" onclick="document.getElementById('file-input').click(); return false;">
-      <div class="drop-icon">+</div>
-      <p class="drop-main-text">클릭하거나 사진을 드래그하세요</p>
-      <p class="drop-sub-text">JPG, PNG, HEIC · 20MB 이하 · 여러 장 선택 가능</p>
-    </div>
-    <input type="file" id="file-input" accept="image/jpeg,image/png,image/jpg,image/heic,image/heif" multiple>
-
-    <div class="photo-count-info" id="photo-count-info" style="display:none"></div>
-
-    <div class="photo-grid" id="photo-grid"></div>
-
-    <button onclick="document.getElementById('file-input').click()" id="add-more-btn" class="add-more-btn" style="display:none">
-      + 사진 추가하기
-    </button>
-
-    <button onclick="submitAllPhotos()" id="submit-all-btn" class="btn-submit-all">
-      다음 단계 — 음악 선택
-    </button>
-    <p id="progress-text" class="progress-label" style="display:none"></p>
-  </div>
 </section>
 
 <section class="upload-section" id="title-section" style="display:none">
-  <div class="upload-card">
-    <div class="step-header">
-      <div class="step-order-num">주문번호 <span id="title-order-num-display" style="color:var(--gold)"></span></div>
-    </div>
-    <span class="section-label">영상 제목 설정</span>
-    <h2 class="serif" style="font-size:22px;font-weight:300;margin-bottom:24px">인트로 &middot; 아웃트로</h2>
+    <div class="upload-card">
+        <div class="step-header">
+            <div class="step-order-num">주문번호 <span id="title-order-num-display" style="color:var(--gold)"></span></div>
+        </div>
+        <span class="section-label">영상 제목 설정</span>
+        <h2 class="serif" style="font-size:22px;font-weight:300;margin-bottom:24px">인트로 &middot; 아웃트로</h2>
 
-    <div class="form-group">
-      <label>인트로 제목 <span style="font-size:10px;text-transform:none;font-weight:300;letter-spacing:.3px">영상 시작 화면에 표시</span></label>
-      <input type="text" id="introTitleInput" placeholder="예: 어머니 환갑, 부모님 결혼 30주년" maxlength="20">
-      <div class="form-error" id="err-introTitle"></div>
-    </div>
+        <div class="form-group">
+            <label>인트로 제목 <span style="font-size:10px;text-transform:none;font-weight:300;letter-spacing:.3px">영상 시작 화면에 표시</span></label>
+            <input type="text" id="introTitleInput" placeholder="예: 어머니 환갑, 부모님 결혼 30주년" maxlength="20">
+            <div class="form-error" id="err-introTitle"></div>
+        </div>
 
-    <div class="form-group">
-      <label>아웃트로 문구 <span style="font-size:10px;text-transform:none;font-weight:300;letter-spacing:.3px">영상 마지막 화면에 표시</span></label>
-      <input type="text" id="outroTitleInput" placeholder="예: 감사합니다, 사랑합니다" maxlength="20" value="감사합니다">
-      <div class="form-error" id="err-outroTitle"></div>
-    </div>
+        <div class="form-group">
+            <label>아웃트로 문구 <span style="font-size:10px;text-transform:none;font-weight:300;letter-spacing:.3px">영상 마지막 화면에 표시</span></label>
+            <input type="text" id="outroTitleInput" placeholder="예: 감사합니다, 사랑합니다" maxlength="20" value="감사합니다">
+            <div class="form-error" id="err-outroTitle"></div>
+        </div>
 
-    <div style="font-size:11px;color:var(--muted);line-height:1.8;margin:16px 0 24px;letter-spacing:.3px">
-      인트로: 검정 화면에 큰 글씨로 표시됩니다<br>
-      아웃트로: 영상 마지막에 "시간의 사진관" 로고와 함께 표시됩니다
-    </div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.8;margin:16px 0 24px;letter-spacing:.3px">
+            인트로: 검정 화면에 큰 글씨로 표시됩니다<br>
+            아웃트로: 영상 마지막에 "시간의 사진관" 로고와 함께 표시됩니다
+        </div>
 
-    <div style="display:flex;gap:10px">
-      <button onclick="backToUploadFromTitle()" style="flex:1;background:transparent;color:var(--muted-light);border:1px solid var(--border-mid);padding:14px;font-size:13px;font-family:var(--sans);cursor:pointer">뒤로</button>
-      <button onclick="goToBgmFromTitle()" style="flex:2;background:var(--gold);color:#080808;border:none;padding:14px;font-size:13px;font-weight:600;letter-spacing:1px;font-family:var(--sans);cursor:pointer">다음 — 음악 선택</button>
+        <div style="display:flex;gap:10px">
+            <button onclick="backToUploadFromTitle()" style="flex:1;background:transparent;color:var(--muted-light);border:1px solid var(--border-mid);padding:14px;font-size:13px;font-family:var(--sans);cursor:pointer">뒤로</button>
+            <button onclick="goToBgmFromTitle()" style="flex:2;background:var(--gold);color:#080808;border:none;padding:14px;font-size:13px;font-weight:600;letter-spacing:1px;font-family:var(--sans);cursor:pointer">다음 — 음악 선택</button>
+        </div>
     </div>
-  </div>
 </section>
 
 <section class="upload-section" id="bgm-section">
-  <div class="upload-card">
-    <div class="step-header">
-      <div class="step-order-num">주문번호 <span id="bgm-order-num-display" style="color:var(--gold)"></span></div>
-      <div class="step-counter">FINAL STEP</div>
-    </div>
+    <div class="upload-card">
+        <div class="step-header">
+            <div class="step-order-num">주문번호 <span id="bgm-order-num-display" style="color:var(--gold)"></span></div>
+            <div class="step-counter">FINAL STEP</div>
+        </div>
 
-    <span class="section-label">BGM 선택</span>
-    <h2 class="step-title-text">영상에 더할 음악을 골라주세요</h2>
-    <p class="step-subtitle">선택 후 ▶ 버튼으로 미리 들어볼 수 있습니다</p>
+        <span class="section-label">BGM 선택</span>
+        <h2 class="step-title-text">영상에 더할 음악을 골라주세요</h2>
+        <p class="step-subtitle">선택 후 ▶ 버튼으로 미리 들어볼 수 있습니다</p>
 
-    <div id="bgm-list" style="display:flex;flex-direction:column;gap:8px;margin:20px 0 28px">
-      <div style="font-size:12px;color:var(--muted)">로딩 중...</div>
-    </div>
+        <div id="bgm-list" style="display:flex;flex-direction:column;gap:8px;margin:20px 0 28px">
+            <div style="font-size:12px;color:var(--muted)">로딩 중...</div>
+        </div>
 
-    <div style="display:flex;gap:10px">
-      <button class="btn-prev" onclick="backToUpload()">← 사진 다시 확인</button>
-      <button class="btn-confirm-yes" style="flex:2" onclick="submitWithBgm()">확인, 제작 시작</button>
+        <div style="display:flex;gap:10px">
+            <button class="btn-prev" onclick="backToUpload()">← 사진 다시 확인</button>
+            <button class="btn-confirm-yes" style="flex:2" onclick="submitWithBgm()">확인, 제작 시작</button>
+        </div>
     </div>
-  </div>
 </section>
 
 <section class="done-section" id="done-section">
-  <div class="done-mark" id="done-mark">✓</div>
-  <span class="section-label" id="done-label">Complete</span>
-  <h2 id="done-title">제작을 시작했습니다</h2>
-  <div class="order-number" id="done-order-num"></div>
-  <p id="done-desc">
-    사진을 AI로 분석하고 영상을 제작 중입니다.<br>
-    완성되면 이 화면에서 바로 확인하실 수 있습니다.
-  </p>
+    <div class="done-mark" id="done-mark">✓</div>
+    <span class="section-label" id="done-label">Complete</span>
+    <h2 id="done-title">제작을 시작했습니다</h2>
+    <div class="order-number" id="done-order-num"></div>
+    <p id="done-desc">
+        사진을 AI로 분석하고 영상을 제작 중입니다.<br>
+        완성되면 이 화면에서 바로 확인하실 수 있습니다.
+    </p>
 
-  <div id="done-processing" style="margin-top:28px">
-    <div style="width:100%;height:1px;background:var(--border-mid);margin-bottom:16px;overflow:hidden">
-      <div id="done-progress-bar" style="height:100%;background:var(--gold);width:0%;transition:width 1s"></div>
+    <div id="done-processing" style="margin-top:28px">
+        <div style="width:100%;height:1px;background:var(--border-mid);margin-bottom:16px;overflow:hidden">
+            <div id="done-progress-bar" style="height:100%;background:var(--gold);width:0%;transition:width 1s"></div>
+        </div>
+        <p style="font-size:12px;color:var(--muted);letter-spacing:.5px" id="done-status-text">제작 대기 중...</p>
     </div>
-    <p style="font-size:12px;color:var(--muted);letter-spacing:.5px" id="done-status-text">제작 대기 중...</p>
-  </div>
 
-  <div id="done-download" style="display:none;margin-top:28px;width:100%">
-    <a id="done-download-link" href="#" target="_blank"
-       onclick="trackEvent('download_click', currentOrderId)"
-       style="display:block;width:100%;background:var(--gold);color:#080808;text-decoration:none;
+    <div id="done-download" style="display:none;margin-top:28px;width:100%">
+        <a id="done-download-link" href="#" target="_blank"
+           onclick="trackEvent('download_click', currentOrderId)"
+           style="display:block;width:100%;background:var(--gold);color:#080808;text-decoration:none;
               padding:16px;font-size:13px;font-weight:600;letter-spacing:1.5px;
               text-transform:uppercase;text-align:center;box-sizing:border-box">
-      영상 다운로드 (72시간 유효)
-    </a>
-    <p style="font-size:11px;color:var(--muted);margin-top:12px;letter-spacing:.3px">
-      링크는 등록하신 연락처로도 문자 발송됩니다
-    </p>
-  </div>
+            영상 다운로드 (72시간 유효)
+        </a>
+        <p style="font-size:11px;color:var(--muted);margin-top:12px;letter-spacing:.3px">
+            링크는 등록하신 연락처로도 문자 발송됩니다
+        </p>
+    </div>
 </section>
 
 <div id="flow-stepper">
-  <div class="stepper-inner">
-    <div class="stepper-step" id="step1">
-      <div class="stepper-dot">1</div>
-      <span class="stepper-label">사진</span>
+    <div class="stepper-inner">
+        <div class="stepper-step" id="step1">
+            <div class="stepper-dot">1</div>
+            <span class="stepper-label">사진</span>
+        </div>
+        <div class="stepper-line"><div class="stepper-line-fill" id="stepper-line-fill-1"></div></div>
+        <div class="stepper-step" id="step2">
+            <div class="stepper-dot">2</div>
+            <span class="stepper-label">제목</span>
+        </div>
+        <div class="stepper-line"><div class="stepper-line-fill" id="stepper-line-fill-2"></div></div>
+        <div class="stepper-step" id="step3">
+            <div class="stepper-dot">3</div>
+            <span class="stepper-label">음악</span>
+        </div>
     </div>
-    <div class="stepper-line"><div class="stepper-line-fill" id="stepper-line-fill-1"></div></div>
-    <div class="stepper-step" id="step2">
-      <div class="stepper-dot">2</div>
-      <span class="stepper-label">제목</span>
-    </div>
-    <div class="stepper-line"><div class="stepper-line-fill" id="stepper-line-fill-2"></div></div>
-    <div class="stepper-step" id="step3">
-      <div class="stepper-dot">3</div>
-      <span class="stepper-label">음악</span>
-    </div>
-  </div>
 </div>
 
 <footer>
-  <p>시간의 사진관 &nbsp;·&nbsp; 문의: 카카오톡 채널 @시간의사진관 &nbsp;·&nbsp; ☎ 010-4622-2849</p>
-  <p style="margin-top:8px;font-size:11px;color:var(--muted);line-height:1.8">
-    상호: 시간의사진관 | 대표: 김재웅 | 사업자등록번호: 292-32-01725<br>
-    주소: 인천광역시 서구 솔빛로 13, 542동 2003호(청라동)
-  </p>
-  <p style="margin-top:8px;font-size:10px;color:var(--muted);opacity:.6">ⓒ 2026 시간의 사진관</p>
+    <p>시간의 사진관 &nbsp;·&nbsp; 문의: 카카오톡 채널 @시간의사진관 &nbsp;·&nbsp; ☎ 010-4622-2849</p>
+    <p style="margin-top:8px;font-size:11px;color:var(--muted);line-height:1.8">
+        상호: 시간의사진관 | 대표: 김재웅 | 사업자등록번호: 292-32-01725<br>
+        주소: 인천광역시 서구 솔빛로 13, 542동 2003호(청라동)
+    </p>
+    <p style="margin-top:8px;font-size:10px;color:var(--muted);opacity:.6">ⓒ 2026 시간의 사진관</p>
 </footer>
 
 <a href="http://pf.kakao.com/_fUyqX/chat" target="_blank" class="kakao-float" id="kakao-float" title="카카오톡 문의">
-  <svg viewBox="0 0 24 24" fill="#3C1E1E"><path d="M12 3C6.48 3 2 6.58 2 10.95c0 2.82 1.87 5.29 4.68 6.68-.15.56-.53 2.03-.61 2.35-.1.39.14.39.3.28.12-.08 1.94-1.31 2.73-1.85.59.09 1.2.13 1.81.13h.18c5.52 0 10-3.58 10-7.59S17.52 3 12 3z"/></svg>
+    <svg viewBox="0 0 24 24" fill="#3C1E1E"><path d="M12 3C6.48 3 2 6.58 2 10.95c0 2.82 1.87 5.29 4.68 6.68-.15.56-.53 2.03-.61 2.35-.1.39.14.39.3.28.12-.08 1.94-1.31 2.73-1.85.59.09 1.2.13 1.81.13h.18c5.52 0 10-3.58 10-7.59S17.52 3 12 3z"/></svg>
 </a>
 
 <script>
-let PORTONE_STORE_ID = '';
-let PORTONE_CHANNEL_KEY = '';
-let IS_DEV = false;
-let currentOrderId = null;
-let currentAccessToken = null;
-let presignedUrls = [];
-let selectedBgm = 'bgm_01';
-let currentAudio = null;
+    let PORTONE_STORE_ID = '';
+    let PORTONE_CHANNEL_KEY = '';
+    let IS_DEV = false;
+    let currentOrderId = null;
+    let currentAccessToken = null;
+    let presignedUrls = [];
+    let selectedBgm = 'bgm_01';
+    let currentAudio = null;
 
-// ── 이벤트 비콘 (fire-and-forget) ─────────────────────────────
-function trackEvent(eventType, orderId, extra) {
-  try {
-    const body = { eventType };
-    if (orderId) body.orderId = Number(orderId);
-    if (extra)   body.payload = JSON.stringify(extra);
-    navigator.sendBeacon('/api/events', new Blob([JSON.stringify(body)], { type: 'application/json' }));
-  } catch(e) { /* 이벤트 로깅 실패는 무시 */ }
-}
+    // ── 이벤트 비콘 (fire-and-forget) ─────────────────────────────
+    function trackEvent(eventType, orderId, extra) {
+        try {
+            const body = { eventType };
+            if (orderId) body.orderId = Number(orderId);
+            if (extra)   body.payload = JSON.stringify(extra);
+            navigator.sendBeacon('/api/events', new Blob([JSON.stringify(body)], { type: 'application/json' }));
+        } catch(e) { /* 이벤트 로깅 실패는 무시 */ }
+    }
 
-function scrollToOrder() {
-  document.getElementById('order-section').scrollIntoView({ behavior: 'smooth' });
-}
+    function scrollToOrder() {
+        document.getElementById('order-section').scrollIntoView({ behavior: 'smooth' });
+    }
 
-function setFlowStep(step) {
-  const stepper = document.getElementById('flow-stepper');
-  const s1 = document.getElementById('step1');
-  const s2 = document.getElementById('step2');
-  const s3 = document.getElementById('step3');
-  const fill1 = document.getElementById('stepper-line-fill-1');
-  const fill2 = document.getElementById('stepper-line-fill-2');
-  stepper.classList.add('visible');
-  document.body.classList.add('flow-active');
-  s1.className = 'stepper-step'; s2.className = 'stepper-step'; s3.className = 'stepper-step';
-  fill1.style.width = '0%'; fill2.style.width = '0%';
-  if (step === 1) {
-    s1.className = 'stepper-step active';
-  } else if (step === 2) {
-    s1.className = 'stepper-step done';
-    s2.className = 'stepper-step active';
-    fill1.style.width = '100%';
-  } else if (step === 3) {
-    s1.className = 'stepper-step done';
-    s2.className = 'stepper-step done';
-    s3.className = 'stepper-step active';
-    fill1.style.width = '100%';
-    fill2.style.width = '100%';
-  }
-}
+    function setFlowStep(step) {
+        const stepper = document.getElementById('flow-stepper');
+        const s1 = document.getElementById('step1');
+        const s2 = document.getElementById('step2');
+        const s3 = document.getElementById('step3');
+        const fill1 = document.getElementById('stepper-line-fill-1');
+        const fill2 = document.getElementById('stepper-line-fill-2');
+        stepper.classList.add('visible');
+        document.body.classList.add('flow-active');
+        s1.className = 'stepper-step'; s2.className = 'stepper-step'; s3.className = 'stepper-step';
+        fill1.style.width = '0%'; fill2.style.width = '0%';
+        if (step === 1) {
+            s1.className = 'stepper-step active';
+        } else if (step === 2) {
+            s1.className = 'stepper-step done';
+            s2.className = 'stepper-step active';
+            fill1.style.width = '100%';
+        } else if (step === 3) {
+            s1.className = 'stepper-step done';
+            s2.className = 'stepper-step done';
+            s3.className = 'stepper-step active';
+            fill1.style.width = '100%';
+            fill2.style.width = '100%';
+        }
+    }
 
-function hideFlowStepper() {
-  document.getElementById('flow-stepper').classList.remove('visible');
-  document.body.classList.remove('flow-active');
-}
+    function hideFlowStepper() {
+        document.getElementById('flow-stepper').classList.remove('visible');
+        document.body.classList.remove('flow-active');
+    }
 
-async function loadBgmList() {
-  try {
-    const list = await fetch('/api/orders/bgm-list').then(r => r.json());
-    const container = document.getElementById('bgm-list');
-    container.innerHTML = '';
-    list.forEach((bgm, idx) => {
-      const isSelected = idx === 0;
-      if (isSelected) selectedBgm = bgm.id;
+    async function loadBgmList() {
+        try {
+            const list = await fetch('/api/orders/bgm-list').then(r => r.json());
+            const container = document.getElementById('bgm-list');
+            container.innerHTML = '';
+            list.forEach((bgm, idx) => {
+                const isSelected = idx === 0;
+                if (isSelected) selectedBgm = bgm.id;
 
-      const div = document.createElement('div');
-      div.className = 'bgm-option' + (isSelected ? ' selected' : '');
-      div.dataset.id = bgm.id;
-      div.innerHTML = `
+                const div = document.createElement('div');
+                div.className = 'bgm-option' + (isSelected ? ' selected' : '');
+                div.dataset.id = bgm.id;
+                div.innerHTML = `
         <button class="bgm-play-btn" data-id="${bgm.id}" onclick="toggleBgmPreview(event, '${bgm.id}')">▶</button>
         <div class="bgm-info">
           <div class="bgm-name">${bgm.name}</div>
@@ -1721,852 +1756,854 @@ async function loadBgmList() {
         </div>
         <div class="bgm-check">✓</div>
       `;
-      div.addEventListener('click', (e) => {
-        if (e.target.classList.contains('bgm-play-btn')) return;
-        selectBgm(bgm.id);
-      });
-      container.appendChild(div);
-    });
-  } catch(e) {
-    document.getElementById('bgm-list').innerHTML =
-      '<div style="font-size:12px;color:var(--muted)">불러오기 실패, 기본 BGM으로 진행됩니다.</div>';
-  }
-}
-
-function selectBgm(id) {
-  selectedBgm = id;
-  document.querySelectorAll('.bgm-option').forEach(el => {
-    el.classList.toggle('selected', el.dataset.id === id);
-  });
-}
-
-function toggleBgmPreview(e, id) {
-  e.stopPropagation();
-  const btn = e.currentTarget;
-
-  function resetAllBtns() {
-    document.querySelectorAll('.bgm-play-btn').forEach(b => {
-      b.textContent = '▶'; b.classList.remove('playing');
-    });
-  }
-
-  // 같은 곡 재생 중이면 정지
-  if (currentAudio && btn.classList.contains('playing')) {
-    currentAudio.pause();
-    currentAudio = null;
-    resetAllBtns();
-    return;
-  }
-
-  // 다른 곡이거나 없으면 → 기존 정지 후 새로 재생
-  if (currentAudio) {
-    currentAudio.pause();
-    currentAudio = null;
-    resetAllBtns();
-  }
-
-  const audio = new Audio(`/bgm/${id}.mp3`);
-  audio.volume = 0.7;
-  currentAudio = audio;
-  btn.textContent = '■';
-  btn.classList.add('playing');
-  selectBgm(id);
-
-  audio.play().catch(() => {
-    btn.textContent = '▶'; btn.classList.remove('playing');
-    currentAudio = null;
-  });
-  audio.onended = () => {
-    btn.textContent = '▶'; btn.classList.remove('playing');
-    currentAudio = null;
-  };
-}
-
-function detectDevMode() {
-  IS_DEV = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-  if (IS_DEV) {
-    document.getElementById('dev-skip-pay-btn').style.display = 'block';
-  }
-}
-
-async function createOrder() {
-  const name       = document.getElementById('customerName').value.trim();
-  const phone      = document.getElementById('customerPhone').value.trim();
-  const email      = document.getElementById('customerEmail').value.trim();
-  const photoCount = parseInt(document.getElementById('photoCount').value);
-
-  let valid = true;
-  if (!name) { showError('err-name', '이름을 입력해주세요'); valid = false; }
-  else hideError('err-name');
-  if (!/^01[016789]\d{7,8}$/.test(phone)) {
-    showError('err-phone', '올바른 휴대폰 번호를 입력해주세요 (예: 01012345678)');
-    valid = false;
-  } else hideError('err-phone');
-  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    showError('err-email', '올바른 이메일 주소를 입력해주세요');
-    valid = false;
-  } else hideError('err-email');
-  if (!valid) throw new Error('VALIDATION');
-
-  const resp = await fetch('/api/orders', {
-    method:  'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body:    JSON.stringify({ customerName: name, customerPhone: phone, customerEmail: email,
-                              photoCount, bgmTrack: selectedBgm })
-  });
-  if (!resp.ok) {
-    const err = await resp.json().catch(() => ({}));
-    let msg = err.message || '주문 생성 실패';
-    if (err.detail) {
-      const details = Object.entries(err.detail).map(([k,v]) => `${k}: ${v}`).join(', ');
-      msg += ' (' + details + ')';
-    }
-    throw new Error(msg);
-  }
-  return resp.json();
-}
-
-function startPayment() {
-  const name       = document.getElementById('customerName').value.trim();
-  const phone      = document.getElementById('customerPhone').value.trim();
-  const email      = document.getElementById('customerEmail').value.trim();
-
-  let valid = true;
-  if (!name) { showError('err-name', '이름을 입력해주세요'); valid = false; }
-  else hideError('err-name');
-  if (!/^01[016789]\d{7,8}$/.test(phone)) {
-    showError('err-phone', '올바른 휴대폰 번호를 입력해주세요 (예: 01012345678)');
-    valid = false;
-  } else hideError('err-phone');
-  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    showError('err-email', '올바른 이메일 주소를 입력해주세요');
-    valid = false;
-  } else hideError('err-email');
-  if (!valid) return;
-
-  const summary = document.getElementById('payment-confirm-summary');
-  summary.innerHTML =
-    `<div class="confirm-summary-row"><span class="label">이름</span><span class="value">${name}</span></div>` +
-    `<div class="confirm-summary-row"><span class="label">연락처</span><span class="value">${phone}</span></div>` +
-    `<div class="confirm-summary-row"><span class="label">이메일</span><span class="value">${email}</span></div>` +
-    `<div class="confirm-summary-row"><span class="label">사진 수량</span><span class="value">10장</span></div>` +
-    `<div class="confirm-summary-row"><span class="label">금액</span><span class="value" style="color:var(--gold)">29,900원</span></div>`;
-
-  document.getElementById('payment-confirm-modal').style.display = 'flex';
-  trackEvent('pay_start');
-}
-
-function cancelPaymentConfirm() {
-  document.getElementById('payment-confirm-modal').style.display = 'none';
-}
-
-async function confirmPayment() {
-  document.getElementById('payment-confirm-modal').style.display = 'none';
-
-  const btn = document.getElementById('pay-btn');
-  btn.disabled = true;
-  btn.textContent = '처리 중...';
-
-  try {
-    const orderData = await createOrder();
-
-    if (orderData.isExistingOrder) {
-      showResumeModal(orderData);
-      btn.disabled = false;
-      btn.textContent = '결제하고 사진 업로드하기';
-      return;
+                div.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('bgm-play-btn')) return;
+                    selectBgm(bgm.id);
+                });
+                container.appendChild(div);
+            });
+        } catch(e) {
+            document.getElementById('bgm-list').innerHTML =
+                '<div style="font-size:12px;color:var(--muted)">불러오기 실패, 기본 BGM으로 진행됩니다.</div>';
+        }
     }
 
-    currentOrderId = orderData.orderId;
-    currentAccessToken = orderData.accessToken;
-    presignedUrls  = orderData.presignedUrls;
-
-    // 결제 리다이렉트 대비 localStorage 저장
-    localStorage.setItem('pendingAccessToken', currentAccessToken);
-    localStorage.setItem('pendingOrderName', document.getElementById('customerName').value.trim());
-
-    const response = await PortOne.requestPayment({
-      storeId:     PORTONE_STORE_ID,
-      channelKey:  PORTONE_CHANNEL_KEY,
-      paymentId:   String(orderData.orderId),
-      orderName:   '프리미엄 인생 영상 1편',
-      totalAmount: orderData.amount,
-      currency:    'CURRENCY_KRW',
-      payMethod:   'CARD',
-      customer: {
-        fullName:    document.getElementById('customerName').value.trim(),
-        phoneNumber: document.getElementById('customerPhone').value.trim(),
-        email:       document.getElementById('customerEmail').value.trim(),
-      },
-      redirectUrl: window.location.origin + '/payment/success',
-    });
-    if (response.code) throw { code: response.code, message: response.message };
-  } catch (e) {
-    if (e.message !== 'VALIDATION' && e.code !== 'USER_CANCEL') alert('오류: ' + e.message);
-    btn.disabled = false;
-    btn.textContent = '결제하고 사진 업로드하기';
-  }
-}
-
-async function devSkipPayment() {
-  const skipBtn = document.getElementById('dev-skip-pay-btn');
-  const payBtn  = document.getElementById('pay-btn');
-  skipBtn.disabled = true;
-  skipBtn.textContent = '처리 중...';
-  payBtn.disabled = true;
-  try {
-    const orderData = await createOrder();
-    currentOrderId = orderData.orderId;
-    currentAccessToken = orderData.accessToken;
-
-    const res = await fetch(`/api/dev/orders/${currentOrderId}/skip-payment`, { method: 'POST' });
-    if (!res.ok) throw new Error('결제 스킵 실패');
-    const data = await res.json();
-
-    presignedUrls = data.presignedUrls || [];
-    showUploadSection(currentOrderId, IS_DEV);
-  } catch(e) {
-    if (e.message !== 'VALIDATION') alert('DEV 오류: ' + e.message);
-    skipBtn.disabled = false;
-    skipBtn.textContent = '[DEV] 결제 스킵';
-    payBtn.disabled = false;
-  }
-}
-
-async function devSkipUpload() {
-  const btn = document.getElementById('dev-skip-upload-btn');
-  btn.disabled = true;
-  btn.textContent = '처리 중...';
-
-  try {
-    const resp = await fetch(`/api/dev/orders/${currentOrderId}/skip-upload`, { method: 'POST' });
-    if (!resp.ok) {
-      const err = await resp.json().catch(() => ({}));
-      throw new Error(err.message || '업로드 스킵 실패');
+    function selectBgm(id) {
+        selectedBgm = id;
+        document.querySelectorAll('.bgm-option').forEach(el => {
+            el.classList.toggle('selected', el.dataset.id === id);
+        });
     }
-    const data = await resp.json();
-    console.log('[DEV] 업로드 스킵:', data);
-    showDone();
-  } catch (e) {
-    alert('오류: ' + e.message);
-    btn.disabled = false;
-    btn.textContent = '[DEV] 업로드 스킵';
-  }
-}
 
-async function handlePaymentSuccess() {
-  const params    = new URLSearchParams(window.location.search);
-  const paymentId = params.get('paymentId');
-  const orderId   = params.get('orderId') || params.get('payment_id');
-  if (!paymentId && !orderId) return;
+    function toggleBgmPreview(e, id) {
+        e.stopPropagation();
+        const btn = e.currentTarget;
 
-  hideMainSections();
-  const loadingDiv = showLoading('결제 처리 중...');
+        function resetAllBtns() {
+            document.querySelectorAll('.bgm-play-btn').forEach(b => {
+                b.textContent = '▶'; b.classList.remove('playing');
+            });
+        }
 
-  const resolvedPaymentId = paymentId || orderId;
-  const resolvedOrderId   = orderId   || paymentId;
+        // 같은 곡 재생 중이면 정지
+        if (currentAudio && btn.classList.contains('playing')) {
+            currentAudio.pause();
+            currentAudio = null;
+            resetAllBtns();
+            return;
+        }
 
-  try {
-    const confirmResp = await fetch('/api/payments/confirm', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ paymentId: resolvedPaymentId, orderId: resolvedOrderId, amount: 29900 })
-    });
-    if (!confirmResp.ok) {
-      const err = await confirmResp.json().catch(() => ({}));
-      throw new Error(err.message || '결제 승인 실패');
+        // 다른 곡이거나 없으면 → 기존 정지 후 새로 재생
+        if (currentAudio) {
+            currentAudio.pause();
+            currentAudio = null;
+            resetAllBtns();
+        }
+
+        const audio = new Audio(`/bgm/${id}.mp3`);
+        audio.volume = 0.7;
+        currentAudio = audio;
+        btn.textContent = '■';
+        btn.classList.add('playing');
+        selectBgm(id);
+
+        audio.play().catch(() => {
+            btn.textContent = '▶'; btn.classList.remove('playing');
+            currentAudio = null;
+        });
+        audio.onended = () => {
+            btn.textContent = '▶'; btn.classList.remove('playing');
+            currentAudio = null;
+        };
     }
-    const confirmData = await confirmResp.json();
 
-    currentOrderId = parseInt(orderId);
-    currentAccessToken = confirmData.accessToken || localStorage.getItem('pendingAccessToken');
-    trackEvent('pay_success', currentOrderId);
-    const urlResp  = await fetch('/api/orders/t/' + currentAccessToken + '/upload-urls');
-    if (!urlResp.ok) throw new Error('업로드 URL 발급 실패');
-    const urlData  = await urlResp.json();
-    presignedUrls  = urlData.presignedUrls || [];
+    function detectDevMode() {
+        IS_DEV = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+        if (IS_DEV) {
+            document.getElementById('dev-skip-pay-btn').style.display = 'block';
+        }
+    }
 
-    loadingDiv.remove();
-    showUploadSection(orderId, false);
+    async function createOrder() {
+        const name       = document.getElementById('customerName').value.trim();
+        const phone      = document.getElementById('customerPhone').value.trim();
+        const email      = document.getElementById('customerEmail').value.trim();
+        const photoCount = parseInt(document.getElementById('photoCount').value);
 
-  } catch (e) {
-    loadingDiv.innerHTML = `
+        let valid = true;
+        if (!name) { showError('err-name', '이름을 입력해주세요'); valid = false; }
+        else hideError('err-name');
+        if (!/^01[016789]\d{7,8}$/.test(phone)) {
+            showError('err-phone', '올바른 휴대폰 번호를 입력해주세요 (예: 01012345678)');
+            valid = false;
+        } else hideError('err-phone');
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            showError('err-email', '올바른 이메일 주소를 입력해주세요');
+            valid = false;
+        } else hideError('err-email');
+        if (!valid) throw new Error('VALIDATION');
+
+        const resp = await fetch('/api/orders', {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({ customerName: name, customerPhone: phone, customerEmail: email,
+                photoCount, bgmTrack: selectedBgm })
+        });
+        if (!resp.ok) {
+            const err = await resp.json().catch(() => ({}));
+            let msg = err.message || '주문 생성 실패';
+            if (err.detail) {
+                const details = Object.entries(err.detail).map(([k,v]) => `${k}: ${v}`).join(', ');
+                msg += ' (' + details + ')';
+            }
+            throw new Error(msg);
+        }
+        return resp.json();
+    }
+
+    function startPayment() {
+        const name       = document.getElementById('customerName').value.trim();
+        const phone      = document.getElementById('customerPhone').value.trim();
+        const email      = document.getElementById('customerEmail').value.trim();
+
+        let valid = true;
+        if (!name) { showError('err-name', '이름을 입력해주세요'); valid = false; }
+        else hideError('err-name');
+        if (!/^01[016789]\d{7,8}$/.test(phone)) {
+            showError('err-phone', '올바른 휴대폰 번호를 입력해주세요 (예: 01012345678)');
+            valid = false;
+        } else hideError('err-phone');
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            showError('err-email', '올바른 이메일 주소를 입력해주세요');
+            valid = false;
+        } else hideError('err-email');
+        if (!valid) return;
+
+        const summary = document.getElementById('payment-confirm-summary');
+        summary.innerHTML =
+            `<div class="confirm-summary-row"><span class="label">이름</span><span class="value">${name}</span></div>` +
+            `<div class="confirm-summary-row"><span class="label">연락처</span><span class="value">${phone}</span></div>` +
+            `<div class="confirm-summary-row"><span class="label">이메일</span><span class="value">${email}</span></div>` +
+            `<div class="confirm-summary-row"><span class="label">사진 수량</span><span class="value">10장</span></div>` +
+            `<div class="confirm-summary-row"><span class="label">금액</span><span class="value" style="color:var(--gold)">29,900원</span></div>`;
+
+        document.getElementById('payment-confirm-modal').style.display = 'flex';
+        trackEvent('pay_start');
+    }
+
+    function cancelPaymentConfirm() {
+        document.getElementById('payment-confirm-modal').style.display = 'none';
+    }
+
+    async function confirmPayment() {
+        document.getElementById('payment-confirm-modal').style.display = 'none';
+
+        const btn = document.getElementById('pay-btn');
+        btn.disabled = true;
+        btn.textContent = '처리 중...';
+
+        try {
+            const orderData = await createOrder();
+
+            if (orderData.isExistingOrder) {
+                showResumeModal(orderData);
+                btn.disabled = false;
+                btn.textContent = '결제하고 사진 업로드하기';
+                return;
+            }
+
+            currentOrderId = orderData.orderId;
+            currentAccessToken = orderData.accessToken;
+            presignedUrls  = orderData.presignedUrls;
+
+            // 결제 리다이렉트 대비 localStorage 저장
+            localStorage.setItem('pendingAccessToken', currentAccessToken);
+            localStorage.setItem('pendingOrderName', document.getElementById('customerName').value.trim());
+
+            const response = await PortOne.requestPayment({
+                storeId:     PORTONE_STORE_ID,
+                channelKey:  PORTONE_CHANNEL_KEY,
+                paymentId:   String(orderData.orderId),
+                orderName:   '프리미엄 인생 영상 1편',
+                totalAmount: orderData.amount,
+                currency:    'CURRENCY_KRW',
+                payMethod:   'CARD',
+                customer: {
+                    fullName:    document.getElementById('customerName').value.trim(),
+                    phoneNumber: document.getElementById('customerPhone').value.trim(),
+                    email:       document.getElementById('customerEmail').value.trim(),
+                },
+                redirectUrl: window.location.origin + '/payment/success',
+            });
+            if (response.code) throw { code: response.code, message: response.message };
+        } catch (e) {
+            if (e.message !== 'VALIDATION' && e.code !== 'USER_CANCEL') alert('오류: ' + e.message);
+            btn.disabled = false;
+            btn.textContent = '결제하고 사진 업로드하기';
+        }
+    }
+
+    async function devSkipPayment() {
+        const skipBtn = document.getElementById('dev-skip-pay-btn');
+        const payBtn  = document.getElementById('pay-btn');
+        skipBtn.disabled = true;
+        skipBtn.textContent = '처리 중...';
+        payBtn.disabled = true;
+        try {
+            const orderData = await createOrder();
+            currentOrderId = orderData.orderId;
+            currentAccessToken = orderData.accessToken;
+
+            const res = await fetch(`/api/dev/orders/${currentOrderId}/skip-payment`, { method: 'POST' });
+            if (!res.ok) throw new Error('결제 스킵 실패');
+            const data = await res.json();
+
+            presignedUrls = data.presignedUrls || [];
+            showUploadSection(currentOrderId, IS_DEV);
+        } catch(e) {
+            if (e.message !== 'VALIDATION') alert('DEV 오류: ' + e.message);
+            skipBtn.disabled = false;
+            skipBtn.textContent = '[DEV] 결제 스킵';
+            payBtn.disabled = false;
+        }
+    }
+
+    async function devSkipUpload() {
+        const btn = document.getElementById('dev-skip-upload-btn');
+        btn.disabled = true;
+        btn.textContent = '처리 중...';
+
+        try {
+            const resp = await fetch(`/api/dev/orders/${currentOrderId}/skip-upload`, { method: 'POST' });
+            if (!resp.ok) {
+                const err = await resp.json().catch(() => ({}));
+                throw new Error(err.message || '업로드 스킵 실패');
+            }
+            const data = await resp.json();
+            console.log('[DEV] 업로드 스킵:', data);
+            showDone();
+        } catch (e) {
+            alert('오류: ' + e.message);
+            btn.disabled = false;
+            btn.textContent = '[DEV] 업로드 스킵';
+        }
+    }
+
+    async function handlePaymentSuccess() {
+        const params    = new URLSearchParams(window.location.search);
+        const paymentId = params.get('paymentId');
+        const orderId   = params.get('orderId') || params.get('payment_id');
+        if (!paymentId && !orderId) return;
+
+        hideMainSections();
+        const loadingDiv = showLoading('결제 처리 중...');
+
+        const resolvedPaymentId = paymentId || orderId;
+        const resolvedOrderId   = orderId   || paymentId;
+
+        try {
+            const confirmResp = await fetch('/api/payments/confirm', {
+                method:  'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body:    JSON.stringify({ paymentId: resolvedPaymentId, orderId: resolvedOrderId, amount: 29900 })
+            });
+            if (!confirmResp.ok) {
+                const err = await confirmResp.json().catch(() => ({}));
+                throw new Error(err.message || '결제 승인 실패');
+            }
+            const confirmData = await confirmResp.json();
+
+            currentOrderId = parseInt(orderId);
+            currentAccessToken = confirmData.accessToken || localStorage.getItem('pendingAccessToken');
+            trackEvent('pay_success', currentOrderId);
+            const urlResp  = await fetch('/api/orders/t/' + currentAccessToken + '/upload-urls');
+            if (!urlResp.ok) throw new Error('업로드 URL 발급 실패');
+            const urlData  = await urlResp.json();
+            presignedUrls  = urlData.presignedUrls || [];
+
+            loadingDiv.remove();
+            showUploadSection(orderId, false);
+
+        } catch (e) {
+            loadingDiv.innerHTML = `
       <div style="font-size:36px;color:var(--gold);margin-bottom:20px">—</div>
       <div style="font-family:var(--serif);font-size:20px;font-weight:300;margin-bottom:12px">결제 처리 오류</div>
       <div style="font-size:13px;color:var(--muted);margin-bottom:8px">${e.message}</div>
       <div style="font-size:12px;color:var(--muted);margin-bottom:28px">주문번호: #${orderId} &nbsp;·&nbsp; 문의: 카카오톡 @시간의사진관</div>
       <a href="/" style="padding:12px 32px;background:var(--gold);color:#080808;text-decoration:none;font-size:12px;font-weight:600;letter-spacing:1px">처음으로 돌아가기</a>`;
-  }
-}
-
-let stepData = [];
-let isUploading = false;
-
-function showUploadSection(orderId, devMode) {
-  hideMainSections();
-  trackEvent('upload_start', orderId);
-  const total = presignedUrls.length || 10;
-
-  document.getElementById('guide-section').style.display = 'block';
-  document.getElementById('guide-total').textContent = total;
-  setFlowStep(1);
-  if (devMode) {
-    document.getElementById('dev-upload-banner').style.display = 'block';
-    document.getElementById('dev-skip-upload-btn').style.display = 'block';
-  }
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function startBulkUpload() {
-  document.getElementById('guide-section').style.display  = 'none';
-  document.getElementById('upload-section').style.display = 'block';
-  setFlowStep(1);
-
-  stepData = [];
-  const total = presignedUrls.length || 10;
-  document.getElementById('order-num-display').textContent = '#' + currentOrderId;
-  document.getElementById('step-label').textContent = `0 / ${total}`;
-  document.getElementById('upload-progress').style.width = '0%';
-
-  const fileInput = document.getElementById('file-input');
-  const newInput = fileInput.cloneNode(true);
-  fileInput.parentNode.replaceChild(newInput, fileInput);
-  newInput.addEventListener('change', e => {
-    if (isUploading) return;
-    handleBulkFiles(e.target.files);
-    e.target.value = '';
-  });
-
-  const drop = document.getElementById('drop-zone');
-  drop.addEventListener('dragover', e => { e.preventDefault(); if (!isUploading) drop.classList.add('drag-over'); });
-  drop.addEventListener('dragleave', () => drop.classList.remove('drag-over'));
-  drop.addEventListener('drop', e => {
-    e.preventDefault(); drop.classList.remove('drag-over');
-    if (isUploading) return;
-    handleBulkFiles(e.dataTransfer.files);
-  });
-
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function handleBulkFiles(fileList) {
-  const total = presignedUrls.length || 10;
-  const MAX_SIZE = 20 * 1024 * 1024; // 20MB
-
-  const files = Array.from(fileList).filter(f =>
-    f.type.startsWith('image/') ||
-    f.name.toLowerCase().endsWith('.heic') ||
-    f.name.toLowerCase().endsWith('.heif')
-  );
-
-  if (files.length === 0) return;
-
-  const oversized = files.filter(f => f.size > MAX_SIZE);
-  if (oversized.length > 0) {
-    alert(`파일 크기 초과 (20MB 이하만 가능):\n${oversized.map(f => f.name).join('\n')}\n\n위 파일은 제외됩니다.`);
-  }
-  const validFiles = files.filter(f => f.size <= MAX_SIZE);
-  if (validFiles.length === 0) return;
-
-  const remaining = total - stepData.length;
-  const toAdd = validFiles.slice(0, remaining);
-
-  toAdd.forEach(file => {
-    stepData.push({ file });
-  });
-
-  if (validFiles.length > remaining) {
-    alert(`최대 ${total}장까지 선택할 수 있습니다. ${validFiles.length - remaining}장이 제외되었습니다.`);
-  }
-
-  renderPhotoGrid();
-}
-
-function renderPhotoGrid() {
-  const total = presignedUrls.length || 10;
-  const count = stepData.length;
-  const grid  = document.getElementById('photo-grid');
-  const info  = document.getElementById('photo-count-info');
-  const addBtn = document.getElementById('add-more-btn');
-
-  document.getElementById('step-label').textContent = `${count} / ${total}`;
-  const pct = Math.round((count / total) * 100);
-  document.getElementById('upload-progress').style.width = pct + '%';
-
-  if (count > 0) {
-    info.style.display = 'block';
-    if (count < total) {
-      info.innerHTML = `<span style="color:var(--gold)">${count}</span> / ${total}장 선택됨 · <span style="color:var(--gold)">${total - count}장 더 추가해 주세요</span>`;
-    } else {
-      info.innerHTML = `<span style="color:var(--gold)">${count}</span> / ${total}장 선택 완료`;
-    }
-  } else {
-    info.style.display = 'none';
-  }
-
-  addBtn.style.display = (count > 0 && count < total) ? 'block' : 'none';
-  document.getElementById('drop-zone').style.display = count >= total ? 'none' : '';
-
-  grid.innerHTML = '';
-  stepData.forEach((item, idx) => {
-    const div = document.createElement('div');
-    div.className = 'photo-item';
-    div.draggable = !isUploading;
-    if (isUploading) { div.style.cursor = 'default'; div.style.pointerEvents = 'none'; }
-    div.dataset.idx = idx;
-
-    const img = document.createElement('img');
-    const url = URL.createObjectURL(item.file);
-    img.src = url;
-    img.onload = () => URL.revokeObjectURL(url);
-
-    const num = document.createElement('div');
-    num.className = 'photo-num';
-    num.textContent = idx + 1;
-
-    const rm = document.createElement('button');
-    rm.className = 'remove-btn';
-    rm.textContent = '×';
-    if (isUploading) {
-      rm.style.display = 'none';
-    } else {
-      rm.onclick = e => { e.stopPropagation(); removePhoto(idx); };
+        }
     }
 
-    div.appendChild(img);
-    div.appendChild(num);
-    div.appendChild(rm);
-    grid.appendChild(div);
-  });
+    let stepData = [];
+    let isUploading = false;
 
-  initDragReorder();
+    function showUploadSection(orderId, devMode) {
+        hideMainSections();
+        trackEvent('upload_start', orderId);
+        const total = presignedUrls.length || 10;
 
-  const submitBtn = document.getElementById('submit-all-btn');
-  submitBtn.disabled = (count < total);
-  submitBtn.style.opacity = (count < total) ? '0.4' : '1';
-}
+        document.getElementById('guide-section').style.display = 'block';
+        document.getElementById('guide-total').textContent = total;
+        setFlowStep(1);
+        if (devMode) {
+            document.getElementById('dev-upload-banner').style.display = 'block';
+            document.getElementById('dev-skip-upload-btn').style.display = 'block';
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
-function removePhoto(idx) {
-  if (isUploading) return;
-  stepData.splice(idx, 1);
-  renderPhotoGrid();
-}
+    function startBulkUpload() {
+        document.getElementById('guide-section').style.display  = 'none';
+        document.getElementById('upload-section').style.display = 'block';
+        setFlowStep(1);
 
-function initDragReorder() {
-  const grid = document.getElementById('photo-grid');
-  let dragIdx = null;
+        stepData = [];
+        const total = presignedUrls.length || 10;
+        document.getElementById('order-num-display').textContent = '#' + currentOrderId;
+        document.getElementById('step-label').textContent = `0 / ${total}`;
+        document.getElementById('upload-progress').style.width = '0%';
 
-  grid.querySelectorAll('.photo-item').forEach(item => {
-    item.addEventListener('dragstart', e => {
-      dragIdx = parseInt(item.dataset.idx);
-      item.classList.add('dragging');
-      e.dataTransfer.effectAllowed = 'move';
-      const ghost = document.createElement('div');
-      ghost.style.opacity = '0';
-      document.body.appendChild(ghost);
-      e.dataTransfer.setDragImage(ghost, 0, 0);
-      setTimeout(() => ghost.remove(), 0);
-    });
-
-    item.addEventListener('dragend', () => {
-      item.classList.remove('dragging');
-      grid.querySelectorAll('.photo-item').forEach(el => el.classList.remove('drag-over'));
-      dragIdx = null;
-    });
-
-    item.addEventListener('dragover', e => {
-      e.preventDefault();
-      e.dataTransfer.dropEffect = 'move';
-      const overIdx = parseInt(item.dataset.idx);
-      if (dragIdx !== null && overIdx !== dragIdx) {
-        item.classList.add('drag-over');
-      }
-    });
-
-    item.addEventListener('dragleave', () => {
-      item.classList.remove('drag-over');
-    });
-
-    item.addEventListener('drop', e => {
-      e.preventDefault();
-      const overIdx = parseInt(item.dataset.idx);
-      if (dragIdx !== null && overIdx !== dragIdx) {
-        const [moved] = stepData.splice(dragIdx, 1);
-        stepData.splice(overIdx, 0, moved);
-        renderPhotoGrid();
-      }
-    });
-  });
-}
-
-function submitAllPhotos() {
-  const total = presignedUrls.length || 10;
-
-  if (stepData.length < total) {
-    alert(`사진이 부족합니다. ${total - stepData.length}장을 더 추가해주세요.`);
-    return;
-  }
-
-  if (currentAudio) { currentAudio.pause(); currentAudio = null; }
-  document.getElementById('upload-section').style.display = 'none';
-  document.getElementById('title-section').style.display  = 'block';
-  document.getElementById('title-order-num-display').textContent = '#' + currentOrderId;
-  setFlowStep(2);
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function backToUploadFromTitle() {
-  document.getElementById('title-section').style.display  = 'none';
-  document.getElementById('upload-section').style.display = 'block';
-  setFlowStep(1);
-}
-
-function goToBgmFromTitle() {
-  const intro = document.getElementById('introTitleInput').value.trim();
-  if (!intro) { document.getElementById('err-introTitle').textContent = '인트로 제목을 입력해주세요'; document.getElementById('err-introTitle').style.display = 'block'; return; }
-  document.getElementById('err-introTitle').style.display = 'none';
-  document.getElementById('title-section').style.display  = 'none';
-  document.getElementById('bgm-section').style.display    = 'block';
-  document.getElementById('bgm-order-num-display').textContent = '#' + currentOrderId;
-  loadBgmList();
-  setFlowStep(3);
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function backToUpload() {
-  if (currentAudio) { currentAudio.pause(); currentAudio = null; }
-  document.getElementById('bgm-section').style.display   = 'none';
-  document.getElementById('title-section').style.display  = 'block';
-  setFlowStep(2);
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function submitWithBgm() {
-  if (currentAudio) { currentAudio.pause(); currentAudio = null; }
-  const total = presignedUrls.length || 10;
-  document.getElementById('upload-confirm-count').textContent = total;
-  document.getElementById('upload-confirm-modal').style.display = 'flex';
-}
-
-function cancelUploadConfirm() {
-  document.getElementById('upload-confirm-modal').style.display = 'none';
-}
-
-async function confirmUpload() {
-  document.getElementById('upload-confirm-modal').style.display = 'none';
-
-  isUploading = true;
-  renderPhotoGrid();
-
-  // 이탈 방지
-  window._uploadGuard = (e) => {
-    e.preventDefault();
-    e.returnValue = '';
-  };
-  window.addEventListener('beforeunload', window._uploadGuard);
-
-  const total = presignedUrls.length || 10;
-  document.getElementById('bgm-section').style.display    = 'none';
-  document.getElementById('upload-section').style.display = 'block';
-  const btn = document.getElementById('submit-all-btn');
-  btn.disabled = true;
-  btn.textContent = '업로드 중...';
-  document.getElementById('progress-text').style.display = 'block';
-
-  const resultPhotos = [];
-
-  const MAX_RETRY = 3;
-  for (let i = 0; i < total; i++) {
-    const { file } = stepData[i];
-    const urlInfo = presignedUrls[i];
-
-    document.getElementById('upload-progress').style.width = Math.round((i / total) * 100) + '%';
-    document.getElementById('progress-text').textContent   = `${i+1} / ${total} 업로드 중...`;
-    document.getElementById('step-label').textContent      = `${i+1} / ${total} 업로드 중`;
-
-    let uploaded = false;
-    for (let attempt = 1; attempt <= MAX_RETRY; attempt++) {
-      try {
-        const resp = await fetch(urlInfo.uploadUrl, {
-          method: 'PUT',
-          body:   file
+        const fileInput = document.getElementById('file-input');
+        const newInput = fileInput.cloneNode(true);
+        fileInput.parentNode.replaceChild(newInput, fileInput);
+        newInput.addEventListener('change', e => {
+            if (isUploading) return;
+            handleBulkFiles(e.target.files);
+            e.target.value = '';
         });
-        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-        resultPhotos.push({ s3Key: urlInfo.s3Key, caption: '' });
-        uploaded = true;
-        break;
-      } catch (err) {
-        console.warn(`사진 ${i+1} 업로드 실패 (${attempt}/${MAX_RETRY}):`, err.message);
-        if (attempt < MAX_RETRY) {
-          document.getElementById('progress-text').textContent = `${i+1}번 사진 재시도 중... (${attempt}/${MAX_RETRY})`;
-          await new Promise(r => setTimeout(r, 2000 * attempt));
+
+        const drop = document.getElementById('drop-zone');
+        drop.addEventListener('dragover', e => { e.preventDefault(); if (!isUploading) drop.classList.add('drag-over'); });
+        drop.addEventListener('dragleave', () => drop.classList.remove('drag-over'));
+        drop.addEventListener('drop', e => {
+            e.preventDefault(); drop.classList.remove('drag-over');
+            if (isUploading) return;
+            handleBulkFiles(e.dataTransfer.files);
+        });
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function handleBulkFiles(fileList) {
+        const total = presignedUrls.length || 10;
+        const MAX_SIZE = 20 * 1024 * 1024; // 20MB
+
+        const files = Array.from(fileList).filter(f =>
+            f.type.startsWith('image/') ||
+            f.name.toLowerCase().endsWith('.heic') ||
+            f.name.toLowerCase().endsWith('.heif')
+        );
+
+        if (files.length === 0) return;
+
+        const oversized = files.filter(f => f.size > MAX_SIZE);
+        if (oversized.length > 0) {
+            alert(`파일 크기 초과 (20MB 이하만 가능):\n${oversized.map(f => f.name).join('\n')}\n\n위 파일은 제외됩니다.`);
         }
-      }
-    }
-    if (!uploaded) {
-      window.removeEventListener('beforeunload', window._uploadGuard);
-      alert(`${i+1}번째 사진 업로드에 ${MAX_RETRY}회 실패했습니다. 네트워크 확인 후 다시 시도해주세요.`);
-      isUploading = false;
-      renderPhotoGrid();
-      btn.disabled = false;
-      btn.textContent = '업로드 완료 — 영상 제작 시작';
-      return;
-    }
-  }
+        const validFiles = files.filter(f => f.size <= MAX_SIZE);
+        if (validFiles.length === 0) return;
 
-  document.getElementById('upload-progress').style.width = '100%';
-  document.getElementById('progress-text').textContent   = `${total} / ${total} 완료`;
+        const remaining = total - stepData.length;
+        const toAdd = validFiles.slice(0, remaining);
 
-  // 서버 전송 중 피드백
-  document.getElementById('step-label').textContent = '제작 요청 중...';
-  btn.textContent = '제작 요청 중...';
+        toAdd.forEach(file => {
+            stepData.push({ file });
+        });
 
-  try {
-    const completeResp = await fetch('/api/orders/t/' + currentAccessToken + '/upload-complete', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({
-        photos: resultPhotos,
-        bgmTrack: selectedBgm,
-        introTitle: document.getElementById('introTitleInput').value.trim(),
-        outroTitle: document.getElementById('outroTitleInput').value.trim() || '감사합니다'
-      })
-    });
-    if (!completeResp.ok) {
-      const err = await completeResp.json().catch(() => ({}));
-      throw new Error(err.message || '서버 처리 실패');
-    }
-  } catch (e) {
-    window.removeEventListener('beforeunload', window._uploadGuard);
-    console.error('upload-complete 오류:', e);
-    alert('제작 시작 중 오류가 발생했습니다: ' + e.message + '\n잠시 후 다시 시도해주세요.');
-    btn.disabled = false;
-    btn.textContent = '다음 단계 — 음악 선택';
-    isUploading = false;
-    return;
-  }
+        if (validFiles.length > remaining) {
+            alert(`최대 ${total}장까지 선택할 수 있습니다. ${validFiles.length - remaining}장이 제외되었습니다.`);
+        }
 
-  window.removeEventListener('beforeunload', window._uploadGuard);
-  trackEvent('upload_complete', currentOrderId, { photoCount: resultPhotos.length, bgm: selectedBgm });
-  setTimeout(() => showDone(), 600);
-}
-
-function showDone() {
-  document.getElementById('guide-section').style.display  = 'none';
-  document.getElementById('upload-section').style.display = 'none';
-  document.getElementById('title-section').style.display  = 'none';
-  document.getElementById('bgm-section').style.display    = 'none';
-  document.getElementById('done-section').style.display   = 'block';
-  hideFlowStepper();
-  document.getElementById('done-order-num').textContent   = '주문번호 #' + currentOrderId;
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-  // 업로드 완료 후 localStorage 정리
-  localStorage.removeItem('pendingAccessToken');
-  localStorage.removeItem('pendingOrderName');
-  startStatusPolling(currentOrderId);
-}
-
-let pollingTimer = null;
-let pollingProgress = 0;
-
-function startStatusPolling(orderId) {
-  pollingProgress = 5;
-  document.getElementById('done-progress-bar').style.width = pollingProgress + '%';
-  document.getElementById('done-status-text').textContent = '영상 제작 중...';
-
-  if (pollingTimer) clearInterval(pollingTimer);
-  pollingTimer = setInterval(() => pollOrderStatus(orderId), 15000);
-}
-
-async function pollOrderStatus(orderId) {
-  try {
-    const resp = await fetch('/api/orders/t/' + currentAccessToken + '/status');
-    if (!resp.ok) return;
-    const data = await resp.json();
-
-    if (data.status === 'PROCESSING') {
-      pollingProgress = Math.min(pollingProgress + 8, 90);
-      document.getElementById('done-progress-bar').style.width = pollingProgress + '%';
-      document.getElementById('done-status-text').textContent = 'AI 영상 제작 중... 8시간 내 완성 후 문자로 안내드립니다';
-
-    } else if (data.status === 'COMPLETED' && data.downloadUrl) {
-      clearInterval(pollingTimer);
-      pollingTimer = null;
-
-      document.getElementById('done-progress-bar').style.width = '100%';
-      document.getElementById('done-processing').style.display = 'none';
-      document.getElementById('done-download').style.display   = 'block';
-      document.getElementById('done-download-link').href       = data.downloadUrl;
-      document.getElementById('done-title').textContent        = '영상이 완성되었습니다';
-      document.getElementById('done-desc').textContent         = '아래 버튼을 눌러 다운로드하세요.';
-      document.getElementById('done-mark').style.background    = '#c9a96e22';
-
-    } else if (data.status === 'FAILED') {
-      clearInterval(pollingTimer);
-      pollingTimer = null;
-      document.getElementById('done-title').textContent     = '제작 중 문제가 발생했습니다';
-      document.getElementById('done-desc').textContent      = '죄송합니다. 카카오톡 @시간의사진관 으로 문의해 주세요.';
-      document.getElementById('done-status-text').textContent = '제작 실패 — 관리자가 확인 중입니다';
-      document.getElementById('done-progress-bar').style.background = '#c97070';
-    }
-  } catch(e) {
-    console.warn('상태 폴링 오류:', e);
-  }
-}
-
-async function handleResume(accessToken) {
-  hideMainSections();
-  const loadingDiv = showLoading('주문 정보 확인 중...');
-  try {
-    const statusResp = await fetch('/api/orders/t/' + accessToken + '/status');
-    if (!statusResp.ok) throw new Error('주문을 찾을 수 없습니다.');
-    const statusData = await statusResp.json();
-
-    currentAccessToken = accessToken;
-    currentOrderId = statusData.orderId;
-
-    if (statusData.status === 'COMPLETED' && statusData.downloadUrl) {
-      loadingDiv.innerHTML =
-        '<div style="font-family:var(--serif);font-size:28px;font-weight:300;margin-bottom:16px;color:var(--gold)">영상이 완성되었습니다</div>' +
-        '<div style="font-size:14px;color:var(--muted);margin-bottom:32px">아래 버튼을 눌러 다운로드하세요.</div>' +
-        '<a href="' + statusData.downloadUrl + '" download ' +
-        'onclick="trackEvent(\'download_click\', {orderId:' + currentOrderId + '})" ' +
-        'style="display:inline-block;padding:16px 48px;background:var(--gold);color:#000;font-weight:600;' +
-        'border-radius:8px;text-decoration:none;font-size:16px;letter-spacing:0.5px">다운로드</a>';
-      return;
-    }
-    if (statusData.status === 'PROCESSING') {
-      loadingDiv.innerHTML = '<div style="font-family:var(--serif);font-size:22px;font-weight:300;margin-bottom:12px">영상 제작 중입니다</div>' +
-        '<div style="font-size:13px;color:var(--muted)">8시간 이내 완성 후 문자로 안내드립니다.</div>';
-      startStatusPolling(currentOrderId);
-      return;
-    }
-    if (statusData.status !== 'PAID') {
-      loadingDiv.innerHTML = '<div style="font-size:13px;color:var(--muted)">이미 처리된 주문입니다.</div>';
-      return;
+        renderPhotoGrid();
     }
 
-    const urlResp = await fetch('/api/orders/t/' + accessToken + '/upload-urls');
-    if (!urlResp.ok) throw new Error('업로드 URL 발급 실패');
-    const urlData = await urlResp.json();
-    presignedUrls = urlData.presignedUrls || [];
+    function renderPhotoGrid() {
+        const total = presignedUrls.length || 10;
+        const count = stepData.length;
+        const grid  = document.getElementById('photo-grid');
+        const info  = document.getElementById('photo-count-info');
+        const addBtn = document.getElementById('add-more-btn');
 
-    loadingDiv.remove();
-    showUploadSection(currentOrderId, IS_DEV);
-  } catch (e) {
-    loadingDiv.innerHTML = `<div style="font-size:13px;color:var(--muted)">${e.message}</div>`;
-  }
-}
+        document.getElementById('step-label').textContent = `${count} / ${total}`;
+        const pct = Math.round((count / total) * 100);
+        document.getElementById('upload-progress').style.width = pct + '%';
 
-function showResumeModal(orderData) {
-  document.getElementById('resume-name').textContent     = orderData.customerName || orderData.existingCustomerName || '';
-  document.getElementById('resume-order-id').textContent = '#' + orderData.orderId;
-  const modal = document.getElementById('resume-modal');
-  modal.style.display = 'flex';
-  modal._orderId = orderData.orderId;
-  modal._accessToken = orderData.accessToken;
-}
-
-async function resumeExistingOrder() {
-  const modal   = document.getElementById('resume-modal');
-  const accessToken = modal._accessToken;
-  modal.style.display = 'none';
-  await handleResume(accessToken);
-}
-
-async function closeResumeModal() {
-  document.getElementById('resume-modal').style.display = 'none';
-  try {
-    const modal   = document.getElementById('resume-modal');
-    const accessToken = modal._accessToken;
-    if (accessToken) await fetch('/api/orders/t/' + accessToken + '/cancel', { method: 'POST' }).catch(() => {});
-  } catch(e) {}
-}
-
-function showError(id, msg) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  el.textContent = msg;
-  el.style.display = 'block';
-}
-
-function hideError(id) {
-  const el = document.getElementById(id);
-  if (el) el.style.display = 'none';
-}
-
-function hideMainSections() {
-  ['hero', 'preview-section', 'features', 'process', 'order-section'].forEach(id => {
-    const el = document.getElementById(id) || document.querySelector('.' + id);
-    // hero/features/process are sections by class
-  });
-  document.querySelector('.hero').style.display          = 'none';
-  document.getElementById('preview-section').style.display = 'none';
-  document.querySelector('.features').style.display     = 'none';
-  document.querySelector('.process').style.display      = 'none';
-  document.querySelector('.order-section').style.display = 'none';
-  document.querySelector('.faq-section').style.display   = 'none';
-  document.querySelector('footer').style.display        = 'none';
-  const kakao = document.getElementById('kakao-float');
-  if (kakao) kakao.style.display = 'none';
-}
-
-function showLoading(msg) {
-  const div = document.createElement('div');
-  div.style.cssText = 'position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg);z-index:9000;text-align:center;padding:40px';
-  div.innerHTML = `<div style="font-family:var(--serif);font-size:20px;font-weight:300;color:var(--text);margin-bottom:12px">${msg}</div>`;
-  document.body.appendChild(div);
-  return div;
-}
-
-document.addEventListener('DOMContentLoaded', async () => {
-  detectDevMode();
-  trackEvent('page_view');
-
-  // beforeunload 기본 제거
-  window._uploadGuard = null;
-
-  // 결제 성공 리다이렉트 처리
-  const params = new URLSearchParams(window.location.search);
-  if (params.get('paymentId') || params.get('payment_id')) {
-    await handlePaymentSuccess();
-    return;
-  }
-
-  // resume 파라미터 (accessToken 기반)
-  const resumeToken = params.get('token');
-  if (resumeToken && !params.get('paymentId')) {
-    await handleResume(resumeToken);
-    return;
-  }
-
-  // 포트원 설정 로드
-  try {
-    const cfg = await fetch('/api/orders/payment-config').then(r => r.json());
-    PORTONE_STORE_ID   = cfg.storeId   || '';
-    PORTONE_CHANNEL_KEY = cfg.channelKey || '';
-  } catch(e) {
-    console.warn('결제 설정 로드 실패:', e);
-  }
-
-  // localStorage 미완료 주문 확인 (accessToken 기반)
-  const savedToken = localStorage.getItem('pendingAccessToken');
-  const savedOrderName = localStorage.getItem('pendingOrderName');
-  if (savedToken && savedOrderName) {
-    try {
-      const statusResp = await fetch('/api/orders/t/' + savedToken + '/status');
-      if (statusResp.ok) {
-        const statusData = await statusResp.json();
-        if (statusData.status === 'PAID') {
-          showResumeModal({ orderId: statusData.orderId, accessToken: savedToken, customerName: savedOrderName });
+        if (count > 0) {
+            info.style.display = 'block';
+            if (count < total) {
+                info.innerHTML = `<span style="color:var(--gold)">${count}</span> / ${total}장 선택됨 · <span style="color:var(--gold)">${total - count}장 더 추가해 주세요</span>`;
+            } else {
+                info.innerHTML = `<span style="color:var(--gold)">${count}</span> / ${total}장 선택 완료`;
+            }
         } else {
-          localStorage.removeItem('pendingAccessToken');
-          localStorage.removeItem('pendingOrderName');
+            info.style.display = 'none';
         }
-      }
-    } catch(e) {}
-  }
-});
+
+        addBtn.style.display = (count > 0 && count < total) ? 'block' : 'none';
+        document.getElementById('drop-zone').style.display = count >= total ? 'none' : '';
+
+        grid.innerHTML = '';
+        stepData.forEach((item, idx) => {
+            const div = document.createElement('div');
+            div.className = 'photo-item';
+            div.draggable = !isUploading;
+            if (isUploading) { div.style.cursor = 'default'; div.style.pointerEvents = 'none'; }
+            div.dataset.idx = idx;
+
+            const img = document.createElement('img');
+            const url = URL.createObjectURL(item.file);
+            img.src = url;
+            img.onload = () => URL.revokeObjectURL(url);
+
+            const num = document.createElement('div');
+            num.className = 'photo-num';
+            num.textContent = idx + 1;
+
+            const rm = document.createElement('button');
+            rm.className = 'remove-btn';
+            rm.textContent = '×';
+            if (isUploading) {
+                rm.style.display = 'none';
+            } else {
+                rm.onclick = e => { e.stopPropagation(); removePhoto(idx); };
+            }
+
+            div.appendChild(img);
+            div.appendChild(num);
+            div.appendChild(rm);
+            grid.appendChild(div);
+        });
+
+        initDragReorder();
+
+        const submitBtn = document.getElementById('submit-all-btn');
+        submitBtn.disabled = (count < total);
+        submitBtn.style.opacity = (count < total) ? '0.4' : '1';
+    }
+
+    function removePhoto(idx) {
+        if (isUploading) return;
+        stepData.splice(idx, 1);
+        renderPhotoGrid();
+    }
+
+    function initDragReorder() {
+        const grid = document.getElementById('photo-grid');
+        let dragIdx = null;
+
+        grid.querySelectorAll('.photo-item').forEach(item => {
+            item.addEventListener('dragstart', e => {
+                dragIdx = parseInt(item.dataset.idx);
+                item.classList.add('dragging');
+                e.dataTransfer.effectAllowed = 'move';
+                const ghost = document.createElement('div');
+                ghost.style.opacity = '0';
+                document.body.appendChild(ghost);
+                e.dataTransfer.setDragImage(ghost, 0, 0);
+                setTimeout(() => ghost.remove(), 0);
+            });
+
+            item.addEventListener('dragend', () => {
+                item.classList.remove('dragging');
+                grid.querySelectorAll('.photo-item').forEach(el => el.classList.remove('drag-over'));
+                dragIdx = null;
+            });
+
+            item.addEventListener('dragover', e => {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'move';
+                const overIdx = parseInt(item.dataset.idx);
+                if (dragIdx !== null && overIdx !== dragIdx) {
+                    item.classList.add('drag-over');
+                }
+            });
+
+            item.addEventListener('dragleave', () => {
+                item.classList.remove('drag-over');
+            });
+
+            item.addEventListener('drop', e => {
+                e.preventDefault();
+                const overIdx = parseInt(item.dataset.idx);
+                if (dragIdx !== null && overIdx !== dragIdx) {
+                    const [moved] = stepData.splice(dragIdx, 1);
+                    stepData.splice(overIdx, 0, moved);
+                    renderPhotoGrid();
+                }
+            });
+        });
+    }
+
+    function submitAllPhotos() {
+        const total = presignedUrls.length || 10;
+
+        if (stepData.length < total) {
+            alert(`사진이 부족합니다. ${total - stepData.length}장을 더 추가해주세요.`);
+            return;
+        }
+
+        if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+        document.getElementById('upload-section').style.display = 'none';
+        document.getElementById('title-section').style.display  = 'block';
+        document.getElementById('title-order-num-display').textContent = '#' + currentOrderId;
+        setFlowStep(2);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function backToUploadFromTitle() {
+        document.getElementById('title-section').style.display  = 'none';
+        document.getElementById('upload-section').style.display = 'block';
+        setFlowStep(1);
+    }
+
+    function goToBgmFromTitle() {
+        const intro = document.getElementById('introTitleInput').value.trim();
+        if (!intro) { document.getElementById('err-introTitle').textContent = '인트로 제목을 입력해주세요'; document.getElementById('err-introTitle').style.display = 'block'; return; }
+        document.getElementById('err-introTitle').style.display = 'none';
+        document.getElementById('title-section').style.display  = 'none';
+        document.getElementById('bgm-section').style.display    = 'block';
+        document.getElementById('bgm-order-num-display').textContent = '#' + currentOrderId;
+        loadBgmList();
+        setFlowStep(3);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function backToUpload() {
+        if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+        document.getElementById('bgm-section').style.display   = 'none';
+        document.getElementById('title-section').style.display  = 'block';
+        setFlowStep(2);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function submitWithBgm() {
+        if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+        const total = presignedUrls.length || 10;
+        document.getElementById('upload-confirm-count').textContent = total;
+        document.getElementById('upload-confirm-modal').style.display = 'flex';
+    }
+
+    function cancelUploadConfirm() {
+        document.getElementById('upload-confirm-modal').style.display = 'none';
+    }
+
+    async function confirmUpload() {
+        document.getElementById('upload-confirm-modal').style.display = 'none';
+
+        isUploading = true;
+        renderPhotoGrid();
+
+        // 이탈 방지
+        window._uploadGuard = (e) => {
+            e.preventDefault();
+            e.returnValue = '';
+        };
+        window.addEventListener('beforeunload', window._uploadGuard);
+
+        const total = presignedUrls.length || 10;
+        document.getElementById('bgm-section').style.display    = 'none';
+        document.getElementById('upload-section').style.display = 'block';
+        const btn = document.getElementById('submit-all-btn');
+        btn.disabled = true;
+        btn.textContent = '업로드 중...';
+        document.getElementById('progress-text').style.display = 'block';
+
+        const resultPhotos = [];
+
+        const MAX_RETRY = 3;
+        for (let i = 0; i < total; i++) {
+            const { file } = stepData[i];
+            const urlInfo = presignedUrls[i];
+
+            document.getElementById('upload-progress').style.width = Math.round((i / total) * 100) + '%';
+            document.getElementById('progress-text').textContent   = `${i+1} / ${total} 업로드 중...`;
+            document.getElementById('step-label').textContent      = `${i+1} / ${total} 업로드 중`;
+
+            let uploaded = false;
+            for (let attempt = 1; attempt <= MAX_RETRY; attempt++) {
+                try {
+                    const resp = await fetch(urlInfo.uploadUrl, {
+                        method: 'PUT',
+                        body:   file
+                    });
+                    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                    resultPhotos.push({ s3Key: urlInfo.s3Key, caption: '' });
+                    uploaded = true;
+                    break;
+                } catch (err) {
+                    console.warn(`사진 ${i+1} 업로드 실패 (${attempt}/${MAX_RETRY}):`, err.message);
+                    if (attempt < MAX_RETRY) {
+                        document.getElementById('progress-text').textContent = `${i+1}번 사진 재시도 중... (${attempt}/${MAX_RETRY})`;
+                        await new Promise(r => setTimeout(r, 2000 * attempt));
+                    }
+                }
+            }
+            if (!uploaded) {
+                window.removeEventListener('beforeunload', window._uploadGuard);
+                alert(`${i+1}번째 사진 업로드에 ${MAX_RETRY}회 실패했습니다. 네트워크 확인 후 다시 시도해주세요.`);
+                isUploading = false;
+                renderPhotoGrid();
+                btn.disabled = false;
+                btn.textContent = '업로드 완료 — 영상 제작 시작';
+                return;
+            }
+        }
+
+        document.getElementById('upload-progress').style.width = '100%';
+        document.getElementById('progress-text').textContent   = `${total} / ${total} 완료`;
+
+        // 서버 전송 중 피드백
+        document.getElementById('step-label').textContent = '제작 요청 중...';
+        btn.textContent = '제작 요청 중...';
+
+        try {
+            const completeResp = await fetch('/api/orders/t/' + currentAccessToken + '/upload-complete', {
+                method:  'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body:    JSON.stringify({
+                    photos: resultPhotos,
+                    bgmTrack: selectedBgm,
+                    introTitle: document.getElementById('introTitleInput').value.trim(),
+                    outroTitle: document.getElementById('outroTitleInput').value.trim() || '감사합니다'
+                })
+            });
+            if (!completeResp.ok) {
+                const err = await completeResp.json().catch(() => ({}));
+                throw new Error(err.message || '서버 처리 실패');
+            }
+        } catch (e) {
+            window.removeEventListener('beforeunload', window._uploadGuard);
+            console.error('upload-complete 오류:', e);
+            alert('제작 시작 중 오류가 발생했습니다: ' + e.message + '\n잠시 후 다시 시도해주세요.');
+            btn.disabled = false;
+            btn.textContent = '다음 단계 — 음악 선택';
+            isUploading = false;
+            return;
+        }
+
+        window.removeEventListener('beforeunload', window._uploadGuard);
+        trackEvent('upload_complete', currentOrderId, { photoCount: resultPhotos.length, bgm: selectedBgm });
+        setTimeout(() => showDone(), 600);
+    }
+
+    function showDone() {
+        document.getElementById('guide-section').style.display  = 'none';
+        document.getElementById('upload-section').style.display = 'none';
+        document.getElementById('title-section').style.display  = 'none';
+        document.getElementById('bgm-section').style.display    = 'none';
+        document.getElementById('done-section').style.display   = 'block';
+        hideFlowStepper();
+        document.getElementById('done-order-num').textContent   = '주문번호 #' + currentOrderId;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        // 업로드 완료 후 localStorage 정리
+        localStorage.removeItem('pendingAccessToken');
+        localStorage.removeItem('pendingOrderName');
+        startStatusPolling(currentOrderId);
+    }
+
+    let pollingTimer = null;
+    let pollingProgress = 0;
+
+    function startStatusPolling(orderId) {
+        pollingProgress = 5;
+        document.getElementById('done-progress-bar').style.width = pollingProgress + '%';
+        document.getElementById('done-status-text').textContent = '영상 제작 중...';
+
+        if (pollingTimer) clearInterval(pollingTimer);
+        pollingTimer = setInterval(() => pollOrderStatus(orderId), 15000);
+    }
+
+    async function pollOrderStatus(orderId) {
+        try {
+            const resp = await fetch('/api/orders/t/' + currentAccessToken + '/status');
+            if (!resp.ok) return;
+            const data = await resp.json();
+
+            if (data.status === 'PROCESSING') {
+                pollingProgress = Math.min(pollingProgress + 8, 90);
+                document.getElementById('done-progress-bar').style.width = pollingProgress + '%';
+                document.getElementById('done-status-text').textContent = '영상 제작 중... 8시간 내 완성 후 문자로 안내드립니다';
+
+            } else if (data.status === 'COMPLETED' && data.downloadUrl) {
+                clearInterval(pollingTimer);
+                pollingTimer = null;
+
+                document.getElementById('done-progress-bar').style.width = '100%';
+                document.getElementById('done-processing').style.display = 'none';
+                document.getElementById('done-download').style.display   = 'block';
+                document.getElementById('done-download-link').href       = data.downloadUrl;
+                document.getElementById('done-title').textContent        = '영상이 완성되었습니다';
+                document.getElementById('done-desc').textContent         = '아래 버튼을 눌러 다운로드하세요.';
+                document.getElementById('done-mark').style.background    = '#c9a96e22';
+
+            } else if (data.status === 'FAILED') {
+                clearInterval(pollingTimer);
+                pollingTimer = null;
+                document.getElementById('done-title').textContent     = '제작 중 문제가 발생했습니다';
+                document.getElementById('done-desc').textContent      = '죄송합니다. 카카오톡 @시간의사진관 으로 문의해 주세요.';
+                document.getElementById('done-status-text').textContent = '제작 실패 — 관리자가 확인 중입니다';
+                document.getElementById('done-progress-bar').style.background = '#c97070';
+            }
+        } catch(e) {
+            console.warn('상태 폴링 오류:', e);
+        }
+    }
+
+    async function handleResume(accessToken) {
+        hideMainSections();
+        const loadingDiv = showLoading('주문 정보 확인 중...');
+        try {
+            const statusResp = await fetch('/api/orders/t/' + accessToken + '/status');
+            if (!statusResp.ok) throw new Error('주문을 찾을 수 없습니다.');
+            const statusData = await statusResp.json();
+
+            currentAccessToken = accessToken;
+            currentOrderId = statusData.orderId;
+
+            if (statusData.status === 'COMPLETED' && statusData.downloadUrl) {
+                loadingDiv.innerHTML =
+                    '<div style="font-family:var(--serif);font-size:28px;font-weight:300;margin-bottom:16px;color:var(--gold)">영상이 완성되었습니다</div>' +
+                    '<div style="font-size:14px;color:var(--muted);margin-bottom:32px">아래 버튼을 눌러 다운로드하세요.</div>' +
+                    '<a href="' + statusData.downloadUrl + '" download ' +
+                    'onclick="trackEvent(\'download_click\', {orderId:' + currentOrderId + '})" ' +
+                    'style="display:inline-block;padding:16px 48px;background:var(--gold);color:#000;font-weight:600;' +
+                    'border-radius:8px;text-decoration:none;font-size:16px;letter-spacing:0.5px">다운로드</a>';
+                return;
+            }
+            if (statusData.status === 'PROCESSING') {
+                loadingDiv.innerHTML = '<div style="font-family:var(--serif);font-size:22px;font-weight:300;margin-bottom:12px">영상 제작 중입니다</div>' +
+                    '<div style="font-size:13px;color:var(--muted)">8시간 이내 완성 후 문자로 안내드립니다.</div>';
+                startStatusPolling(currentOrderId);
+                return;
+            }
+            if (statusData.status !== 'PAID') {
+                loadingDiv.innerHTML = '<div style="font-size:13px;color:var(--muted)">이미 처리된 주문입니다.</div>';
+                return;
+            }
+
+            const urlResp = await fetch('/api/orders/t/' + accessToken + '/upload-urls');
+            if (!urlResp.ok) throw new Error('업로드 URL 발급 실패');
+            const urlData = await urlResp.json();
+            presignedUrls = urlData.presignedUrls || [];
+
+            loadingDiv.remove();
+            showUploadSection(currentOrderId, IS_DEV);
+        } catch (e) {
+            loadingDiv.innerHTML = `<div style="font-size:13px;color:var(--muted)">${e.message}</div>`;
+        }
+    }
+
+    function showResumeModal(orderData) {
+        document.getElementById('resume-name').textContent     = orderData.customerName || orderData.existingCustomerName || '';
+        document.getElementById('resume-order-id').textContent = '#' + orderData.orderId;
+        const modal = document.getElementById('resume-modal');
+        modal.style.display = 'flex';
+        modal._orderId = orderData.orderId;
+        modal._accessToken = orderData.accessToken;
+    }
+
+    async function resumeExistingOrder() {
+        const modal   = document.getElementById('resume-modal');
+        const accessToken = modal._accessToken;
+        modal.style.display = 'none';
+        await handleResume(accessToken);
+    }
+
+    async function closeResumeModal() {
+        document.getElementById('resume-modal').style.display = 'none';
+        try {
+            const modal   = document.getElementById('resume-modal');
+            const accessToken = modal._accessToken;
+            if (accessToken) await fetch('/api/orders/t/' + accessToken + '/cancel', { method: 'POST' }).catch(() => {});
+        } catch(e) {}
+    }
+
+    function showError(id, msg) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.textContent = msg;
+        el.style.display = 'block';
+    }
+
+    function hideError(id) {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+    }
+
+    function hideMainSections() {
+        ['hero', 'preview-section', 'features', 'process', 'order-section'].forEach(id => {
+            const el = document.getElementById(id) || document.querySelector('.' + id);
+            // hero/features/process are sections by class
+        });
+        document.querySelector('.hero').style.display          = 'none';
+        document.getElementById('preview-section').style.display = 'none';
+        document.querySelector('.features').style.display     = 'none';
+        document.querySelector('.process').style.display      = 'none';
+        document.querySelector('.order-section').style.display = 'none';
+        document.querySelector('.faq-section').style.display   = 'none';
+        const igSection = document.getElementById('instagram-section');
+        if (igSection) igSection.style.display = 'none';
+        document.querySelector('footer').style.display        = 'none';
+        const kakao = document.getElementById('kakao-float');
+        if (kakao) kakao.style.display = 'none';
+    }
+
+    function showLoading(msg) {
+        const div = document.createElement('div');
+        div.style.cssText = 'position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg);z-index:9000;text-align:center;padding:40px';
+        div.innerHTML = `<div style="font-family:var(--serif);font-size:20px;font-weight:300;color:var(--text);margin-bottom:12px">${msg}</div>`;
+        document.body.appendChild(div);
+        return div;
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        detectDevMode();
+        trackEvent('page_view');
+
+        // beforeunload 기본 제거
+        window._uploadGuard = null;
+
+        // 결제 성공 리다이렉트 처리
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('paymentId') || params.get('payment_id')) {
+            await handlePaymentSuccess();
+            return;
+        }
+
+        // resume 파라미터 (accessToken 기반)
+        const resumeToken = params.get('token');
+        if (resumeToken && !params.get('paymentId')) {
+            await handleResume(resumeToken);
+            return;
+        }
+
+        // 포트원 설정 로드
+        try {
+            const cfg = await fetch('/api/orders/payment-config').then(r => r.json());
+            PORTONE_STORE_ID   = cfg.storeId   || '';
+            PORTONE_CHANNEL_KEY = cfg.channelKey || '';
+        } catch(e) {
+            console.warn('결제 설정 로드 실패:', e);
+        }
+
+        // localStorage 미완료 주문 확인 (accessToken 기반)
+        const savedToken = localStorage.getItem('pendingAccessToken');
+        const savedOrderName = localStorage.getItem('pendingOrderName');
+        if (savedToken && savedOrderName) {
+            try {
+                const statusResp = await fetch('/api/orders/t/' + savedToken + '/status');
+                if (statusResp.ok) {
+                    const statusData = await statusResp.json();
+                    if (statusData.status === 'PAID') {
+                        showResumeModal({ orderId: statusData.orderId, accessToken: savedToken, customerName: savedOrderName });
+                    } else {
+                        localStorage.removeItem('pendingAccessToken');
+                        localStorage.removeItem('pendingOrderName');
+                    }
+                }
+            } catch(e) {}
+        }
+    });
 </script>
 </body>
 </html>
